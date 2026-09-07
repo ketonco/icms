@@ -11,6 +11,24 @@ services:
     networks:
       - e-commerce-network
 
+  user-auth:
+    build:
+      context: ../user-auth
+      dockerfile: Dockerfile
+    container_name: user-auth
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgreSQL_DB:5432/dii2db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=adm123456
+    networks:
+      - e-commerce-network
+      - docker_db_network
+
 networks:
   e-commerce-network:
     driver: bridge
+  docker_db_network:
+    external: true
