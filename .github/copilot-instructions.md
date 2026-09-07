@@ -2,7 +2,7 @@
 
 ## 1. Arquitectura General y Tecnologías Core
 - **Estructura:** Monorepo con Gradle Multi-Project Build (Groovy DSL).
-- **Lenguaje:** Java 21 puro (sin Kotlin en el código fuente).
+- **Lenguaje:** Java 24 puro (sin Kotlin en el código fuente).
 - **Framework Principal:** Spring Boot 3.3+.
 - **Base de Datos:** PostgreSQL gestionado exclusivamente con migraciones de Liquibase.
 - **API Gateway:** Spring Cloud Gateway (Spring WebFlux reactivo). NUNCA agregar `spring-boot-starter-web` a este módulo ni `@RestController` con lógica de negocio.
