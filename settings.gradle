@@ -1,0 +1,4 @@
+rootProject.name = "ICMS"
+
+include(":api")
+include(":user-auth")
