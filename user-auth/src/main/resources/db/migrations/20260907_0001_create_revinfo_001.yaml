@@ -1,0 +1,96 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260907_0001_create_revinfo_001
+      author: system
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: revinfo
+      changes:
+        - createSequence:
+            sequenceName: revinfo_seq
+            startValue: 1
+            incrementBy: 50
+
+        - createTable:
+            tableName: revinfo
+            remarks: "Tabla de revisiones de Hibernate Envers para auditoria"
+            columns:
+              - column:
+                  name: rev
+                  type: INTEGER
+                  defaultValueSequenceNext: revinfo_seq
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_revinfo
+                    nullable: false
+              - column:
+                  name: revtstmp
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+              - column:
+                  name: ip_address
+                  type: VARCHAR(45)
+                  remarks: "IP desde donde se genero la modificacion (soporta IPv4 e IPv6)"
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: revinfo
+        - dropSequence:
+            sequenceName: revinfo_seq
+
+  - changeSet:
+      id: 20260907_0001_create_revinfo_002
+      author: system
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: revinfo
+      changes:
+        - createIndex:
+            tableName: revinfo
+            indexName: idx_revinfo_revtstmp
+            columns:
+              - column:
+                  name: revtstmp
+
+        - createIndex:
+            tableName: revinfo
+            indexName: idx_revinfo_username
+            columns:
+              - column:
+                  name: username
+
+        - createIndex:
+            tableName: revinfo
+            indexName: idx_revinfo_created_at
+            columns:
+              - column:
+                  name: created_at
+
+      rollback:
+        - dropIndex:
+            tableName: revinfo
+            indexName: idx_revinfo_revtstmp
+
+        - dropIndex:
+            tableName: revinfo
+            indexName: idx_revinfo_username
+
+        - dropIndex:
+            tableName: revinfo
+            indexName: idx_revinfo_created_at

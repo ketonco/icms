@@ -1,6 +1,9 @@
 spring:
   application:
     name: user-auth
+  liquibase:
+    change-log: classpath:db/migration-root.yaml
+    enabled: ${LIQUIBASE_ENABLED:false}  
 
 server:
   port: 8081
