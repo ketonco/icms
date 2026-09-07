@@ -1,9 +1,28 @@
 spring:
   application:
     name: user-auth
+  datasource:
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_USER_AUTH_NAME}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   liquibase:
     change-log: classpath:db/migration-root.yaml
     enabled: ${LIQUIBASE_ENABLED:false}  
+  jpa:
+    hibernate:
+      # En desarrollo, 'validate' asegura que Liquibase hizo bien su trabajo [10, 11]
+      ddl-auto: validate 
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+      envers:
+        audit_table_suffix: _aud
+        revision_field_name: rev
+        revision_type_field_name: revtype
+        store_data_at_delete: true
+  # Configuración de Spring MVC, this includes settings for handling web requests and responses which means you can customize how your application handles HTTP requests and responses.
+  mvc:
+    problem:
+      include-stacktrace: always # Always include stacktrace in the response for debugging purposes
 
 server:
-  port: 8081
+  port: ${PORT_USER_AUTH}
