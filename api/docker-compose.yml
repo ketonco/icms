@@ -5,9 +5,12 @@ services:
       dockerfile: Dockerfile
     container_name: api-gateway
     ports:
-      - "8080:8080"
+      - "${PORT_GATEWAY_PUBLIC}:${PORT_GATEWAY}"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - PORT_GATEWAY=${PORT_GATEWAY}
+      - LIQUIBASE_ENABLED=${LIQUIBASE_ENABLED}
+      - PORT_USER_AUTH=${PORT_USER_AUTH}
     networks:
       - e-commerce-network
 
@@ -17,12 +20,14 @@ services:
       dockerfile: Dockerfile
     container_name: user-auth
     ports:
-      - "8081:8081"
+      - "${PORT_USER_AUTH}:${PORT_USER_AUTH}"
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgreSQL_DB:5432/dii2db
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=adm123456
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_USER_AUTH_NAME}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - LIQUIBASE_ENABLED=${LIQUIBASE_ENABLED}
+      - PORT_USER_AUTH=${PORT_USER_AUTH}
     networks:
       - e-commerce-network
       - docker_db_network
