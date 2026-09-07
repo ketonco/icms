@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: user-auth
+
+server:
+  port: 8081
