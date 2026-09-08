@@ -26,3 +26,20 @@ spring:
 
 server:
   port: ${PORT_USER_AUTH}
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  liquibase:
+    enabled: false
+
+    
+  session:
+    store-type: none
+    
+  cache:
+    type: none
