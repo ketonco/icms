@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: api-gateway
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   cloud:
     gateway:
       server:
@@ -30,3 +32,19 @@ logging:
   level:
     org.springframework.cloud.gateway: INFO
     org.springframework.web.reactive: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  liquibase:
+    enabled: false
+
+    
+  session:
+    store-type: none
+    
+  cache:
+    type: none
