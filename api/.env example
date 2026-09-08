@@ -9,6 +9,9 @@ DB_PORT=
 DB_USER=
 DB_PASSWORD=
 
+# Nombre de los Hosts
+HOST_USER_AUTH=user-auth
+
 # Nombre de las bases de datos
 DB_USER_AUTH_NAME=
 

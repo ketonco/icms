@@ -24,7 +24,7 @@ spring:
           # Definición de Rutas hacia los Microservicios
           routes:
             - id: servicio-autenticacion-usuarios
-              uri: http://user-auth:${PORT_USER_AUTH}
+              uri: http://${HOST_USER_AUTH:localhost}:${PORT_USER_AUTH:8081}
               predicates:
                 - Path=/api/v1/auth/**
 

@@ -11,6 +11,7 @@ services:
       - PORT_GATEWAY=${PORT_GATEWAY}
       - LIQUIBASE_ENABLED=${LIQUIBASE_ENABLED}
       - PORT_USER_AUTH=${PORT_USER_AUTH}
+      - HOST_USER_AUTH=${HOST_USER_AUTH}
     networks:
       - e-commerce-network
 
