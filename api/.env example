@@ -9,8 +9,11 @@ DB_PORT=
 DB_USER=
 DB_PASSWORD=
 
-
+# Nombre de las bases de datos
 DB_USER_AUTH_NAME=
 
 # Perfil
-SPRING_PROFILE=dev
+SPRING_PROFILES_ACTIVE=dev
+
+# Liquibase
+LIQUIBASE_ENABLED=false
