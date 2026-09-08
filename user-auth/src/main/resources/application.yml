@@ -2,9 +2,9 @@ spring:
   application:
     name: user-auth
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_USER_AUTH_NAME}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:25432}/${DB_USER_AUTH_NAME:ICMS_UA}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:adm123456}
   liquibase:
     change-log: classpath:db/migration-root.yaml
     enabled: ${LIQUIBASE_ENABLED:false}  
@@ -25,7 +25,7 @@ spring:
       include-stacktrace: always # Always include stacktrace in the response for debugging purposes
 
 server:
-  port: ${PORT_USER_AUTH}
+  port: ${PORT_USER_AUTH:8081}
 
 
 ---
@@ -37,7 +37,6 @@ spring:
   liquibase:
     enabled: false
 
-    
   session:
     store-type: none
     
