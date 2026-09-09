@@ -2,3 +2,4 @@ rootProject.name = "ICMS"
 
 include(":api")
 include(":user-auth")
+include(":shared-kernel")

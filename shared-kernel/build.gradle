@@ -1,0 +1,44 @@
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' version '3.3.0' apply false
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.icms'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(24)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Data JPA (para MappedSuperclass, JPA Annotations y Auditing)
+    compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+    
+    // Spring Web (para DTOs, RestControllerAnnotations y LocaleContextHolder)
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    
+    // Spring Security (para extracción del usuario autenticado en AuditorAware)
+    compileOnly 'org.springframework.boot:spring-boot-starter-security'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Jackson para serialización JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+// Configuración para tratarse como librería ejecutable en JAR, no como aplicación Boot
+bootJar {
+    enabled = false
+}
+jar {
+    enabled = true
+}
