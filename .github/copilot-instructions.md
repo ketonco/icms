@@ -49,3 +49,4 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 - Mantener actualizada la documentación del proyecto para facilitar la incorporación de nuevos desarrolladores.
 - Seguir las mejores prácticas de seguridad, como la gestión adecuada de credenciales y la protección de datos sensibles.
 - Mantener las dependencias del proyecto actualizadas para evitar vulnerabilidades de seguridad conocidas.
+- todos los comentarios/documentacion deben ser generados en ingles en el codigo.
