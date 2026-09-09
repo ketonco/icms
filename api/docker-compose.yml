@@ -1,8 +1,8 @@
 services:
   api-gateway:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: api/Dockerfile
     container_name: api-gateway
     ports:
       - "${PORT_GATEWAY_PUBLIC}:${PORT_GATEWAY}"
@@ -17,8 +17,8 @@ services:
 
   user-auth:
     build:
-      context: ../user-auth
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: user-auth/Dockerfile
     container_name: user-auth
     ports:
       - "${PORT_USER_AUTH}:${PORT_USER_AUTH}"
