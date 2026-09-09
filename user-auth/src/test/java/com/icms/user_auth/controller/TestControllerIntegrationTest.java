@@ -24,6 +24,10 @@ public class TestControllerIntegrationTest {
             .build();
     }
 
+    /**
+     * integration test for the /api/v1/auth/test endpoint.
+     * Verifies that the service responds correctly when accessed directly.
+    */
     @Test
     @DisplayName("GET /api/v1/auth/test - Debe responder directamente desde User-Auth")
     void testAuthHealthDirect() {
