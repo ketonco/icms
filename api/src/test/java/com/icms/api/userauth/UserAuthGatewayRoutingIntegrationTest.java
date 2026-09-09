@@ -22,6 +22,10 @@ public class UserAuthGatewayRoutingIntegrationTest {
                 .build();
     }
 
+    /**
+     * integration test for the /api/v1/auth/test endpoint through the API Gateway.
+     * Verifies that the gateway correctly routes the request to the User-Auth service.
+    */
     @Test
     @DisplayName("GET /api/v1/auth/test - Gateway debe redirigir la petición a User-Auth")
     void testGatewayRoutingToUserAuth() {
