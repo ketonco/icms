@@ -1,0 +1,224 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260909_0001_create_languages_001
+      comments: "Creación de la tabla de idiomas"
+      author: system
+      changes:
+        - createSequence:
+            sequenceName: language_seq
+            startValue: 1
+            incrementBy: 1
+
+        - createTable:
+            tableName: languages
+            remarks: "Tabla de idiomas"
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueSequenceNext: language_seq
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_languages
+                    nullable: false
+              - column:
+                  name: code
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    updatable: true
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValue: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    updatable: true
+              - column:
+                  name: is_default
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValue: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: languages
+        - dropSequence:
+            sequenceName: language_seq
+
+  - changeSet:
+      id: 20260909_0001_create_languages_indexes_002
+      author: system
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: languages
+      changes:
+        - createIndex:
+            tableName: languages
+            indexName: idx_id_languages
+            columns:
+              - column:
+                  name: id
+
+        - createIndex:
+            tableName: languages
+            indexName: idx_code_languages
+            columns:
+              - column:
+                  name: code
+
+      rollback:
+        - dropIndex:
+            tableName: languages
+            indexName: idx_id_languages
+
+        - dropIndex:
+            tableName: languages
+            indexName: idx_code_languages
+
+  - changeSet:
+      id: 20260909_0001_create_languages_indexes_003
+      author: system
+      changes:
+        - createTable:
+            tableName: languages_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: code
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_default
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: languages_aud
+            columnNames: id, rev
+            constraintName: pk_languages_aud
+
+        - addForeignKeyConstraint:
+            baseTableName: languages_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_languages_aud_revinfo
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: languages_aud
+
+  - changeSet:
+      id: 20260909_0001_create_languages_indexes_004
+      author: system
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: languages_aud
+      changes:
+        - createIndex:
+            tableName: languages_aud
+            indexName: idx_languages_aud_rev
+            columns:
+              - column:
+                  name: rev
+        - createIndex:
+            tableName: languages_aud
+            indexName: idx_languages_aud_id
+            columns:
+              - column:
+                  name: id
+
+      rollback:
+        - dropIndex:
+            tableName: languages_aud
+            indexName: idx_languages_aud_rev
+        - dropIndex:
+            tableName: languages_aud
+            indexName: idx_languages_aud_id
