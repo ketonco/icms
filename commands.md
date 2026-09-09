@@ -5,6 +5,23 @@
 
 ## Gradle — proyecto principal
 
+### Detener procesos de Gradle
+ 
+```powershell
+.\gradlew.bat --stop
+```
+
+Detiene los Gradle Daemons en ejecución. Útil después de cambios en la
+configuración de Gradle o para liberar recursos.
+
+### Limpiar artefactos generados
+
+```powershell
+.\gradlew.bat clean
+```
+
+Elimina los directorios `build` generados por todos los módulos del monorepo.
+
 ### Listar módulos del monorepo
 
 ```powershell
@@ -47,6 +64,33 @@ Lista de todos los comandos para test unitario
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.controller.TestControllerIntegrationTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.controller.TestControllerIntegrationTest.testAuthHealthDirect"
 ```
+
+### Compilar el módulo
+
+```powershell
+.\gradlew.bat :user-auth:build
+```
+
+Compila `user-auth`, ejecuta sus pruebas y genera el artefacto de la
+aplicación.
+
+## Módulo `shared-kernel`
+
+### Listar tareas disponibles
+
+```powershell
+.\gradlew.bat :shared-kernel:tasks
+```
+
+Muestra las tareas disponibles para la librería `shared-kernel`.
+
+### Compilar la librería
+
+```powershell
+.\gradlew.bat :shared-kernel:build
+```
+
+Compila `shared-kernel`, ejecuta sus pruebas y genera el JAR de la librería.
 
 ## Módulo `api`
 
