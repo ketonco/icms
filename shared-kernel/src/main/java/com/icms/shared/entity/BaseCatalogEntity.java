@@ -15,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BaseCatalogEntity extends AuditableEntity<Long> {
+public class BaseCatalogEntity extends AuditableEntity {
  
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
