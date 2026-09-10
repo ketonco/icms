@@ -4,7 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 
-@SpringBootApplication(scanBasePackages = {"com.icms.user_auth", "com.icms.shared"})
+//@SpringBootApplication(scanBasePackages = {"com.icms.user_auth", "com.icms.shared"})
+@SpringBootApplication
 @EntityScan(basePackages = {"com.icms.user_auth", "com.icms.shared"})
 public class UserAuthApplication {
 
