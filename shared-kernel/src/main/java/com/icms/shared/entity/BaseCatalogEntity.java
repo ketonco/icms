@@ -1,8 +1,5 @@
 package com.icms.shared.entity;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -15,11 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BaseCatalogEntity extends AuditableEntity {
- 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class BaseCatalogEntity extends AuditableEntity<Long> {
 
     @Column(unique = true, updatable = true, nullable = false, name="code")
     private String code;
