@@ -1,0 +1,14 @@
+package com.icms.shared.config.exception;
+
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.context.annotation.Bean;
+
+@AutoConfiguration 
+public class ExceptionAutoConfiguration {
+
+    @Bean 
+    public GlobalExceptionHandler globalExceptionHandler() {
+        return new GlobalExceptionHandler();
+    }
+
+}
