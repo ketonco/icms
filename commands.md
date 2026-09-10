@@ -63,6 +63,9 @@ Lista de todos los comandos para test unitario
 ```powershell
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.controller.TestControllerIntegrationTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.controller.TestControllerIntegrationTest.testAuthHealthDirect"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest.mapFromEntityToDto"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest.mapFromDtoToEntity"
 ```
 
 ### Compilar el módulo
