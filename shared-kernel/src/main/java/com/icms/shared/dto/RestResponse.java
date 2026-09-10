@@ -17,6 +17,8 @@ public class RestResponse<T> {
     private String message;
     private LocalDateTime timestamp;
     private String path;
+    private String code; // Código de error o éxito
+    private String error; // Mensaje de error detallado
     private T data; // Genérico para devolver cualquier dato extra  
 
     public static <T> RestResponse<T> ok(T data, String message) {
@@ -32,11 +34,14 @@ public class RestResponse<T> {
         return ok(data, "OK");
     }
 
-    public static <T> RestResponse<T> error(int status, String message) {
+    public static <T> RestResponse<T> error(int status, String message, String code, String path, String error) {
         RestResponse<T> response = new RestResponse<>();
         response.setStatus(status);
         response.setMessage(message);
+        response.setCode(code);
         response.setTimestamp(LocalDateTime.now());
+        response.setPath(path);
+        response.setError(error); // Set the detailed error message
         return response;
     }
 }
