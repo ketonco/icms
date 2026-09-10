@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260910_0001_alter_lenguages_sequence_increment_001
+      author: system
+      changes:
+        - alterSequence:
+            sequenceName: languages_seq
+            incrementBy: 50

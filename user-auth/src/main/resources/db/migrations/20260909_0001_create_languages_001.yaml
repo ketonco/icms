@@ -5,7 +5,7 @@ databaseChangeLog:
       author: system
       changes:
         - createSequence:
-            sequenceName: language_seq
+            sequenceName: languages_seq
             startValue: 1
             incrementBy: 1
 
@@ -16,7 +16,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: BIGINT
-                  defaultValueSequenceNext: language_seq
+                  defaultValueSequenceNext: languages_seq
                   constraints:
                     primaryKey: true
                     primaryKeyName: pk_languages
@@ -79,7 +79,7 @@ databaseChangeLog:
             cascadeConstraints: false
             tableName: languages
         - dropSequence:
-            sequenceName: language_seq
+            sequenceName: languages_seq
 
   - changeSet:
       id: 20260909_0001_create_languages_indexes_002
