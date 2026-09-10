@@ -23,19 +23,26 @@ dependencyManagement {
 }
 
 dependencies {
-    // Spring Data JPA (para MappedSuperclass, JPA Annotations y Auditing)
+    // Spring Data JPA (for MappedSuperclass, JPA Annotations and Auditing)
     compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
     
-    // Spring Web (para DTOs, RestControllerAnnotations y LocaleContextHolder)
+    // Spring Web (for DTOs, RestControllerAnnotations and LocaleContextHolder)
     compileOnly 'org.springframework.boot:spring-boot-starter-web'
     
-    // Spring Security (para extracción del usuario autenticado en AuditorAware)
+    // Spring Security (for extracting the authenticated user in AuditorAware)
     compileOnly 'org.springframework.boot:spring-boot-starter-security'
 
-    // Lombok
+    // Lombok for reducing boilerplate code (getters, setters, constructors, etc.)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // Jackson para serialización JSON
+    // Jackson for JSON serialization and deserialization
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+
+    // MapStruct for object mapping between DTOs and entities
+    compileOnly 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    // Bean Validation (for @NotBlank, @NotNull, etc.)
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
