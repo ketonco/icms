@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import com.icms.user_auth.entity.Language;
+import com.icms.shared.entity.Language;
 import com.icms.user_auth.dto.language.LanguageDto;
 import com.icms.user_auth.dto.language.LanguageMapper;
 public class LanguageMapperTest {
