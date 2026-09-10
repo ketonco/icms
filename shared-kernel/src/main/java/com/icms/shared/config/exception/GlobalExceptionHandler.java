@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.icms.shared.Utils.MessageResolver;
 import com.icms.shared.dto.RestResponse;
+import com.icms.shared.exceptions.BusinessRuleException;
 import com.icms.shared.exceptions.EntityNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,10 +38,26 @@ public class GlobalExceptionHandler {
 
         return RestResponse.error(
             status.value(),
-            MessageResolver.resolveMessage("001"),
-            "001", // Código de error para entidad no encontrada
+            MessageResolver.resolveMessage("Ent-001"),
+            "Ent-001", // Código de error para entidad no encontrada
             uri,
             status.getReasonPhrase() // Detailed error message like "Not Found"
+        ); 
+
+    }
+
+    @ExceptionHandler(BusinessRuleException.class)
+    public RestResponse<String> handleBusinessRuleException(BusinessRuleException ex, HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String uri = request.getRequestURI();
+
+        return RestResponse.error(
+            status.value(),
+            ex.getMessage(),
+            ex.getCode(), // Código de error para regla de negocio
+            uri,
+            status.getReasonPhrase() // Detailed error message like "Bad Request"
         ); 
 
     }
