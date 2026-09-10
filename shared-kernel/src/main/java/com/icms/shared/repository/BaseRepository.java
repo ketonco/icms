@@ -13,13 +13,13 @@ import java.util.List;
 * revision repository is for auditing and versioning of entities
 */
 @NoRepositoryBean
-public interface BaseRepository<T, ID> extends JpaRepository<T, ID>, RevisionRepository<T, ID, Integer> {
+public interface BaseRepository<E, ID> extends JpaRepository<E, ID>, RevisionRepository<E, ID, Integer> {
 
-    default List<T> getAllAscending() {
+    default List<E> getAllAscending() {
         return findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    default List<T> getAllDescending() {
+    default List<E> getAllDescending() {
         return findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
     
