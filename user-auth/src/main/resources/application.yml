@@ -42,3 +42,11 @@ spring:
     
   cache:
     type: none
+
+---
+spring:
+  config:
+    activate:
+      on-profile: task
+  main:
+    web-application-type: none
