@@ -22,8 +22,8 @@ public class GlobalExceptionHandler {
 
         return RestResponse.error(
             status.value(),
-            MessageResolver.resolveMessage("000"),
-            "000", // Código de error genérico
+            ex.getMessage(),
+            "000", // Código de error para regla de negocio
             uri,
             status.getReasonPhrase() // Detailed error message like "Internal Server Error" or "Not Found"
         ); 
@@ -38,8 +38,8 @@ public class GlobalExceptionHandler {
 
         return RestResponse.error(
             status.value(),
-            MessageResolver.resolveMessage("Ent-001"),
-            "Ent-001", // Código de error para entidad no encontrada
+            ex.getMessage(),
+            ex.getCode(), // Código de error para regla de negocio
             uri,
             status.getReasonPhrase() // Detailed error message like "Not Found"
         ); 
