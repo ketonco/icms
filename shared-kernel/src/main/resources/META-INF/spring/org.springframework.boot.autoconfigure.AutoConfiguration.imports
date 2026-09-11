@@ -1,1 +1,2 @@
 com.icms.shared.config.exception.ExceptionAutoConfiguration
+com.icms.shared.config.i18n.MessageConfig
