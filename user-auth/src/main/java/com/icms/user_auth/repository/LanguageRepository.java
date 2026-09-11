@@ -1,5 +1,6 @@
 package com.icms.user_auth.repository;
 import org.springframework.stereotype.Repository;
+import java.util.Optional;
 import com.icms.shared.repository.BaseCatalogRepository;
 import com.icms.shared.entity.Language;
 
@@ -10,10 +11,10 @@ public interface LanguageRepository extends BaseCatalogRepository<Language, Long
     boolean existsByName(String name);
 
     // Finds a language by its name in the repository
-    Language findByName(String name);
+    Optional<Language> findByName(String name);
 
     // find by isDefault boolean value
-    Language findByIsDefault(boolean isDefault);
+    Optional<Language> findByIsDefault(boolean isDefault);
 
 
 }

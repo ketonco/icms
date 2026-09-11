@@ -35,7 +35,7 @@ public class LanguageRules extends BaseDaoCatalogRules<Language, LanguageReposit
     }
     /* Checks if a language with the given name already exists in the repository */
     private void existsByName(Language language) {
-        Language existingLanguage = languageRepository.findByName(language.getName());
+        Language existingLanguage = languageRepository.findByName(language.getName()).orElse(null);
         // If an existing language with the same name is found and it is not the same as the current language, throw an exception
         if (existingLanguage != null && !existingLanguage.getId().equals(language.getId())) {
             throw new BusinessRuleException("Ent-005"); 
@@ -44,7 +44,7 @@ public class LanguageRules extends BaseDaoCatalogRules<Language, LanguageReposit
 
     /* Checks if a language is set as the default language in the repository to not allow deletion or modification */
     private void checkIsDefault(Language language, String code) {
-        Language defaultLanguage = languageRepository.findByIsDefault(true);
+        Language defaultLanguage = languageRepository.findByIsDefault(true).orElse(null);
         if (defaultLanguage != null && defaultLanguage.getId().equals(language.getId())) {
             throw new BusinessRuleException(code);
         }
