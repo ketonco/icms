@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260911_0003_modify_language_code_length_both_tables
+      author: maximo
+      changes:
+        - modifyDataType:
+            tableName: languages
+            columnName: code
+            newDataType: VARCHAR(10)
