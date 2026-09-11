@@ -1,6 +1,8 @@
 package com.icms.shared.repository;
 
 import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
 
 @NoRepositoryBean 
 public interface BaseCatalogRepository<E, ID> extends BaseRepository<E, ID> {
@@ -9,6 +11,7 @@ public interface BaseCatalogRepository<E, ID> extends BaseRepository<E, ID> {
     boolean existsByCode(String code);
 
     /* find an entity by its code */
-    E findByCode(String code);
+    @Transactional(readOnly = true)
+    Optional<E> findByCode(String code);
 
 }
