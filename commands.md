@@ -77,6 +77,15 @@ Lista de todos los comandos para test unitario
 Compila `user-auth`, ejecuta sus pruebas y genera el artefacto de la
 aplicación.
 
+### Ejecutar los Seeds (CLI)
+
+```powershell
+.\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=all'
+.\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=LanguageDataSeed'
+```
+
+Ejecuta los Seeds de `user-auth` para llenar la base de datos con informacion base
+
 ## Módulo `shared-kernel`
 
 ### Listar tareas disponibles
