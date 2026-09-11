@@ -66,6 +66,8 @@ Lista de todos los comandos para test unitario
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest.mapFromEntityToDto"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest.mapFromDtoToEntity"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.repository.LanguageRepositoryTest"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.repository.LanguageRepositoryTest.testSaveAndRetrieveLanguage"
 ```
 
 ### Compilar el módulo
