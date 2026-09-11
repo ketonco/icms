@@ -1,9 +1,12 @@
 package com.icms.user_auth.rules.dao;
 import com.icms.shared.rules.BaseDaoCatalogRules;
+
+import org.springframework.stereotype.Component;
+
 import com.icms.shared.entity.Language;
 import com.icms.shared.exceptions.BusinessRuleException;
 import com.icms.user_auth.repository.LanguageRepository;
-
+@Component 
 public class LanguageRules extends BaseDaoCatalogRules<Language, LanguageRepository> {
     private final LanguageRepository languageRepository;
 
