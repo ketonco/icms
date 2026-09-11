@@ -18,6 +18,10 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+    mockitoAgent
+}
+
 dependencies {
 	// Módulo local del mismo proyecto Gradle; no es necesario declararlo como dependencia publicada.
 	implementation project(':shared-kernel')
@@ -46,6 +50,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
+	testImplementation 'org.mockito:mockito-core:5.14.2'
 
 	testCompileOnly 'org.projectlombok:lombok'
 
@@ -58,6 +63,8 @@ dependencies {
     liquibaseRuntime 'org.postgresql:postgresql'
     liquibaseRuntime 'info.picocli:picocli:4.7.6'
     liquibaseRuntime sourceSets.main.output
+
+	mockitoAgent('org.mockito:mockito-core:5.14.2') { transitive = false }
 }
 
 // Configuración de la base de datos EXCLUSIVA de este microservicio
@@ -72,6 +79,11 @@ liquibase {
             password project.hasProperty('dbPassword') ? project.property('dbPassword') : 'adm123456'
         }
     }
+}
+
+test {
+    useJUnitPlatform()
+    jvmArgs "-javaagent:${configurations.mockitoAgent.singleFile}"
 }
 
 tasks.named('test') {
