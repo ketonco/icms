@@ -26,6 +26,12 @@ public class MessageResolver {
                 return "Entity cannot be created.";
             case "Ent-008": // Entity must be new
                 return "Entity must be new.";
+
+            // Catalog-related exceptions
+            case "Cat-001": // code must exist
+                return "The catalog code must exist.";
+            case "Cat-002": // code must be unique
+                return "The catalog code must be unique.";
             
 
             //Language-related exceptions
