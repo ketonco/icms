@@ -31,7 +31,22 @@ Elimina los directorios `build` generados por todos los módulos del monorepo.
 Muestra la lista de proyectos o módulos anidados configurados en el proyecto
 principal de Gradle.
 
+### Refrescar Dependencias
+
+```powershell
+./gradlew --refresh-dependencies build -x test
+```
+Refresca las dependencias de cada modulo en un solo comando, bastante util al agregar una dependencia nueva ejecutarlo
+
 ## Módulo `user-auth`
+
+### Levantar unicamente el servicio de user-auth local
+
+```powershell
+./gradlew :user-auth:bootRun
+```
+
+Levantar unicamente el servicio de user-auth local en el puerto indicado.
 
 ### Actualizar la base de datos
 
@@ -108,6 +123,14 @@ Compila `shared-kernel`, ejecuta sus pruebas y genera el JAR de la librería.
 
 ## Módulo `api`
 
+### Levantar unicamente el servicio de api-gateway local
+
+```powershell
+./gradlew :api:bootRun
+```
+
+Levantar unicamente el servicio de api-gateway local en el puerto indicado.
+
 ### Levantar los servicios con Docker Compose
 
 ```powershell
@@ -142,3 +165,5 @@ Lista de todos los comandos para test unitario
 
 Explica brevemente qué hace, qué módulo afecta y cualquier precaución o
 requisito necesario para ejecutarlo.
+
+./gradlew :user-auth:bootRun
