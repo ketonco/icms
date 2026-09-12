@@ -2,7 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: 20260909_0001_create_languages_001
       comments: "Creación de la tabla de idiomas"
-      author: system
+      author: "Maximo"
       changes:
         - createSequence:
             sequenceName: languages_seq
@@ -83,7 +83,7 @@ databaseChangeLog:
 
   - changeSet:
       id: 20260909_0001_create_languages_indexes_002
-      author: system
+      author: "Maximo"
       preConditions:
         - onFail: HALT
         - tableExists:
@@ -114,7 +114,7 @@ databaseChangeLog:
 
   - changeSet:
       id: 20260909_0001_create_languages_indexes_003
-      author: system
+      author: "Maximo"
       changes:
         - createTable:
             tableName: languages_aud
@@ -195,7 +195,7 @@ databaseChangeLog:
 
   - changeSet:
       id: 20260909_0001_create_languages_indexes_004
-      author: system
+      author: "Maximo"
       preConditions:
         - onFail: HALT
         - tableExists:
