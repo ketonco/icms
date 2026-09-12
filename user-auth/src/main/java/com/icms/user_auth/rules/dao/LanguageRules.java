@@ -38,7 +38,7 @@ public class LanguageRules extends BaseDaoCatalogRules<Language, LanguageReposit
         Language existingLanguage = languageRepository.findByName(language.getName()).orElse(null);
         // If an existing language with the same name is found and it is not the same as the current language, throw an exception
         if (existingLanguage != null && !existingLanguage.getId().equals(language.getId())) {
-            throw new BusinessRuleException("Ent-005"); 
+            throw new BusinessRuleException("Ent-005");
         }
     }
 
