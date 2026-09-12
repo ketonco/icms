@@ -19,19 +19,16 @@ import lombok.Builder;
 public class Language extends BaseCatalogEntity {
 
     public Language(String code, String name, Boolean isDefault, Boolean active) {
-        this.name = name;
-        this.isDefault = isDefault;
+        super.setName(name);
         super.setActive(active);
         super.setCode(code);
+        this.isDefault = isDefault;
     }
 
     public Language(Long id, String code, String name, Boolean isDefault, Boolean active) {
         this(code, name, isDefault, active);
         super.setId(id);
     }
-
-    @Column(unique = true, updatable = true, nullable = false, name="name", length = 50)
-    private String name; // Ej: English, Spanish, etc.
 
     @Column(updatable = true, nullable = false, name="is_default")
     private Boolean isDefault; // Indicate if this language is the default one

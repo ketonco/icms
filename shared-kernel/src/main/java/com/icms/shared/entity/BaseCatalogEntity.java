@@ -19,4 +19,10 @@ public class BaseCatalogEntity extends AuditableEntity<Long> {
 
     @Column(updatable = true, nullable = false, name="active")
     private Boolean active;
+
+    
+
+    @Column(unique = true, updatable = true, nullable = false, name="name", length = 50)
+    private String name; 
+
 }
