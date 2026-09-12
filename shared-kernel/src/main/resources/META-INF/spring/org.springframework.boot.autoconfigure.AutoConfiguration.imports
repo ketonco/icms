@@ -1,3 +1,4 @@
 com.icms.shared.config.exception.ExceptionAutoConfiguration
 com.icms.shared.config.i18n.MessageConfig
 com.icms.shared.config.AuditConfig
+com.icms.shared.config.jackson.SharedJacksonConfig

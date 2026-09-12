@@ -1,5 +1,7 @@
 package com.icms.shared.service;
 
+import java.util.List;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import com.icms.shared.dto.BaseMapper;
@@ -33,7 +35,7 @@ public abstract class BaseService<E extends AuditableEntity<ID>,D, ID, R extends
 
     /* find all dto */
     @Transactional(readOnly = true)
-    public Iterable<D> findAllDto() {
+    public List<D> findAllDto() {
         return mapper.toDtoList(repository.findAll());
     }
 
@@ -45,7 +47,7 @@ public abstract class BaseService<E extends AuditableEntity<ID>,D, ID, R extends
 
     /* find all dto in descending order */
     @Transactional(readOnly = true)
-    public Iterable<D> findAllDescendingDto() {
+    public List<D> findAllDescendingDto() {
         return mapper.toDtoList(repository.getAllDescending());
     }
 
@@ -57,7 +59,7 @@ public abstract class BaseService<E extends AuditableEntity<ID>,D, ID, R extends
 
     /* find all dto in ascending order */
     @Transactional(readOnly = true)
-    public Iterable<D> findAllAscendingDto() {
+    public List<D> findAllAscendingDto() {
         return mapper.toDtoList(repository.getAllAscending());
     }
 
