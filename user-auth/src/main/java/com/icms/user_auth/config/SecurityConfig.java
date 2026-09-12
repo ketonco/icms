@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.icms.shared.exceptions.CustomSecurityExceptionHandler;
+
 /*
  * Security configuration for the application.
  *
@@ -18,16 +20,30 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @Profile("!task") // Exclude this configuration when the 'task' profile is active because it is not needed for task-related operations
 public class SecurityConfig {
+    
+    private final CustomSecurityExceptionHandler securityExceptionHandler;
+
+    public SecurityConfig(CustomSecurityExceptionHandler securityExceptionHandler) {
+        this.securityExceptionHandler = securityExceptionHandler;
+    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+        .csrf(csrf -> csrf.disable())
+        .exceptionHandling(exception -> exception
+                // FIX: Redirige los fallos de seguridad a tu RestResponse JSON
+                .authenticationEntryPoint(securityExceptionHandler)
+                .accessDeniedHandler(securityExceptionHandler)
+            )
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/api/v1/auth/languages/**").permitAll()
+
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form.disable())
-            .httpBasic(httpBasic -> {});
+            .httpBasic(httpBasic -> httpBasic.disable());
 
         return http.build();
     }
