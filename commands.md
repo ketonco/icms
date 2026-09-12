@@ -135,6 +135,8 @@ Levantar unicamente el servicio de api-gateway local en el puerto indicado.
 
 ```powershell
 docker compose -f .\api\docker-compose.yml up --build -d
+docker compose -f .\api\docker-compose.yml up --build -d user-auth
+docker compose -f .\api\docker-compose.yml up --build -d api-gateway
 ```
 
 Construye las imágenes y levanta en segundo plano los servicios definidos en
@@ -153,6 +155,8 @@ Lista de todos los comandos para test unitario
 ```powershell
 .\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIntegrationTest"
 .\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIntegrationTest.testGatewayRoutingToUserAuth"
+.\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIntegrationTest.testGatewayRoutingToUserAuthLanguages"
+.\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIntegrationTest.testGatewayRoutingToUserAuthLanguageByCode"
 ```
 
 ## Plantilla para nuevos comandos
