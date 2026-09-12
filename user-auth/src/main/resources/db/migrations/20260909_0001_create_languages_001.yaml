@@ -113,7 +113,7 @@ databaseChangeLog:
             indexName: idx_code_languages
 
   - changeSet:
-      id: 20260909_0001_create_languages_indexes_003
+      id: 20260909_0001_create_languages_revision_003
       author: "Maximo"
       changes:
         - createTable:
@@ -194,7 +194,7 @@ databaseChangeLog:
             tableName: languages_aud
 
   - changeSet:
-      id: 20260909_0001_create_languages_indexes_004
+      id: 20260909_0001_create_languages_revision_indexes_004
       author: "Maximo"
       preConditions:
         - onFail: HALT
