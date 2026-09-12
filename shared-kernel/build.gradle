@@ -38,6 +38,7 @@ dependencies {
 
     // Jackson for JSON serialization and deserialization
     implementation 'com.fasterxml.jackson.core:jackson-databind'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     // MapStruct for object mapping between DTOs and entities
     compileOnly 'org.mapstruct:mapstruct:1.5.5.Final'
