@@ -78,6 +78,7 @@ Lista de todos los comandos para test unitario
 ```powershell
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.controller.TestControllerIntegrationTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.controller.TestControllerIntegrationTest.testAuthHealthDirect"
+
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest.mapFromEntityToDto"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.LanguageMapperTest.mapFromDtoToEntity"
@@ -85,6 +86,10 @@ Lista de todos los comandos para test unitario
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.service.LanguageServiceTest.testGetLanguageByCode"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.repository.LanguageRepositoryTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.repository.LanguageRepositoryTest.testSaveAndRetrieveLanguage"
+
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusMapperTest"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusMapperTest.mapFromEntityToDto"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusMapperTest.mapFromDtoToEntity"
 ```
 
 ### Compilar el módulo
