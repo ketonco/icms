@@ -34,12 +34,6 @@ public class LanguageMapperTest {
         // When
         LanguageDto languageDto = languageMapper.toDto(language);
 
-        // shows object
-        System.out.println("=== RESULTADO DEL MAPEO ENTIDAD -> DTO ===");
-        System.out.println("Entidad Original : " + language);
-        System.out.println("DTO Resultado    : " + languageDto);
-        System.out.println("==========================================");
-
         // Then
         assertNotNull(languageDto);
         assertEquals("Spanish", languageDto.name());
@@ -56,12 +50,6 @@ public class LanguageMapperTest {
 
         // When
         Language language = languageMapper.toEntity(languageDto);
-
-        // shows object
-        System.out.println("=== RESULTADO DEL MAPEO DTO -> ENTIDAD ===");
-        System.out.println("DTO Original    : " + languageDto);
-        System.out.println("Entidad Resultado : " + language);
-        System.out.println("==========================================");
 
         // Then
         assertNotNull(language);
