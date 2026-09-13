@@ -41,7 +41,7 @@ public class LanguageServiceTest {
         language.setActive(true);
         language.setIsDefault(true);
 
-        LanguageDto languageDto = new LanguageDto("en-US", "English", true, true);
+        LanguageDto languageDto = new LanguageDto(Long.valueOf(1L), "en-US", "English", true, true);
 
         given(languageRepository.findByCode("en-US")).willReturn(Optional.of(language));
         given(languageMapper.toDto(language)).willReturn(languageDto);

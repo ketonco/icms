@@ -46,7 +46,7 @@ public class LanguageMapperTest {
     @DisplayName("Test if the LanguageMapper returns entity correctly when mapping from dto")
     void mapFromDtoToEntity() {
         // Given
-        LanguageDto languageDto = new LanguageDto("es", "Spanish", true, true);
+        LanguageDto languageDto = new LanguageDto(Long.valueOf(1L), "es", "Spanish", true, true);
 
         // When
         Language language = languageMapper.toEntity(languageDto);
