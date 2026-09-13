@@ -16,7 +16,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 public class UserAuthGatewayRoutingIntegrationTest {
 
     @LocalServerPort 
-    private int port;private WebTestClient webTestClient;
+    private int port;
+    private WebTestClient webTestClient;
 
     @BeforeEach
     void setUp() {
@@ -32,7 +33,7 @@ public class UserAuthGatewayRoutingIntegrationTest {
     @Test
     @DisplayName("GET /api/v1/auth/test - Gateway debe redirigir la petición a User-Auth")
     void testGatewayRoutingToUserAuth() {
-        // NOTA: Para que este test pase, el servicio 'user-auth' debe estar corriendo en localhost:8081
+        // NOTE: In order for this test to pass, the 'user-auth' service must be running on localhost:8081
         webTestClient.get()
                 .uri("/api/v1/auth/test")
                 .exchange()
@@ -51,7 +52,7 @@ public class UserAuthGatewayRoutingIntegrationTest {
     @Test
     @DisplayName("GET /api/v1/auth/languages - Gateway debe redirigir la petición a User-Auth")
     void testGatewayRoutingToUserAuthLanguages() {
-        // NOTA: Para que este test pase, el servicio 'user-auth' debe estar corriendo en localhost:8081
+        // NOTE: In order for this test to pass, the 'user-auth' service must be running on localhost:8081
         webTestClient.get()
                 .uri("/api/v1/auth/languages")
                 .exchange()
@@ -78,7 +79,7 @@ public class UserAuthGatewayRoutingIntegrationTest {
     @Test
     @DisplayName("GET /api/v1/auth/languages/code/{code} - Gateway debe redirigir la petición a User-Auth")
     void testGatewayRoutingToUserAuthLanguageByCode() {
-        // NOTA: Para que este test pase, el servicio 'user-auth' debe estar corriendo en localhost:8081
+        // NOTE: In order for this test to pass, the 'user-auth' service must be running on localhost:8081
         webTestClient.get()
                 .uri("/api/v1/auth/languages/code/en-US")
                 .exchange()
