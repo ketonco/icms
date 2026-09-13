@@ -39,6 +39,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/v1/auth/languages/**").permitAll()
+                .requestMatchers("/api/v1/auth/user-status/**").permitAll()
 
                 .anyRequest().authenticated()
             )
