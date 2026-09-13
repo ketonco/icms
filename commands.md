@@ -101,6 +101,7 @@ aplicación.
 ```powershell
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=all'
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=LanguageDataSeed'
+.\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=UserStatusDataSeed'
 ```
 
 Ejecuta los Seeds de `user-auth` para llenar la base de datos con informacion base
