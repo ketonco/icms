@@ -3,6 +3,7 @@ package com.icms.shared.rules;
 import com.icms.shared.entity.AuditableEntity;
 import com.icms.shared.repository.BaseRepository;
 import com.icms.shared.exceptions.BusinessRuleException;
+import com.icms.shared.exceptions.EntityNotFoundException;
 
 public class BaseDaoRules<E extends AuditableEntity<ID>, R extends BaseRepository<E, ID>, ID> implements DaoRulesImpl<E> {
 
@@ -43,7 +44,7 @@ public class BaseDaoRules<E extends AuditableEntity<ID>, R extends BaseRepositor
 
     protected void existsById(ID id) {
         if (!repository.existsById(id)) {
-            throw new BusinessRuleException("Ent-002"); 
+            throw new EntityNotFoundException("Ent-001"); 
         }
     }
 }
