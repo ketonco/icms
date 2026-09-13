@@ -18,7 +18,7 @@ public class MessageResolver {
 
     public static String resolveMessage(String code, Object... args) {
         if (messageSource == null) {
-            return code; // Fallback si el contexto de Spring aún no se ha cargado (ej. pruebas unitarias aisladas)
+            return code + " context"; // Fallback si el contexto de Spring aún no se ha cargado (ej. pruebas unitarias aisladas)
         }
         // LocaleContextHolder toma automáticamente el header Accept-Language enviado por el cliente
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
