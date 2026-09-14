@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseCatalogTranslationEntity<C> extends AuditableEntity<Long> {
+public class BaseCatalogTranslationEntity<C extends BaseCatalogEntity> extends AuditableEntity<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
