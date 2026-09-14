@@ -7,7 +7,7 @@ import com.icms.shared.repository.BaseCatalogTranslationRepository;
 public class BaseDaoCatalogTranslationRules<E extends BaseCatalogTranslationEntity<C>, R extends BaseCatalogTranslationRepository<E, C>, C extends BaseCatalogEntity>
         extends BaseDaoRules<E, R, Long> {
 
-        BaseDaoCatalogTranslationRules(R repository) {
+        public BaseDaoCatalogTranslationRules(R repository) {
             super(repository);  
         }
 
