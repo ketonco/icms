@@ -28,7 +28,7 @@ public class UserAuthGlobalExceptions {
     }
 
     /**
-     * Integration tests to validate the update service
+     * Integration tests to validate the update exception handling service
      * we create an entity that does not exist to trigger the exception.
      * This ensures that the global exception handler is properly invoked and the correct response is returned.
      */
@@ -54,6 +54,39 @@ public class UserAuthGlobalExceptions {
                         JsonNode jsonNode = new ObjectMapper().readTree(body);
                         assertThat(jsonNode.get("status").asInt()).isEqualTo(404);
                         assertThat(jsonNode.get("code").asText()).isEqualTo("Ent-001");
+                    } catch (Exception exception) {
+                        throw new AssertionError("Unable to parse the error response", exception);
+                    }
+                });
+    }
+
+    /**
+    * Integration test to validate exception handling for existing code conflicts (e.g., duplicate entries).
+     * We attempt to create an entity with a code that already exists to trigger the exception.
+     * This ensures that the global exception handler is properly invoked and the correct response is returned.
+     */
+    @Test
+    @DisplayName("POST /api/v1/auth/languages - Test global exception handling for existing code conflict")
+    void testGlobalExceptionHandlingForExistingCodeConflict() {
+        // we create the json object representing the language entity with an existing code
+        String existingCodeLanguageJson = "{" +
+        "\"code\": \"en-US\", " +
+        "\"name\": \"Existing Code Language\", " +
+        "\"active\": true, " +
+        "\"isDefault\": false }";
+
+        webTestClient.post()
+                .uri("/api/v1/auth/languages")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(existingCodeLanguageJson)
+                .exchange()
+                .expectBody(String.class)
+                .consumeWith(response -> {
+                    String body = response.getResponseBody();
+                    try {
+                        JsonNode jsonNode = new ObjectMapper().readTree(body);
+                        assertThat(jsonNode.get("status").asInt()).isEqualTo(400);
+                        assertThat(jsonNode.get("code").asText()).isEqualTo("Cat-002");
                     } catch (Exception exception) {
                         throw new AssertionError("Unable to parse the error response", exception);
                     }
