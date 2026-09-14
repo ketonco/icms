@@ -1,0 +1,206 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260914_0001_create_userstatus_translation_001
+      comment: "Create userstatus translation table"
+      author: "Maximo"
+      changes:
+        - createSequence:
+            sequenceName: userstatus_translation_seq
+            startValue: 1
+            incrementBy: 50
+        - createTable:
+            tableName: userstatus_translation
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: catalog_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: language_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: translation
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: userstatus_translation
+            baseColumnNames: catalog_id
+            referencedTableName: userstatus
+            referencedColumnNames: id
+            constraintName: fk_userstatus_translation_catalog_id
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: userstatus_translation
+            baseColumnNames: language_id
+            referencedTableName: languages
+            referencedColumnNames: id
+            constraintName: fk_userstatus_translation_language_id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: userstatus_translation
+        - dropSequence:
+            sequenceName: userstatus_translation_seq
+
+  - changeSet:
+      id: 20260914_0001_create_userstatus_translation_002
+      author: "Maximo"
+      preConditions:
+        - tableExists:
+            tableName: userstatus_translation
+      changes:
+        - createIndex:
+            indexName: idx_userstatus_translation_id
+            tableName: userstatus_translation
+            columns:
+              - column:
+                  name: id
+
+      rollback:
+        - dropIndex:
+            indexName: idx_userstatus_translation_id
+            tableName: userstatus_translation
+
+  - changeSet:
+      id: 20260914_0001_create_userstatus_translation_003
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: userstatus_translation_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: catalog_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: language_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: translation
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: userstatus_translation_aud
+            columnNames: id, rev
+            constraintName: pk_userstatus_translation_aud
+
+        - addForeignKeyConstraint:
+            baseTableName: userstatus_translation_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_userstatus_translation_aud_revinfo
+            onDelete: CASCADE
+
+  - changeSet:
+      id: 20260914_0001_create_userstatus_translation_004
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: userstatus_translation_aud
+      changes:
+        - createIndex:
+            tableName: userstatus_translation_aud
+            indexName: idx_userstatus_translation_aud_rev
+            columns:
+              - column:
+                  name: rev
+        - createIndex:
+            tableName: userstatus_translation_aud
+            indexName: idx_userstatus_translation_aud_id
+            columns:
+              - column:
+                  name: id
+
+      rollback:
+        - dropIndex:
+            tableName: userstatus_translation_aud
+            indexName: idx_userstatus_translation_aud_rev
+        - dropIndex:
+            tableName: userstatus_translation_aud
+            indexName: idx_userstatus_translation_aud_id
