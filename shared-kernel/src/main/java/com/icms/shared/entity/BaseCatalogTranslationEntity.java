@@ -20,6 +20,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class BaseCatalogTranslationEntity<C extends BaseCatalogEntity> extends AuditableEntity<Long> {
 
+    public BaseCatalogTranslationEntity(C catalog, Language language, String translation, String description) {
+        super();
+        this.catalog = catalog;
+        this.language = language;
+        this.translation = translation;
+        this.description = description;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
