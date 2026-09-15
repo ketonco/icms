@@ -1,0 +1,199 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260915_0001_create_usertype_001
+      comment: "Create user type table"
+      author: "Maximo"
+      changes:
+        - createSequence:
+            sequenceName: usertypes_seq
+            startValue: 1
+            incrementBy: 50
+        
+        - createTable:
+            tableName: usertypes
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: code
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: usertypes
+        - dropSequence:
+            sequenceName: usertypes_seq
+
+  - changeSet:
+      id: 20260915_0001_create_usertype_index_002
+      author: "Maximo"
+      preConditions:
+        - tableExists:
+            tableName: usertypes
+      changes:
+        - createIndex:
+            indexName: idx_usertypes_code
+            tableName: usertypes
+            columns:
+              - column:
+                  name: code
+        - createIndex:
+            indexName: idx_usertypes_id
+            tableName: usertypes
+            columns:
+              - column:
+                  name: id
+
+      rollback:
+        - dropIndex:
+            indexName: idx_usertypes_code
+        - dropIndex:
+            indexName: idx_usertypes_id
+
+  - changeSet:
+      id: 20260915_0001_create_usertype_revision_003
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: usertype_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: usertype_aud
+            columnNames: id, rev
+            constraintName: pk_usertype_aud
+
+        - addForeignKeyConstraint:
+            baseTableName: usertype_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_usertype_aud_revinfo
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: usertype_aud
+
+  - changeSet:
+      id: 20260915_0001_create_usertype_revision_indexes_004
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: usertype_aud
+      changes:
+        - createIndex:
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_rev
+            columns:
+              - column:
+                  name: rev
+        - createIndex:
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_id
+            columns:
+              - column:
+                  name: id
+
+      rollback:
+        - dropIndex:
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_rev
+        - dropIndex:
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_id
