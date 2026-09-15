@@ -90,6 +90,9 @@ Lista de todos los comandos para test unitario
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusMapperTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusMapperTest.mapFromEntityToDto"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusMapperTest.mapFromDtoToEntity"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusTranslationMapperTest"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusTranslationMapperTest.testDtoToEntityMapping"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusTranslationMapperTest.testEntityToDtoMapping"
 
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions.testGlobalExceptionHandlingForNonExistentEntity"
@@ -111,6 +114,7 @@ aplicación.
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=all'
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=LanguageDataSeed'
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=UserStatusDataSeed'
+.\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=UserStatusTranslationDataSeed'
 ```
 
 Ejecuta los Seeds de `user-auth` para llenar la base de datos con informacion base
