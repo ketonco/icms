@@ -45,7 +45,7 @@ public class LanguageRules extends BaseDaoCatalogRules<Language, LanguageReposit
     /* Checks if a language is set as the default language in the repository to not allow deletion or modification */
     private void checkIsDefault(Language language, String code) {
         Language defaultLanguage = languageRepository.findByIsDefault(true).orElse(null);
-        if (defaultLanguage != null && defaultLanguage.getId().equals(language.getId())) {
+        if (language.getIsDefault() == Boolean.TRUE && defaultLanguage != null && !defaultLanguage.getId().equals(language.getId())) {
             throw new BusinessRuleException(code);
         }
     }
