@@ -40,6 +40,7 @@ public class SecurityConfig {
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/v1/auth/languages/**").permitAll()
                 .requestMatchers("/api/v1/auth/user-status/**").permitAll()
+                .requestMatchers("/api/v1/auth/user-status-translations/**").permitAll()
 
                 .anyRequest().authenticated()
             )
