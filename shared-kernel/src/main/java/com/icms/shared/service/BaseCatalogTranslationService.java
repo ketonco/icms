@@ -4,6 +4,7 @@ import com.icms.shared.dto.BaseMapper;
 import java.util.List;
 import com.icms.shared.entity.BaseCatalogEntity;
 import com.icms.shared.entity.BaseCatalogTranslationEntity;
+import com.icms.shared.entity.Language;
 import com.icms.shared.repository.BaseCatalogTranslationRepository;
 import com.icms.shared.rules.BaseDaoCatalogTranslationRules;
 
@@ -30,5 +31,15 @@ public class BaseCatalogTranslationService<E extends BaseCatalogTranslationEntit
     public List<D> findByCatalogDto(C catalog) {
         List<E> entities = repository.findByCatalog(catalog);
         return entities.stream().map(mapper::toDto).toList();
+    }
+
+    
+
+    public E findByCatalogAndLanguage(C catalog, Language language) {
+        return repository.findByCatalogAndLanguage(catalog, language).orElse(null);
+    }
+
+    public D findByCatalogAndLanguageDto(C catalog, Language language) {
+        return mapper.toDto(findByCatalogAndLanguage(catalog, language));
     }
 }

@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.icms.shared.entity.Language;
 import com.icms.shared.exceptions.EntityNotFoundException;
 import com.icms.user_auth.dto.userstatus.UserStatusTranslationMapper;
 
@@ -30,14 +29,6 @@ public class UserStatusTranslationService extends BaseCatalogTranslationService<
         super(repository, mapper, rules);
         this.repository = repository;
         this.mapper = mapper;
-    }
-
-    public UserStatusTranslation findByCatalogAndLanguage(UserStatus catalog, Language language) {
-        return repository.findByCatalogAndLanguage(catalog, language).orElse(null);
-    }
-
-    public UserStatusTranslationDto findByCatalogAndLanguageDto(UserStatus catalog, Language language) {
-        return mapper.toDto(findByCatalogAndLanguage(catalog, language));
     }
 
     public List<UserStatusTranslationDto> findByCatalogId(Long catalogId) {
