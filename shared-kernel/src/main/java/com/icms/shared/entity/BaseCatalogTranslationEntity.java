@@ -1,9 +1,6 @@
 package com.icms.shared.entity;
 
 import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.FetchType;
@@ -19,18 +16,6 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseCatalogTranslationEntity<C extends BaseCatalogEntity> extends AuditableEntity<Long> {
-
-    public BaseCatalogTranslationEntity(C catalog, Language language, String translation, String description) {
-        super();
-        this.catalog = catalog;
-        this.language = language;
-        this.translation = translation;
-        this.description = description;
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY) // Many-to-one relationship with the catalog entity, FetchType.LAZY ensures the catalog is loaded only when accessed
     @JoinColumn(updatable = false, nullable = false, name="catalog_id")
