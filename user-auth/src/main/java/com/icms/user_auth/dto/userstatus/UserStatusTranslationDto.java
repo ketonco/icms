@@ -1,12 +1,13 @@
 package com.icms.user_auth.dto.userstatus;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record UserStatusTranslationDto(
     Long id,
-    @NotBlank(message = "Catalog ID cannot be blank")
+    @NotNull(message = "Catalog ID cannot be blank")
     Long catalogId,
-    @NotBlank(message = "Language ID cannot be blank")
+    @NotNull(message = "Language ID cannot be blank")
     Long languageId,
     @NotBlank(message = "Translation cannot be blank")
     String translation,
