@@ -1,0 +1,206 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260915_0002_create_usertype_translation_001
+      comment: "Create user type translation table"
+      author: "Maximo"
+      changes:
+        - createSequence:
+            sequenceName: usertype_translation_seq
+            startValue: 1
+            incrementBy: 50
+        
+        - createTable:
+            tableName: usertype_translation
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: catalog_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: language_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: translation
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: usertype_translation
+            baseColumnNames: catalog_id
+            referencedTableName: usertypes
+            referencedColumnNames: id
+            constraintName: fk_usertype_translation_catalog
+            onDelete: CASCADE
+
+        - addForeignKeyConstraint:
+            baseTableName: usertype_translation
+            baseColumnNames: language_id
+            referencedTableName: languages
+            referencedColumnNames: id
+            constraintName: fk_usertype_translation_language
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: usertype_translation
+        - dropSequence:
+            sequenceName: usertype_translation_seq
+
+  - changeSet:
+      id: 20260915_0002_create_usertype_translation_index_002
+      author: "Maximo"
+      preConditions:
+        - tableExists:
+            tableName: usertype_translation
+      changes:
+        - createIndex:
+            indexName: idx_usertype_translation_catalog_language_id
+            tableName: usertype_translation
+            unique: true
+            columns:
+              - column:
+                  name: catalog_id
+              - column:
+                  name: language_id
+
+      rollback:
+        - dropIndex:
+            tableName: usertype_translation
+            indexName: idx_usertype_translation_catalog_language_id
+
+  - changeSet:
+      id: 20260915_0002_create_usertype_translation_revision_003
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: usertype_translation_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: catalog_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: language_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: translation
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: usertype_translation_aud
+            columnNames: id, rev
+            constraintName: pk_usertype_translation_aud
+
+        - addForeignKeyConstraint:
+            baseTableName: usertype_translation_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_usertype_translation_aud_revinfo
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: usertype_translation_aud
+
+  - changeSet:
+      id: 20260915_0002_create_usertype_translation_revision_indexes_004
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: usertype_translation_aud
+      changes:
+        - createIndex:
+            tableName: usertype_translation_aud
+            indexName: idx_usertype_translation_aud_rev
+            columns:
+              - column:
+                  name: rev
+
+      rollback:
+        - dropIndex:
+            tableName: usertype_translation_aud
+            indexName: idx_usertype_translation_aud_rev

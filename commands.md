@@ -122,6 +122,7 @@ aplicación.
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=UserStatusDataSeed'
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=UserStatusTranslationDataSeed'
 .\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=UserTypeDataSeed'
+.\gradlew :user-auth:bootRun --args='--spring.profiles.active=task --seed=UserTypeTranslationDataSeed'
 ```
 
 Ejecuta los Seeds de `user-auth` para llenar la base de datos con informacion base
