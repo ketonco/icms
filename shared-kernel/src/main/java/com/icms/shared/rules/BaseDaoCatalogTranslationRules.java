@@ -2,6 +2,7 @@ package com.icms.shared.rules;
 
 import com.icms.shared.entity.BaseCatalogEntity;
 import com.icms.shared.entity.BaseCatalogTranslationEntity;
+import com.icms.shared.exceptions.BusinessRuleException;
 import com.icms.shared.repository.BaseCatalogTranslationRepository;
 
 public class BaseDaoCatalogTranslationRules<E extends BaseCatalogTranslationEntity<C>, R extends BaseCatalogTranslationRepository<E, C>, C extends BaseCatalogEntity>
@@ -31,8 +32,8 @@ public class BaseDaoCatalogTranslationRules<E extends BaseCatalogTranslationEnti
 
         public void noRepeatedCatalogTranslation(E translationEntity) {
             E existingTranslation = repository.findByCatalogAndLanguage(translationEntity.getCatalog(), translationEntity.getLanguage()).orElse(null);
-            if (existingTranslation != null && translationEntity.getId() != null && existingTranslation.getId() != translationEntity.getId()) {
-                throw new RuntimeException("Lan-007"); 
+            if (existingTranslation != null && existingTranslation.getId() != translationEntity.getId()) {
+                throw new BusinessRuleException("Lan-007"); 
             }
         }
 
@@ -43,7 +44,7 @@ public class BaseDaoCatalogTranslationRules<E extends BaseCatalogTranslationEnti
         public void atLeastTwoTranslations(C catalog) {
             int count = repository.countByCatalog(catalog);
             if (count < 2) {
-                throw new RuntimeException("Lan-006"); 
+                throw new BusinessRuleException("Lan-006"); 
             }
         }
 
