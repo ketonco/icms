@@ -51,7 +51,7 @@ public class UserStatusTranslationDataSeed implements DataSeed{
         UserStatusTranslation existing = userStatusTranslationService.findByCatalogAndLanguage(userStatusTranslation.getCatalog(), userStatusTranslation.getLanguage());
         if (existing != null) {
             existing.setTranslation(userStatusTranslation.getTranslation());
-            userStatusTranslationService.save(existing);
+            userStatusTranslationService.update(existing);
         } else {
             userStatusTranslationService.save(userStatusTranslation);
         }

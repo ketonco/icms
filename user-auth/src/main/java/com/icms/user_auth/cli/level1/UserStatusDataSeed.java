@@ -44,7 +44,7 @@ public class UserStatusDataSeed implements DataSeed{
         if (existing != null) {
             existing.setActive(userStatus.getActive());
             existing.setName(userStatus.getName());
-            userStatusService.save(existing);
+            userStatusService.update(existing);
         } else {
             userStatusService.save(userStatus);
         }

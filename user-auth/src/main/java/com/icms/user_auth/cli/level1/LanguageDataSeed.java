@@ -21,7 +21,8 @@ public class LanguageDataSeed implements DataSeed {
 
     List<Language> languages = List.of(
         new Language("en-US", "English", Boolean.TRUE, Boolean.TRUE),
-        new Language("es-ES", "Spanish", Boolean.FALSE, Boolean.TRUE)
+        new Language("es-ES", "Spanish", Boolean.FALSE, Boolean.TRUE),
+        new Language("fr-FR", "French", Boolean.FALSE, Boolean.TRUE)
     );
 
     @Override
@@ -47,7 +48,7 @@ public class LanguageDataSeed implements DataSeed {
             existingLanguage.setName(language.getName());
             existingLanguage.setActive(language.getActive());
             existingLanguage.setIsDefault(language.getIsDefault());
-            languageService.save(existingLanguage);
+            languageService.update(existingLanguage);
         } else {
             languageService.save(language);
         }
