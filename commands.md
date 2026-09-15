@@ -93,6 +93,9 @@ Lista de todos los comandos para test unitario
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusTranslationMapperTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusTranslationMapperTest.testDtoToEntityMapping"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserStatusTranslationMapperTest.testEntityToDtoMapping"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.service.UserStatusTranslationServiceTest"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.service.UserStatusTranslationServiceTest.testCreateUserStatusTranslation"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.service.UserStatusTranslationServiceTest.testCreateUserStatusTranslationWithInvalidData"
 
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions.testGlobalExceptionHandlingForNonExistentEntity"
