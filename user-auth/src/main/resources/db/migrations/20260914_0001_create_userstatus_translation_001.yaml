@@ -91,19 +91,22 @@ databaseChangeLog:
             tableName: userstatus_translation
       changes:
         - createIndex:
-            indexName: idx_userstatus_translation_id
+            indexName: idx_userstatus_translation_catalog_language_id
             tableName: userstatus_translation
+            unique: true
             columns:
               - column:
-                  name: id
+                  name: catalog_id
+              - column:
+                  name: language_id
 
       rollback:
         - dropIndex:
-            indexName: idx_userstatus_translation_id
+            indexName: idx_userstatus_translation_catalog_language_id
             tableName: userstatus_translation
 
   - changeSet:
-      id: 20260914_0001_create_userstatus_translation_003
+      id: 20260914_0001_create_userstatus_translation_revision_003
       author: "Maximo"
       changes:
         - createTable:
@@ -176,8 +179,13 @@ databaseChangeLog:
             constraintName: fk_userstatus_translation_aud_revinfo
             onDelete: CASCADE
 
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: userstatus_translation_aud
+
   - changeSet:
-      id: 20260914_0001_create_userstatus_translation_004
+      id: 20260914_0001_create_userstatus_translation_revision_indexes_004
       author: "Maximo"
       preConditions:
         - onFail: HALT
@@ -190,17 +198,8 @@ databaseChangeLog:
             columns:
               - column:
                   name: rev
-        - createIndex:
-            tableName: userstatus_translation_aud
-            indexName: idx_userstatus_translation_aud_id
-            columns:
-              - column:
-                  name: id
 
       rollback:
         - dropIndex:
             tableName: userstatus_translation_aud
             indexName: idx_userstatus_translation_aud_rev
-        - dropIndex:
-            tableName: userstatus_translation_aud
-            indexName: idx_userstatus_translation_aud_id
