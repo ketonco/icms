@@ -11,6 +11,7 @@ import com.icms.shared.controller.BaseController;
 import com.icms.shared.controller.DeleteController;
 import com.icms.shared.controller.ReadController;
 import com.icms.shared.controller.WriteController;
+import com.icms.shared.controller.UpdateController;
 import com.icms.shared.dto.RestResponse;
 import com.icms.user_auth.dto.usertype.UserTypeTranslationDto;
 import com.icms.user_auth.service.daoservice.UserTypeTranslationService;
@@ -18,7 +19,10 @@ import com.icms.user_auth.service.daoservice.UserTypeTranslationService;
 @RestController 
 @RequestMapping("/api/v1/auth/user-type-translations")
 public class UserTypeTranslationController extends BaseController<Long, UserTypeTranslationDto> 
-    implements ReadController<Long, UserTypeTranslationDto>, WriteController<Long, UserTypeTranslationDto>, DeleteController<Long, UserTypeTranslationDto> {
+    implements ReadController<Long, UserTypeTranslationDto>,
+     WriteController<Long, UserTypeTranslationDto>,
+     UpdateController<Long, UserTypeTranslationDto>,
+     DeleteController<Long, UserTypeTranslationDto> {
 
     private final UserTypeTranslationService userTypeTranslationService;
     

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.icms.shared.controller.BaseController;
 import com.icms.shared.controller.ReadController;
 import com.icms.shared.controller.DeleteController;
+import com.icms.shared.controller.UpdateController;
 import com.icms.shared.controller.WriteController;
 import com.icms.shared.dto.RestResponse;
 import com.icms.user_auth.dto.language.LanguageDto;
@@ -19,6 +20,7 @@ import com.icms.user_auth.service.daoservice.LanguageService;
 public class LanguageController extends BaseController<Long, LanguageDto> 
     implements ReadController<Long, LanguageDto>,
     WriteController<Long, LanguageDto>,
+    UpdateController<Long, LanguageDto>,
     DeleteController<Long, LanguageDto>{
 
     private final LanguageService service;
