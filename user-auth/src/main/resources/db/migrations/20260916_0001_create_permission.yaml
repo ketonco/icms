@@ -1,0 +1,199 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260916_0001_create_permissions_001
+      comment: "Create permissions table"
+      author: "Maximo"
+      changes:
+        - createSequence:
+            sequenceName: permissions_seq
+            startValue: 1
+            incrementBy: 50
+        
+        - createTable:
+            tableName: permissions
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: code
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: permissions
+        - dropSequence:
+            sequenceName: permissions_seq
+
+  - changeSet:
+      id: 20260916_0001_create_permissions_index_002
+      author: "Maximo"
+      preConditions:
+        - tableExists:
+            tableName: permissions
+      changes:
+        - createIndex:
+            indexName: idx_permissions_code
+            tableName: permissions
+            columns:
+              - column:
+                  name: code
+        - createIndex:
+            indexName: idx_permission_id
+            tableName: permissions
+            columns:
+              - column:
+                  name: id
+
+      rollback:
+        - dropIndex:
+            indexName: idx_permissions_code
+        - dropIndex:
+            indexName: idx_permission_id
+
+  - changeSet:
+      id: 20260916_0001_create_permission_revision_003
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: permission_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: code
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: permission_aud
+            columnNames: id, rev
+            constraintName: pk_permission_aud
+
+        - addForeignKeyConstraint:
+            baseTableName: permission_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_permission_aud_rev
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: permission_aud
+
+  - changeSet:
+      id: 20260916_0001_create_permission_revision_index_004
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: permission_aud
+      changes:
+        - createIndex:
+            tableName: permission_aud
+            indexName: idx_permission_aud_rev
+            columns:
+              - column:
+                  name: rev
+        - createIndex:
+            tableName: permission_aud
+            indexName: idx_permission_aud_id
+            columns:
+              - column:
+                  name: id
+
+      rollback:
+        - dropIndex:
+            tableName: permission_aud
+            indexName: idx_permission_aud_rev
+        - dropIndex:
+            tableName: permission_aud
+            indexName: idx_permission_aud_id
