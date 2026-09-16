@@ -3,9 +3,6 @@ package com.icms.shared.entity;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,12 +16,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class) // Enable auditing for this entity from Spring Data JPA
 @Getter
 @Setter
-public abstract class AuditableEntity<ID> {
-
-     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private ID id;
+public abstract class AuditableEntity {
     
     @CreatedDate
     @Column(updatable = false, nullable = false, name="created_at")

@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BaseCatalogTranslationEntity<C extends BaseCatalogEntity> extends AuditableEntity<Long> {
+public class BaseCatalogTranslationEntity<C extends BaseCatalogEntity> extends LongAuditableEntity {
 
     @ManyToOne(fetch = FetchType.LAZY) // Many-to-one relationship with the catalog entity, FetchType.LAZY ensures the catalog is loaded only when accessed
     @JoinColumn(updatable = false, nullable = false, name="catalog_id")

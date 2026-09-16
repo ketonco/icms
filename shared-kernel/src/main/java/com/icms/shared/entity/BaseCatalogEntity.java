@@ -12,15 +12,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class BaseCatalogEntity extends AuditableEntity<Long> {
+public class BaseCatalogEntity extends LongAuditableEntity {
 
     @Column(unique = true, updatable = true, nullable = false, name="code")
     private String code;
 
     @Column(updatable = true, nullable = false, name="active")
     private Boolean active;
-
-    
 
     @Column(unique = true, updatable = true, nullable = false, name="name", length = 50)
     private String name; 
