@@ -3,21 +3,17 @@ databaseChangeLog:
       id: 20260916_0002_create_user_001
       comment: "Create user table"
       author: "Maximo"
-      changes:
-        - createSequence:
-            sequenceName: users_seq
-            startValue: 1
-            incrementBy: 50
-        
+      changes:        
         - createTable:
             tableName: users
             columns:
               - column:
                   name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
                   constraints:
                     primaryKey: true
+                    nullable: false
               - column:
                   name: username
                   type: VARCHAR(50)
@@ -95,8 +91,6 @@ databaseChangeLog:
         - dropTable:
             cascadeConstraints: false
             tableName: users
-        - dropSequence:
-            sequenceName: users_seq
 
   - changeSet:
       id: 20260916_0002_create_user_index_002
@@ -127,7 +121,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: BIGINT
+                  type: UUID
                   constraints:
                     nullable: false
               - column:

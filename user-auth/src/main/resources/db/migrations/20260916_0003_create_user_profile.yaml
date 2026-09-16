@@ -3,21 +3,17 @@ databaseChangeLog:
       id: 20260916_0003_create_user_profile_001
       comment: "Create user profile table"
       author: "Maximo"
-      changes:
-        - createSequence:
-            sequenceName: user_profiles_seq
-            startValue: 1
-            incrementBy: 50
-        
+      changes:        
         - createTable:
             tableName: user_profiles
             columns:
               - column:
                   name: id
-                  type: BIGINT
-                  autoIncrement: true
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
                   constraints:
                     primaryKey: true
+                    nullable: false
               - column:
                   name: first_name
                   type: VARCHAR(50)
@@ -45,7 +41,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: user_id
-                  type: bigint
+                  type: UUID
                   constraints:
                     nullable: false
                     foreignKeyName: fk_user_profiles_user_id
@@ -77,10 +73,8 @@ databaseChangeLog:
 
       rollback:
         - dropTable:
-            cascadeConstraints: false
+            cascadeConstraints: true
             tableName: user_profiles
-        - dropSequence:
-            sequenceName: user_profiles_seq
 
   - changeSet:
       id: 20260916_0003_create_user_profile_index_002
@@ -111,7 +105,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: BIGINT
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
@@ -141,7 +135,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: user_id
-                  type: bigint
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
