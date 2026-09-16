@@ -1,0 +1,218 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260916_0003_create_user_profile_001
+      comment: "Create user profile table"
+      author: "Maximo"
+      changes:
+        - createSequence:
+            sequenceName: user_profiles_seq
+            startValue: 1
+            incrementBy: 50
+        
+        - createTable:
+            tableName: user_profiles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contact
+                  type: jsonb
+                  constraints:
+                    nullable: true
+              - column:
+                  name: prefs
+                  type: jsonb
+                  constraints:
+                    nullable: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_profiles_user_id
+                    references: users(id)
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: user_profiles
+        - dropSequence:
+            sequenceName: user_profiles_seq
+
+  - changeSet:
+      id: 20260916_0003_create_user_profile_index_002
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: user_profiles
+      changes:
+        - createIndex:
+            indexName: idx_user_profiles_user_id
+            tableName: user_profiles
+            columns:
+              - column:
+                  name: user_id
+
+      rollback:
+        - dropIndex:
+            indexName: idx_user_profiles_user_id
+            tableName: user_profiles
+
+  - changeSet:
+      id: 20260916_0003_create_user_profile_revision_003
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: user_profiles_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contact
+                  type: jsonb
+                  constraints:
+                    nullable: true
+              - column:
+                  name: prefs
+                  type: jsonb
+                  constraints:
+                    nullable: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: user_profiles_aud
+            columnNames: id, rev
+            constraintName: pk_user_profiles_aud
+
+        - addForeignKeyConstraint:
+            baseTableName: user_profiles_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_user_profiles_aud_rev
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: user_profiles_aud
+
+  - changeSet:
+      id: 20260916_0003_create_user_profile_revision_index_004
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: user_profiles_aud
+      changes:
+        - createIndex:
+            tableName: user_profiles_aud
+            indexName: idx_user_profiles_aud_rev
+            columns:
+              - column:
+                  name: rev
+        - createIndex:
+            tableName: user_profiles_aud
+            indexName: idx_user_profiles_aud_user_id
+            columns:
+              - column:
+                  name: user_id
+
+      rollback:
+        - dropIndex:
+            tableName: user_profiles_aud
+            indexName: idx_user_profiles_aud_rev
+        - dropIndex:
+            tableName: user_profiles_aud
+            indexName: idx_user_profiles_aud_user_id
