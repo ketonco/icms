@@ -29,6 +29,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: avatar_url
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: true
+              - column:
                   name: contact
                   type: jsonb
                   constraints:
@@ -120,10 +125,10 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: email
-                  type: VARCHAR(100)
+                  name: avatar_url
+                  type: VARCHAR(255)
                   constraints:
-                    nullable: false
+                    nullable: true
               - column:
                   name: contact
                   type: jsonb
