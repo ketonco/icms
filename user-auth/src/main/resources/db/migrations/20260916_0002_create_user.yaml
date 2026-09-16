@@ -1,0 +1,240 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260916_0002_create_user_001
+      comment: "Create user table"
+      author: "Maximo"
+      changes:
+        - createSequence:
+            sequenceName: users_seq
+            startValue: 1
+            incrementBy: 50
+        
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "enabled"
+                  type: "BOOLEAN"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "locked"
+                  type: "BOOLEAN"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "failed_login_attempts"
+                  type: "INTEGER"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "last_login_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: userstatus_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+                    updatable: true
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: userstatus_id
+            referencedTableName: userstatus
+            referencedColumnNames: id
+            constraintName: fk_users_userstatus_id
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: users
+        - dropSequence:
+            sequenceName: users_seq
+
+  - changeSet:
+      id: 20260916_0002_create_user_index_002
+      author: "Maximo"
+      preConditions:
+        - tableExists:
+            tableName: users
+      changes:
+        - createIndex:
+            indexName: idx_users_email
+            tableName: users
+            unique: true
+            columns:
+              - column:
+                  name: email
+
+      rollback:
+        - dropIndex:
+            indexName: idx_users_email
+            tableName: users
+
+  - changeSet:
+      id: 20260916_0002_create_user_revision_003
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: user_aud
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "enabled"
+                  type: "BOOLEAN"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "locked"
+                  type: "BOOLEAN"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "failed_login_attempts"
+                  type: "INTEGER"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "last_login_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: true
+              - column:
+                  name: userstatus_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "created_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_at"
+                  type: "TIMESTAMP"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: "updated_by"
+                  type: "VARCHAR(100)"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: user_aud
+            columnNames: id, rev
+            constraintName: pk_user_aud
+
+        - addForeignKeyConstraint:
+            baseTableName: user_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_user_aud_rev
+            onDelete: CASCADE
+
+      rollback:
+        - dropTable:
+            cascadeConstraints: false
+            tableName: user_aud
+
+  - changeSet:
+      id: 20260916_0002_create_user_revision_index_004
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: user_aud
+      changes:
+        - createIndex:
+            tableName: user_aud
+            indexName: idx_user_aud_rev
+            columns:
+              - column:
+                  name: rev
+
+      rollback:
+        - dropIndex:
+            tableName: user_aud
+            indexName: idx_user_aud_rev
