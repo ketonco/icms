@@ -11,7 +11,8 @@ import lombok.Builder;
 
 
 @Entity 
-@Table(name = "languages")@Getter
+@Table(name = "languages")
+@Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
