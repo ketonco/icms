@@ -50,7 +50,7 @@ public class UserStatusTranslationServiceTest {
         Mockito.when(userStatusTranslationMapper.toDto(userStatusTranslation)).thenReturn(userStatusTranslationDto);
 
         // Act
-        UserStatusTranslationDto result = userStatusTranslationService.saveDto(userStatusTranslationDto);
+        UserStatusTranslationDto result = userStatusTranslationService.save(userStatusTranslationDto);
 
         // Assert
         Mockito.verify(userStatusTranslationRules, Mockito.times(1)).canSave(userStatusTranslation);
@@ -73,7 +73,7 @@ public class UserStatusTranslationServiceTest {
 
         // Act & Assert
         try {
-            userStatusTranslationService.saveDto(userStatusTranslationDto);
+            userStatusTranslationService.save(userStatusTranslationDto);
         } catch (BusinessRuleException e) {
             assertEquals("Lan-007 context", e.getMessage());
         }
