@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import org.hibernate.envers.AuditJoinTable;
 
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +28,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor 
+@Builder 
 public class User extends UUIDAuditableEntity{
 
     @Column(nullable = false, unique = true, length = 50)
