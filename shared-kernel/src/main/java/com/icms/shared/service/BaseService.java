@@ -90,7 +90,7 @@ public abstract class BaseService<E extends IdentifiableImpl<ID>,D, ID, R extend
 
     /* save dto */
     @Transactional
-    public D saveDto(D dto) {
+    public D save(D dto) {
         E entity = mapper.toEntity(dto);
         entity = save(entity);
         return mapper.toDto(entity);
@@ -105,7 +105,7 @@ public abstract class BaseService<E extends IdentifiableImpl<ID>,D, ID, R extend
 
     /* update dto */
     @Transactional
-    public D updateDto(D dto) {
+    public D update(D dto) {
         E entity = mapper.toEntity(dto);
         entity = update(entity);
         return mapper.toDto(entity);
@@ -117,5 +117,17 @@ public abstract class BaseService<E extends IdentifiableImpl<ID>,D, ID, R extend
         E entity = findById(id);
         rules.canDelete(entity);
         repository.deleteById(id);
+    }
+
+    public BaseRepository<E, ID> getRepository() {
+        return repository;
+    }
+
+    public BaseMapper<E, D> getMapper() {
+        return mapper;
+    }
+
+    public BaseDaoRules<E, R, ID> getRules() {
+        return rules;
     }
 }

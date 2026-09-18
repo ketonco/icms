@@ -12,7 +12,7 @@ public interface UpdateController <ID, DTO>
 
     @PutMapping
     default ResponseEntity<RestResponse<DTO>> update(@RequestBody DTO dto) {
-        DTO updatedDto = getService().updateDto(dto);
+        DTO updatedDto = getService().update(dto);
         return ResponseEntity.ok(RestResponse.ok(updatedDto, MessageResolver.resolveMessage("S-001")));
     }
     

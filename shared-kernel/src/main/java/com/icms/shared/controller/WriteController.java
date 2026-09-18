@@ -11,7 +11,7 @@ public interface WriteController<ID, DTO>
 
     @PostMapping
     default ResponseEntity<RestResponse<DTO>> create(@RequestBody DTO dto) {
-        DTO createdDto = getService().saveDto(dto);
+        DTO createdDto = getService().save(dto);
         return ResponseEntity.ok(RestResponse.ok(createdDto, MessageResolver.resolveMessage("S-000")));
     }
 
