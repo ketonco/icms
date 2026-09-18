@@ -38,11 +38,7 @@ public class UserProfileService extends BaseService<UserProfile, UserProfileDto,
     @Override 
     @Transactional 
     public UserProfileDto save(UserProfileDto dto) {
-        //TODO change exception message with internationalization support
-        User user = userRepository.findByEmail(dto.email()).orElseThrow(() -> new EntityNotFoundException("User not found with email: " + dto.email()));
-        UserProfile entity = repository.findByUser(user).orElseThrow(() -> new EntityNotFoundException("UserProfile not found for user: " + user.getEmail()));
-        mapper.updateEntityFromDto(dto, entity);
-        entity.setUser(user);
+        UserProfile entity = toEntity(dto);
         rules.canSave(entity);
         entity = repository.save(entity);
         return null;
@@ -51,14 +47,18 @@ public class UserProfileService extends BaseService<UserProfile, UserProfileDto,
     @Override
     @Transactional
     public UserProfileDto update(UserProfileDto dto) {
-        //TODO change exception message with internationalization support
-        User user = userRepository.findByEmail(dto.email()).orElseThrow(() -> new EntityNotFoundException("User not found with email: " + dto.email()));
-        UserProfile entity = repository.findByUser(user).orElseThrow(() -> new EntityNotFoundException("UserProfile not found for user: " + user.getEmail()));
-        mapper.updateEntityFromDto(dto, entity);
-        entity.setUser(user);
+        UserProfile entity = toEntity(dto);
         rules.canUpdate(entity);
         entity = repository.save(entity);
         return null;
+    }
+
+    private UserProfile toEntity(UserProfileDto dto) {
+        User user = userRepository.findByEmail(dto.email()).orElseThrow(() -> new EntityNotFoundException("Usr-009"));
+        UserProfile entity = repository.findByUser(user).orElseThrow(() -> new EntityNotFoundException("UsrProf-001"));
+        mapper.updateEntityFromDto(dto, entity);
+        entity.setUser(user);
+        return entity;
     }
 
     public UserProfile findByUser(User user) { 
