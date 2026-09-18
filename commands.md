@@ -6,7 +6,7 @@
 ## Gradle — proyecto principal
 
 ### Detener procesos de Gradle
- 
+
 ```powershell
 .\gradlew.bat --stop
 ```
@@ -36,6 +36,7 @@ principal de Gradle.
 ```powershell
 ./gradlew --refresh-dependencies build -x test
 ```
+
 Refresca las dependencias de cada modulo en un solo comando, bastante util al agregar una dependencia nueva ejecutarlo
 
 ## Módulo `user-auth`
@@ -65,7 +66,7 @@ Ejecuta la tarea `update` del módulo `user-auth`.
 Ejecuta la tarea `dropAll` del módulo `user-auth`. Usar con precaución, ya que
 puede eliminar todos los datos administrados por el módulo.
 
-### Comando para unit test
+### Comando para unit test userauth
 
 ```powershell
 .\gradlew.bat :user-auth:test
@@ -172,7 +173,7 @@ docker compose -f .\api\docker-compose.yml up --build -d api-gateway
 Construye las imágenes y levanta en segundo plano los servicios definidos en
 `api/docker-compose.yml`.
 
-### Comando para unit test
+### Comando para unit test api
 
 ```powershell
 .\gradlew.bat :api:test
