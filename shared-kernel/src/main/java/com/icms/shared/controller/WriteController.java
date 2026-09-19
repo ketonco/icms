@@ -4,9 +4,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
 
 import com.icms.shared.Utils.MessageResolver;
+import com.icms.shared.dto.IdentifiableDtoImpl;
 import com.icms.shared.dto.RestResponse;
 
-public interface WriteController<ID, DTO> 
+public interface WriteController<ID, DTO extends IdentifiableDtoImpl<ID>> 
     extends BaseControllerImpl<ID, DTO> {
 
     @PostMapping

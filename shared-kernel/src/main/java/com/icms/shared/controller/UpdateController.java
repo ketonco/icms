@@ -3,11 +3,11 @@ package com.icms.shared.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import com.icms.shared.dto.IdentifiableDtoImpl;
 import com.icms.shared.Utils.MessageResolver;
 import com.icms.shared.dto.RestResponse;
 
-public interface UpdateController <ID, DTO> 
+public interface UpdateController <ID, DTO extends IdentifiableDtoImpl<ID>> 
     extends BaseControllerImpl<ID, DTO> {
 
     @PutMapping

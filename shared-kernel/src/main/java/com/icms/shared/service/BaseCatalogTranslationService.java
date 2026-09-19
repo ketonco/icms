@@ -1,6 +1,8 @@
 package com.icms.shared.service;
 
 import com.icms.shared.dto.BaseMapper;
+import com.icms.shared.dto.IdentifiableDtoImpl;
+
 import java.util.List;
 import com.icms.shared.entity.BaseCatalogEntity;
 import com.icms.shared.entity.BaseCatalogTranslationEntity;
@@ -8,7 +10,7 @@ import com.icms.shared.entity.Language;
 import com.icms.shared.repository.BaseCatalogTranslationRepository;
 import com.icms.shared.rules.BaseDaoCatalogTranslationRules;
 
-public class BaseCatalogTranslationService<E extends BaseCatalogTranslationEntity<C>, D, R extends BaseCatalogTranslationRepository<E, C>, C extends BaseCatalogEntity> 
+public class BaseCatalogTranslationService<E extends BaseCatalogTranslationEntity<C>, D extends IdentifiableDtoImpl<Long>, R extends BaseCatalogTranslationRepository<E, C>, C extends BaseCatalogEntity> 
     extends BaseService<E, D, Long, R> {
 
     protected BaseCatalogTranslationRepository<E, C> repository;

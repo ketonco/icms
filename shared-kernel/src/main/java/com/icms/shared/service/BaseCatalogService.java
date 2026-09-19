@@ -3,11 +3,12 @@ package com.icms.shared.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.icms.shared.dto.BaseMapper;
+import com.icms.shared.dto.IdentifiableDtoImpl;
 import com.icms.shared.entity.BaseCatalogEntity;
 import com.icms.shared.repository.BaseCatalogRepository;
 import com.icms.shared.rules.BaseDaoCatalogRules;
 
-public class BaseCatalogService<E extends BaseCatalogEntity, D, R extends BaseCatalogRepository<E, Long>> 
+public class BaseCatalogService<E extends BaseCatalogEntity, D extends IdentifiableDtoImpl<Long>, R extends BaseCatalogRepository<E, Long>> 
     extends BaseService<E, D, Long, R> {
 
     protected BaseCatalogService(

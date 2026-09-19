@@ -2,11 +2,11 @@ package com.icms.shared.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import com.icms.shared.dto.IdentifiableDtoImpl;
 import com.icms.shared.dto.RestResponse;
 import com.icms.shared.Utils.MessageResolver;
     
-public interface DeleteController<ID, DTO> 
+public interface DeleteController<ID, DTO extends IdentifiableDtoImpl<ID>> 
     extends BaseControllerImpl<ID, DTO> {
 
     @DeleteMapping("/{id}")

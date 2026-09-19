@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import com.icms.shared.dto.IdentifiableDtoImpl;
 
 import java.util.Map;
 
@@ -21,6 +22,6 @@ import java.util.Map;
     @NotBlank(message = "Email must not be blank")
     @Size(max = 100, message = "Email must be at most 100 characters")
     String email
-) {
+) implements IdentifiableDtoImpl<UUID> {
 
 }

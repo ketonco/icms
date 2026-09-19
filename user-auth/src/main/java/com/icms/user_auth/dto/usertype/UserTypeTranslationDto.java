@@ -2,7 +2,7 @@ package com.icms.user_auth.dto.usertype;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
+import com.icms.shared.dto.IdentifiableDtoImpl;
 public record UserTypeTranslationDto(
     Long id,
     @NotNull (message = "Catalog ID cannot be blank")
@@ -12,6 +12,6 @@ public record UserTypeTranslationDto(
     @NotBlank(message = "Translation cannot be blank")
     String translation,
     String description
-) {
+) implements IdentifiableDtoImpl<Long> {
 
 }

@@ -2,6 +2,7 @@ package com.icms.user_auth.dto.userstatus;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import com.icms.shared.dto.IdentifiableDtoImpl;
 
 public record UserStatusTranslationDto(
     Long id,
@@ -12,6 +13,6 @@ public record UserStatusTranslationDto(
     @NotBlank(message = "Translation cannot be blank")
     String translation,
     String description
-) {
+) implements IdentifiableDtoImpl<Long> {
 
 }

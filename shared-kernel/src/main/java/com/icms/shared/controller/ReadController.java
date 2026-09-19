@@ -1,13 +1,13 @@
 package com.icms.shared.controller;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import com.icms.shared.dto.IdentifiableDtoImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.icms.shared.dto.RestResponse;
 
-public interface ReadController<ID, DTO> 
+public interface ReadController<ID, DTO extends IdentifiableDtoImpl<ID>> 
     extends BaseControllerImpl<ID, DTO> {
 
     @GetMapping

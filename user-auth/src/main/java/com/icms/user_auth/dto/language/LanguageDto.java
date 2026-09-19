@@ -3,6 +3,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Pattern;
+import com.icms.shared.dto.IdentifiableDtoImpl;
 
 public record LanguageDto(
     Long id,
@@ -17,6 +18,6 @@ public record LanguageDto(
     Boolean isDefault,
     @NotNull(message = "Active cannot be null")
     Boolean active
-) {
+) implements IdentifiableDtoImpl<Long> {
 
 }

@@ -5,11 +5,12 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.icms.shared.dto.BaseMapper;
+import com.icms.shared.dto.IdentifiableDtoImpl;
 import com.icms.shared.entity.IdentifiableImpl;
 import com.icms.shared.repository.BaseRepository;
 import com.icms.shared.rules.BaseDaoRules;
 
-public abstract class BaseService<E extends IdentifiableImpl<ID>,D, ID, R extends BaseRepository<E, ID>> {
+public abstract class BaseService<E extends IdentifiableImpl<ID>,D extends IdentifiableDtoImpl<ID>, ID, R extends BaseRepository<E, ID>> {
 
     protected final R repository;
     protected final BaseMapper<E, D> mapper;
@@ -106,7 +107,8 @@ public abstract class BaseService<E extends IdentifiableImpl<ID>,D, ID, R extend
     /* update dto */
     @Transactional
     public D update(D dto) {
-        E entity = mapper.toEntity(dto);
+        E entity = findById(dto.id());
+        mapper.updateEntityFromDto(dto, entity);
         entity = update(entity);
         return mapper.toDto(entity);
     }

@@ -1,5 +1,5 @@
 package com.icms.user_auth.dto.userstatus;
-
+import com.icms.shared.dto.IdentifiableDtoImpl;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,6 +14,6 @@ public record UserStatusDto(
     String name,
     @NotNull (message = "Active cannot be null")
     Boolean active
-) {
+) implements IdentifiableDtoImpl<Long> {
     
 }

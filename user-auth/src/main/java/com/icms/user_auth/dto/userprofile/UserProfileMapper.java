@@ -23,7 +23,7 @@ public interface UserProfileMapper extends BaseMapper<UserProfile, UserProfileDt
     @Mapping(target = "user", ignore = true)
     UserProfile toEntity(UserProfileDto dto);
 
-    //TODO: add updateEntityFromDto to base mapper interface if needed
+    @Override
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     void updateEntityFromDto(UserProfileDto dto, @MappingTarget UserProfile entity);
