@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.icms.shared.dto.BaseMapper;
 import com.icms.shared.dto.IdentifiableDtoImpl;
 import com.icms.shared.entity.IdentifiableImpl;
+import com.icms.shared.exceptions.EntityNotFoundException;
 import com.icms.shared.repository.BaseRepository;
 import com.icms.shared.rules.BaseDaoRules;
 
@@ -107,7 +108,7 @@ public abstract class BaseService<E extends IdentifiableImpl<ID>,D extends Ident
     /* update dto */
     @Transactional
     public D update(D dto) {
-        E entity = findById(dto.id());
+        E entity = repository.findById(dto.id()).orElseThrow(() -> new EntityNotFoundException("Ent-001"));
         mapper.updateEntityFromDto(dto, entity);
         entity = update(entity);
         return mapper.toDto(entity);
@@ -116,7 +117,7 @@ public abstract class BaseService<E extends IdentifiableImpl<ID>,D extends Ident
     /* delete entity by id */
     @Transactional
     public void deleteById(ID id) {
-        E entity = findById(id);
+        E entity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Ent-001"));
         rules.canDelete(entity);
         repository.deleteById(id);
     }
