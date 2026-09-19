@@ -41,7 +41,7 @@ public class UserProfileService extends BaseService<UserProfile, UserProfileDto,
         UserProfile entity = toEntity(dto);
         rules.canSave(entity);
         entity = repository.save(entity);
-        return null;
+        return getMapper().toDto(entity);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class UserProfileService extends BaseService<UserProfile, UserProfileDto,
         UserProfile entity = toEntity(dto);
         rules.canUpdate(entity);
         entity = repository.save(entity);
-        return null;
+        return getMapper().toDto(entity);
     }
 
     private UserProfile toEntity(UserProfileDto dto) {
