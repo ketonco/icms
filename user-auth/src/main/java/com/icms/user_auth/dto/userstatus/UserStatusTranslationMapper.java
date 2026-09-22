@@ -3,8 +3,7 @@ import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import com.icms.shared.config.mapper.MapperSetting;
-
-import com.icms.shared.dto.BaseMapperIdentifiable;
+import com.icms.shared.dto.BaseMapper;
 import com.icms.user_auth.entity.UserStatusTranslation;
 
 
@@ -12,7 +11,7 @@ import com.icms.user_auth.entity.UserStatusTranslation;
     config = MapperSetting.class,
     builder = @Builder(disableBuilder = true)
 )
-public interface UserStatusTranslationMapper extends BaseMapperIdentifiable<UserStatusTranslation, UserStatusTranslationDto> {
+public interface UserStatusTranslationMapper extends BaseMapper<UserStatusTranslation, UserStatusTranslationDto> {
 
     @Override
     @Mapping(target = "id", ignore = true)

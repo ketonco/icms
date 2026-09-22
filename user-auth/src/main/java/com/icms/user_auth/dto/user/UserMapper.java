@@ -3,7 +3,7 @@ import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import com.icms.shared.dto.BaseMapperIdentifiable;
+import com.icms.shared.dto.BaseMapper;
 
 import com.icms.shared.config.mapper.MapperSetting;
 import com.icms.user_auth.dto.userprofile.UserProfileMapper;
@@ -13,7 +13,7 @@ import com.icms.user_auth.entity.User;
     builder = @Builder(disableBuilder = true),
     uses = {UserProfileMapper.class}
 )
-public interface UserMapper extends BaseMapperIdentifiable<User,UserDto> {
+public interface UserMapper extends BaseMapper<User,UserDto> {
 
     @Mapping(source = "status.name", target = "status")
     UserDto toDto(User user);
