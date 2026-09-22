@@ -39,6 +39,14 @@ principal de Gradle.
 
 Refresca las dependencias de cada modulo en un solo comando, bastante util al agregar una dependencia nueva ejecutarlo
 
+### Reporte de dependencias
+
+```powershell
+./gradlew build --scan
+```
+
+Gradle genera un reporte web detallado e interactivo de todo el árbol de dependencias de tus microservicios. Nos permitirá auditar visualmente que ningún módulo esté arrastrando dependencias duplicadas o versiones no deseadas sin adivinar nada.
+
 ## Módulo `user-auth`
 
 ### Levantar unicamente el servicio de user-auth local
