@@ -1,22 +1,10 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '4.1.1'
-	id 'io.spring.dependency-management' version '1.1.7'
-	id 'org.liquibase.gradle' version '2.2.2'
+	id 'spring-boot-conventions'
+	id 'org.liquibase.gradle'
 }
 
 group = 'com.icms'
 version = '0.0.1-SNAPSHOT'
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(24)
-	}
-}
-
-repositories {
-	mavenCentral()
-}
 
 configurations {
     mockitoAgent
@@ -43,7 +31,6 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-liquibase-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
@@ -82,12 +69,8 @@ liquibase {
         }
     }
 }
-
-test {
+/** Configuración de pruebas con JUnit y Mockito */
+tasks.named('test', Test) {
     useJUnitPlatform()
     jvmArgs "-javaagent:${configurations.mockitoAgent.singleFile}"
-}
-
-tasks.named('test') {
-	useJUnitPlatform()
 }

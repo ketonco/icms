@@ -1,21 +1,9 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '4.1.1'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'spring-boot-conventions'
 }
 
 group = 'com.icms'
 version = '0.0.1-SNAPSHOT'
-
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(24)
-	}
-}
-
-repositories {
-	mavenCentral()
-}
 
 ext {
 	set('springCloudVersion', "2025.1.3")
