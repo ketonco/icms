@@ -1,11 +1,15 @@
 # Etapa 1: Construcción
 FROM eclipse-temurin:24-jdk-alpine AS builder
 WORKDIR /app
-
+# 1. Copia de infraestructura global de Gradle (Aprovecha la caché de Docker)
 COPY gradle gradle
-COPY gradlew settings.gradle ./
+COPY gradlew settings.gradle ./ 
+COPY buildSrc buildSrc
+# 2. Copia de módulos requeridos para este servicio
+COPY shared-kernel shared-kernel
 COPY api api
-
+# 3. Empaquetado del artefacto executable
+RUN chmod +x gradlew
 RUN ./gradlew :api:bootJar --no-daemon
 
 # Etapa 2: Imagen final de ejecución

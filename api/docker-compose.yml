@@ -14,6 +14,8 @@ services:
       - HOST_USER_AUTH=${HOST_USER_AUTH}
     networks:
       - e-commerce-network
+    depends_on:
+      - user-auth
 
   user-auth:
     build:
