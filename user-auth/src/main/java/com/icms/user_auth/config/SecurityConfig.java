@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/languages/**").permitAll()
                 .requestMatchers("/api/v1/auth/user-status/**").permitAll()
                 .requestMatchers("/api/v1/auth/user-status-translations/**").permitAll()
+                .requestMatchers("/api/v1/auth/test/**").permitAll()
 
                 .anyRequest().authenticated()
             )
