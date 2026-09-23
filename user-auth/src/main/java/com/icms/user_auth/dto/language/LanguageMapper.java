@@ -4,6 +4,8 @@ import com.icms.shared.config.mapper.MapperSetting;
 import com.icms.shared.dto.BaseMapper;
 import com.icms.shared.entity.Language;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Builder;
 
 @Mapper(
@@ -12,4 +14,7 @@ import org.mapstruct.Builder;
 )
 public interface LanguageMapper extends BaseMapper<Language, LanguageDto> {
 
+    @Override 
+    @Mapping (target = "id", ignore = true)
+    void updateEntityFromDto(LanguageDto dto, @MappingTarget Language entity);
 }
