@@ -1,5 +1,9 @@
 package com.icms.user_auth.mappers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.instancio.Instancio;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,10 +26,7 @@ public class UserStatusMapperTest {
     @DisplayName ("Test if the UserStatusMapper returns dto correctly when mapping from entity")
     public void mapFromEntityToDto() {
         // Given
-        UserStatus userStatus = new UserStatus();
-        userStatus.setCode("ACT");
-        userStatus.setActive(true);
-        userStatus.setName("ACTIVE");
+        UserStatus userStatus = Instancio.create(UserStatus.class);
 
         // When
         // You would call the mapper to convert the entity to a DTO
@@ -33,27 +34,47 @@ public class UserStatusMapperTest {
 
         // Then
         // You would assert that the DTO has the expected values
-        assertNotNull(userStatusDto);
-        assertEquals("ACT", userStatusDto.code());
-        assertEquals(true, userStatusDto.active());
-        assertEquals("ACTIVE", userStatusDto.name());
+        assertThat(userStatusDto).isNotNull();
+        assertThat(userStatusDto.code()).isEqualTo(userStatus.getCode());
+        assertThat(userStatusDto.active()).isEqualTo(userStatus.getActive());
+        assertThat(userStatusDto.name()).isEqualTo(userStatus.getName());
     }
 
     @Test 
     @DisplayName ("Test if the UserStatusMapper returns entity correctly when mapping from dto")
-    public void mapFromDtoToEntity() {
+    public void createEntityFromDto() {
         // Given
-        UserStatusDto userStatusDto = new UserStatusDto(Long.valueOf(1), "ACT", "ACTIVE", true);
+        UserStatusDto userStatusDto = Instancio.create(UserStatusDto.class);
 
         // When
         UserStatus userStatus = userStatusMapper.toEntity(userStatusDto);
 
         // Then
-        assertNotNull(userStatus);
-        assertEquals(Long.valueOf(1), userStatus.getId());
-        assertEquals("ACT", userStatus.getCode());
-        assertEquals(true, userStatus.getActive());
-        assertEquals("ACTIVE", userStatus.getName());
+        assertThat(userStatus).isNotNull();
+        assertThat(userStatus.getCode()).isEqualTo(userStatusDto.code());
+        assertThat(userStatus.getActive()).isEqualTo(userStatusDto.active());
+        assertThat(userStatus.getName()).isEqualTo(userStatusDto.name());
+        // The ID should be null because it is ignored during mapping from DTO to entity for the entity creation.
+        assertThat(userStatus.getId()).isNull();
     }
 
+    @Test 
+    @DisplayName ("Test if the UserStatusMapper updates entity correctly when mapping from dto")
+    void updateEntityFromDto() {
+        // Given
+        UserStatus existingUserStatus = Instancio.create(UserStatus.class);
+        Long existingId = existingUserStatus.getId();
+
+        UserStatusDto userStatusDto = Instancio.create(UserStatusDto.class);
+
+        // When
+        userStatusMapper.updateEntityFromDto(userStatusDto, existingUserStatus);
+
+        // Then
+        assertThat(existingUserStatus.getCode()).isEqualTo(userStatusDto.code());
+        assertThat(existingUserStatus.getName()).isEqualTo(userStatusDto.name());
+        assertThat(existingUserStatus.getActive()).isEqualTo(userStatusDto.active());
+        // The ID should remain unchanged after the update
+        assertThat(existingUserStatus.getId()).isEqualTo(existingId);
+    }
 }
