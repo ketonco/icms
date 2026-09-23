@@ -1,20 +1,11 @@
 plugins {
+    id 'java-common-conventions'
     id 'java-library'
     id 'io.spring.dependency-management' 
 }
 
 group = 'com.icms'
 version = '0.0.1-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
-    }
-}
-
-repositories {
-    mavenCentral()
-}
 
 dependencyManagement {
     imports {
@@ -24,26 +15,15 @@ dependencyManagement {
 
 dependencies {
     // Spring Data JPA (for MappedSuperclass, JPA Annotations and Auditing)
-    compileOnly 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compileOnly libs.spring.boot.starter.data.jpa
     
     // Spring Web (for DTOs, RestControllerAnnotations and LocaleContextHolder)
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly libs.spring.boot.starter.web
     
     // Spring Security (for extracting the authenticated user in AuditorAware)
-    compileOnly 'org.springframework.boot:spring-boot-starter-security'
-
-    // Lombok for reducing boilerplate code (getters, setters, constructors, etc.)
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+    compileOnly libs.spring.boot.starter.security
 
     // Jackson for JSON serialization and deserialization
-    implementation 'com.fasterxml.jackson.core:jackson-databind'
-	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-
-    // MapStruct for object mapping between DTOs and entities
-    compileOnly 'org.mapstruct:mapstruct:1.5.5.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-
-    // Bean Validation (for @NotBlank, @NotNull, etc.)
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // implementation 'com.fasterxml.jackson.core:jackson-databind'
+    // implementation libs.jackson.datatype.jsr310
 }

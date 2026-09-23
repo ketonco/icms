@@ -1,6 +1,6 @@
 plugins {
-	id 'spring-boot-conventions'
-	id 'org.liquibase.gradle'
+    id 'spring-jpa-conventions'
+    id 'migration-conventions'
 }
 
 group = 'com.icms'
@@ -13,47 +13,21 @@ configurations {
 dependencies {
 	// Módulo local del mismo proyecto Gradle; no es necesario declararlo como dependencia publicada.
 	implementation project(':shared-kernel')
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-liquibase'
-	implementation 'org.liquibase:liquibase-core'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	implementation 'org.springframework.data:spring-data-envers'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	implementation libs.spring.boot.starter.security
+	implementation libs.spring.boot.starter.webmvc
 
-	compileOnly 'org.projectlombok:lombok'
+	testImplementation libs.spring.boot.starter.security.test
+	testImplementation libs.spring.boot.starter.webmvc.test
+	testImplementation libs.spring.boot.test.autoconfigure
+	testImplementation libs.mockito.core
+	testImplementation libs.instancio.junit
 
-	runtimeOnly 'org.postgresql:postgresql'
-    runtimeOnly 'info.picocli:picocli:4.7.6'
+	testRuntimeOnly libs.junit.platform
 
-	annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+	// Requerido por la tarea de Liquibase para ejecutar desde CLI postgre
+    liquibaseRuntime libs.postgresql
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-liquibase-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-	testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-webflux'
-	testImplementation 'org.mockito:mockito-core:5.14.2'
-	testImplementation 'org.instancio:instancio-junit:5.4.0'
-
-	testCompileOnly 'org.projectlombok:lombok'
-
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-	testAnnotationProcessor 'org.projectlombok:lombok'
-
-	// Requerido por la tarea de Liquibase para ejecutar desde CLI
-    liquibaseRuntime 'org.liquibase:liquibase-core'
-    liquibaseRuntime 'org.postgresql:postgresql'
-    liquibaseRuntime 'info.picocli:picocli:4.7.6'
-    liquibaseRuntime sourceSets.main.output
-
-	mockitoAgent('org.mockito:mockito-core:5.14.2') { transitive = false }
+	mockitoAgent(libs.mockito.core) { transitive = false }
 }
 
 // Configuración de la base de datos EXCLUSIVA de este microservicio
@@ -70,7 +44,7 @@ liquibase {
     }
 }
 /** Configuración de pruebas con JUnit y Mockito */
-tasks.named('test', Test) {
+/**tasks.named('test', Test) {
     useJUnitPlatform()
     jvmArgs "-javaagent:${configurations.mockitoAgent.singleFile}"
-}
+}*/
