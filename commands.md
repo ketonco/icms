@@ -125,9 +125,9 @@ Lista de todos los comandos para test unitario
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions.testGlobalExceptionHandlingForExistingCodeConflict"
 
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest"
-.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest.testEntityToDtoMapping"
-.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest.testDtoToEntityMapping"
-.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest.testUpdateEntityFromDtoMapping"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest.mapFromEntityToDto"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest.createEntityFromDto"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest.updateEntityFromDto"
 ```
 
 ### Compilar el módulo
