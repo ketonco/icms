@@ -47,6 +47,16 @@ Refresca las dependencias de cada modulo en un solo comando, bastante util al ag
 
 Gradle genera un reporte web detallado e interactivo de todo el árbol de dependencias de tus microservicios. Nos permitirá auditar visualmente que ningún módulo esté arrastrando dependencias duplicadas o versiones no deseadas sin adivinar nada.
 
+### Generacion de archivo jar
+
+```powershell
+./gradlew :api:bootJar --no-daemon
+```
+
+Compila el módulo `api` y genera su archivo JAR ejecutable de Spring Boot. La
+opción `--no-daemon` ejecuta Gradle sin utilizar un proceso daemon persistente,
+por lo que resulta útil en compilaciones puntuales o entornos de CI.
+
 ## Módulo `user-auth`
 
 ### Levantar unicamente el servicio de user-auth local
