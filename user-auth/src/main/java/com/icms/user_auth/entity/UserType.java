@@ -3,13 +3,14 @@ import com.icms.shared.entity.BaseCatalogEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Entity
 @Table(name = "usertypes")
+@AllArgsConstructor 
+@Builder 
 public class UserType extends BaseCatalogEntity{
-
-    public UserType() {
-    }
 
     public UserType(String code, Boolean active, String description) {
         super(code, active, description);

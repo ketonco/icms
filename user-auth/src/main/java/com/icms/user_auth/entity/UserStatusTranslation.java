@@ -5,11 +5,13 @@ import com.icms.shared.entity.Language;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Entity
 @Table(name = "userstatus_translation")
-@NoArgsConstructor 
+@AllArgsConstructor 
+@Builder 
 public class UserStatusTranslation extends BaseCatalogTranslationEntity<UserStatus>{
 
     public UserStatusTranslation(UserStatus catalog, Language language, String translation, String description) {
