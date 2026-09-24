@@ -23,6 +23,7 @@ dependencies {
 	testImplementation libs.instancio.junit
     testImplementation libs.spring.boot.starter.webflux
     testImplementation libs.rest.assured
+    testImplementation libs.rest.assured.mockmvc
 
 	testRuntimeOnly libs.junit.platform
 
