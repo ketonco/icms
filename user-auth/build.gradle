@@ -22,6 +22,7 @@ dependencies {
 	testImplementation libs.mockito.core
 	testImplementation libs.instancio.junit
     testImplementation libs.spring.boot.starter.webflux
+    testImplementation libs.rest.assured
 
 	testRuntimeOnly libs.junit.platform
 
