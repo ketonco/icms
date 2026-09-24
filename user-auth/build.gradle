@@ -21,6 +21,7 @@ dependencies {
 	testImplementation libs.spring.boot.test.autoconfigure
 	testImplementation libs.mockito.core
 	testImplementation libs.instancio.junit
+    testImplementation libs.spring.boot.starter.webflux
 
 	testRuntimeOnly libs.junit.platform
 
