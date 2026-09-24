@@ -34,9 +34,6 @@ public class LanguageRepositoryTest {
         Language language = Instancio.of(Language.class)
         .set(Select.field(Language::getId), null)
         .set(Select.field(Language::getCode), "hr-HR")
-        .set(Select.field(Language::getName), "Croatian")
-        .set(Select.field(Language::getActive), Boolean.TRUE)
-        .set(Select.field(Language::getIsDefault), Boolean.FALSE)
         .create(); // create a new language instance with a null ID
         
         // action: persist the language entity
