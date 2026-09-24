@@ -1,9 +1,10 @@
 package com.icms.user_auth.repository;
 
+import org.instancio.Instancio;
+import org.instancio.Select;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
@@ -26,28 +27,33 @@ public class LanguageRepositoryTest {
     private LanguageRepository languageRepository;
 
     @Test 
+    @SuppressWarnings("null")
     @DisplayName("Test for saving and retrieving a language entity")
     public void testSaveAndRetrieveLanguage() {
         // Given
-        //new Language("en-US", "English", Boolean.TRUE, Boolean.TRUE)
-        Language language = new Language();
-        language.setName("English test");
-        language.setCode("en-USA");
-        language.setActive(Boolean.FALSE);
-        language.setIsDefault(Boolean.FALSE);
+        Language language = Instancio.of(Language.class)
+        .set(Select.field(Language::getId), null)
+        .set(Select.field(Language::getCode), "hr-HR")
+        .set(Select.field(Language::getName), "Croatian")
+        .set(Select.field(Language::getActive), Boolean.TRUE)
+        .set(Select.field(Language::getIsDefault), Boolean.FALSE)
+        .create(); // create a new language instance with a null ID
         
         // action: persist the language entity
         testEntityManager.persistAndFlush(language);
+        // clear the persistence context to ensure the entity is fetched from the database
+        testEntityManager.clear();
         
         // When
         Language found = languageRepository.findByCode(language.getCode()).orElse(null);
 
         // Then
-        assertNotNull(found);
-        assertEquals(language.getName(), found.getName());
-        assertEquals(language.getCode(), found.getCode());
-        assertEquals(language.getActive(), found.getActive());
-        assertEquals(language.getIsDefault(), found.getIsDefault());
+        assertThat(found).isNotNull();
+        assertThat(found.getId()).isNotNull();
+        assertThat(found.getCode()).isEqualTo(language.getCode());
+        assertThat(found.getName()).isEqualTo(language.getName());
+        assertThat(found.getActive()).isEqualTo(language.getActive());
+        assertThat(found.getIsDefault()).isEqualTo(language.getIsDefault());
     }
 
 }
