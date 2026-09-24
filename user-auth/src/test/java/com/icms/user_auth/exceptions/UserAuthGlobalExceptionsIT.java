@@ -6,19 +6,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.icms.shared.dto.RestResponse;
+import com.icms.shared.entity.Language;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class UserAuthGlobalExceptions {
+class UserAuthGlobalExceptionsIT {
 
-    @LocalServerPort 
-    private int port;
-    private WebTestClient webTestClient;
+    
+    @LocalServerPort private int port;
+    private WebTestClient webTestClient; 
 
     @BeforeEach
     void setUp() {
@@ -29,34 +29,36 @@ public class UserAuthGlobalExceptions {
 
     /**
      * Integration tests to validate the update exception handling service
-     * we create an entity that does not exist to trigger the exception.
+     * we update an entity that does not exist to trigger the exception.
      * This ensures that the global exception handler is properly invoked and the correct response is returned.
      */
     @Test 
     @DisplayName("PUT /api/v1/auth/languages - Test global exception handling for non-existent entity")
     void testGlobalExceptionHandlingForNonExistentEntity() {
         // we create the json object representing the non-existent language entity (id, code, name, active, isDefault)
-        String nonExistentLanguageJson = "{\"id\": 9999, " +
-        "\"code\": \"xx-XX\", " +
-        "\"name\": \"Non-Existent Language\", " +
-        "\"active\": false, " +
-        "\"isDefault\": false }";
+        String nonExistentLanguageJson = """
+                {
+                    "id": 9999,
+                    "code": "xx-XX",
+                    "name": "Non-Existent Language",
+                    "active": false,
+                    "isDefault": false
+                }
+                """;
 
         webTestClient.put()
                 .uri("/api/v1/auth/languages")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(nonExistentLanguageJson)
                 .exchange()
-                .expectBody(String.class)
+                .expectStatus().isNotFound()
+                .expectBody(new ParameterizedTypeReference<RestResponse<Language>>() {})
                 .consumeWith(response -> {
-                    String body = response.getResponseBody();
-                    try {
-                        JsonNode jsonNode = new ObjectMapper().readTree(body);
-                        assertThat(jsonNode.get("status").asInt()).isEqualTo(404);
-                        assertThat(jsonNode.get("code").asText()).isEqualTo("Ent-001");
-                    } catch (Exception exception) {
-                        throw new AssertionError("Unable to parse the error response", exception);
-                    }
+                    RestResponse<Language> body = response.getResponseBody();
+                    assertThat(body).isNotNull();
+                    assertThat(body.getStatus()).isEqualTo(404);
+                    assertThat(body.getCode()).isEqualTo("Ent-001");
+                    assertThat(body.getMessage()).isNotBlank();
                 });
     }
 
@@ -69,27 +71,28 @@ public class UserAuthGlobalExceptions {
     @DisplayName("POST /api/v1/auth/languages - Test global exception handling for existing code conflict")
     void testGlobalExceptionHandlingForExistingCodeConflict() {
         // we create the json object representing the language entity with an existing code
-        String existingCodeLanguageJson = "{" +
-        "\"code\": \"en-US\", " +
-        "\"name\": \"Existing Code Language\", " +
-        "\"active\": true, " +
-        "\"isDefault\": false }";
+        String existingCodeLanguageJson = """
+                {
+                    "code": "en-US",
+                    "name": "Existing Code Language",
+                    "active": true,
+                    "isDefault": false
+                }
+                """;
 
         webTestClient.post()
                 .uri("/api/v1/auth/languages")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(existingCodeLanguageJson)
                 .exchange()
-                .expectBody(String.class)
+                .expectStatus().isBadRequest()
+                .expectBody(new ParameterizedTypeReference<RestResponse<Language>>() {})
                 .consumeWith(response -> {
-                    String body = response.getResponseBody();
-                    try {
-                        JsonNode jsonNode = new ObjectMapper().readTree(body);
-                        assertThat(jsonNode.get("status").asInt()).isEqualTo(400);
-                        assertThat(jsonNode.get("code").asText()).isEqualTo("Cat-002");
-                    } catch (Exception exception) {
-                        throw new AssertionError("Unable to parse the error response", exception);
-                    }
+                    RestResponse<Language> body = response.getResponseBody();
+                    assertThat(body).isNotNull();
+                    assertThat(body.getStatus()).isEqualTo(400);
+                    assertThat(body.getCode()).isEqualTo("Cat-002");
+                    assertThat(body.getMessage()).isNotBlank();
                 });
     }
 

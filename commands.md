@@ -122,9 +122,9 @@ Lista de todos los comandos para test unitario
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.rules.UserStatusTranslationRulesTest.testCanSave"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.rules.UserStatusTranslationRulesTest.testCanSaveWhenTranslationExists"
 
-.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions"
-.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions.testGlobalExceptionHandlingForNonExistentEntity"
-.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptions.testGlobalExceptionHandlingForExistingCodeConflict"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptionsIT"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptionsIT.testGlobalExceptionHandlingForNonExistentEntity"
+.\gradlew.bat :user-auth:test --tests "com.icms.user_auth.exceptions.UserAuthGlobalExceptionsIT.testGlobalExceptionHandlingForExistingCodeConflict"
 
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest"
 .\gradlew.bat :user-auth:test --tests "com.icms.user_auth.mappers.UserProfileMapperTest.mapFromEntityToDto"
