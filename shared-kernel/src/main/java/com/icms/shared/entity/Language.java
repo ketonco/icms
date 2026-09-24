@@ -1,5 +1,6 @@
 package com.icms.shared.entity;
 
+import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -12,6 +13,10 @@ import lombok.Builder;
 
 @Entity 
 @Table(name = "languages")
+@AttributeOverride (
+    name = "code", 
+    column = @Column(name = "code", length = 10)
+)
 @Getter
 @Setter
 @NoArgsConstructor
