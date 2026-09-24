@@ -18,7 +18,7 @@ import com.icms.shared.entity.Language;
 @ActiveProfiles("test")
 @Import(AuditConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) 
-public class LanguageRepositoryTest {
+class LanguageRepositoryTest {
 
     @Autowired 
     private TestEntityManager testEntityManager;
@@ -29,7 +29,7 @@ public class LanguageRepositoryTest {
     @Test 
     @SuppressWarnings("null")
     @DisplayName("Test for saving and retrieving a language entity")
-    public void testSaveAndRetrieveLanguage() {
+    void testSaveAndRetrieveLanguage() {
         // Given
         Language language = Instancio.of(Language.class)
         .set(Select.field(Language::getId), null)
