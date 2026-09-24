@@ -1,16 +1,18 @@
 package com.icms.user_auth.exceptions;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.not;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.MediaType;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import com.icms.shared.dto.RestResponse;
-import com.icms.shared.entity.Language;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -18,13 +20,11 @@ class UserAuthGlobalExceptionsIT {
 
     
     @LocalServerPort private int port;
-    private WebTestClient webTestClient; 
 
     @BeforeEach
     void setUp() {
-        webTestClient = WebTestClient.bindToServer()
-                .baseUrl("http://localhost:" + port)
-                .build();
+        RestAssured.port = port;
+        RestAssured.baseURI = "http://localhost";
     }
 
     /**
@@ -46,20 +46,16 @@ class UserAuthGlobalExceptionsIT {
                 }
                 """;
 
-        webTestClient.put()
-                .uri("/api/v1/auth/languages")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(nonExistentLanguageJson)
-                .exchange()
-                .expectStatus().isNotFound()
-                .expectBody(new ParameterizedTypeReference<RestResponse<Language>>() {})
-                .consumeWith(response -> {
-                    RestResponse<Language> body = response.getResponseBody();
-                    assertThat(body).isNotNull();
-                    assertThat(body.getStatus()).isEqualTo(404);
-                    assertThat(body.getCode()).isEqualTo("Ent-001");
-                    assertThat(body.getMessage()).isNotBlank();
-                });
+        given()
+            .contentType(ContentType.JSON)
+            .body(nonExistentLanguageJson)
+        .when()
+            .put("/api/v1/auth/languages")
+        .then()
+            .statusCode(404)
+            .body("status", equalTo(404))
+            .body("code", equalTo("Ent-001"))
+            .body("message", not(emptyOrNullString()));
     }
 
     /**
@@ -80,20 +76,16 @@ class UserAuthGlobalExceptionsIT {
                 }
                 """;
 
-        webTestClient.post()
-                .uri("/api/v1/auth/languages")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(existingCodeLanguageJson)
-                .exchange()
-                .expectStatus().isBadRequest()
-                .expectBody(new ParameterizedTypeReference<RestResponse<Language>>() {})
-                .consumeWith(response -> {
-                    RestResponse<Language> body = response.getResponseBody();
-                    assertThat(body).isNotNull();
-                    assertThat(body.getStatus()).isEqualTo(400);
-                    assertThat(body.getCode()).isEqualTo("Cat-002");
-                    assertThat(body.getMessage()).isNotBlank();
-                });
+        given()
+            .contentType(ContentType.JSON)
+            .body(existingCodeLanguageJson)
+        .when()
+            .post("/api/v1/auth/languages")
+        .then()
+            .statusCode(400)
+            .body("status", equalTo(400))
+            .body("code", equalTo("Cat-002"))
+            .body("message", not(emptyOrNullString()));
     }
 
 }
