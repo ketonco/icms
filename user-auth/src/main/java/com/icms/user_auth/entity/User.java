@@ -42,13 +42,16 @@ public class User extends UUIDAuditableEntity{
     private String password;
 
     @Column(nullable = false) 
-    private boolean enabled;
+    @Builder.Default
+    private boolean enabled = false;
 
     @Column(nullable = false) 
-    private boolean locked;
+    @Builder.Default
+    private boolean locked = false;
 
     @Column(name = "failed_login_attempts", nullable = false)
-    private int failedLoginAttempts;
+    @Builder.Default
+    private int failedLoginAttempts = 0;
 
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
