@@ -11,4 +11,8 @@ import com.icms.user_auth.entity.UserType;
 )
 public interface UserTypeMapper extends BaseMapper<UserType, UserTypeDto>{
 
+    default String convertToString(UserType userType){
+        return (userType != null)? userType.getName() : null;
+    }
+
 }
