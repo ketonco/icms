@@ -1,0 +1,38 @@
+# ==========================================
+# 1. ARCHIVOS TEMPORALES Y CACHÉ DE GRADLE
+# ==========================================
+# Ignora .gradle tanto en la raíz como dentro de :api, :user-auth, :shared-kernel
+.gradle/
+**/.gradle/
+
+# Archivos y carpetas de compilación
+**/build/
+**/bin/
+**/out/
+
+# ==========================================
+# 2. ARCHIVOS DE ENTORNO Y SECRETOS (SEGURIDAD)
+# ==========================================
+.env
+**/.env
+!.env.example
+**/.env.example
+
+# ==========================================
+# 3. ENTORNOS DE IDE Y CONTROL DE VERSIONES
+# ==========================================
+.idea/
+**/.idea/
+.vscode/
+**/.vscode/
+*.iml
+.git/
+**/.git/
+
+# ==========================================
+# 4. BINARIOS Y LOGS RECURSIVOS
+# ==========================================
+**/*.class
+**/*.jar
+**/*.war
+**/*.log
