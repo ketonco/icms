@@ -3,33 +3,6 @@
 Validación de `.github/copilot-instructions.md` vs código real. Fecha: 2026-09-30.
 Solo lectura y marcadores `TODO`; nada de lo listado está corregido todavía.
 
-## P-01 — `starter-webflux` en tests de `user-auth` viola la regla A de aislamiento
-
-**Dónde:** `user-auth/build.gradle:24`
-
-**Ubicacion del TODO: agregado** `user-auth/build.gradle:24`
-
-**Problema:** la regla A de `.github/copilot-instructions.md:19` prohíbe
-dependencias reactivas en módulos MVC, pero el módulo declara
-`testImplementation libs.spring.boot.starter.webflux`.
-
-**Contexto / Explicación:** el código de `src/main` está limpio (sin
-`Mono`/`Flux`); la dependencia solo afecta al classpath de tests y
-normalmente se trae por `WebTestClient` (cliente reactivo de pruebas).
-La regla queda en mentira mientras no se documente la excepción ni se migre.
-
-**Opciones estándar:**
-
-- A) Mantenerla y documentar la excepción en las instrucciones (“prohibido en
-  `src/main`; permitido `WebTestClient` solo en `src/test`”).
-- B) Eliminarla y usar `spring-boot-starter-webmvc-test` + `rest-assured-mockmvc`
-  (ya declarados en `build.gradle:20,26`), que cubren tests MVC sin Reactor.
-
-**Recomendación:** B si ningún test usa `WebTestClient`; si alguno lo usa, A.
-
-**Nivel de acción requerido:** Medio — solo afecta al classpath de tests, pero
-requiere decisión antes de cerrar la regla A.
-
 ## P-02 — Secuencias huérfanas en 5 migraciones Liquibase
 
 **Dónde:** `user-auth/src/main/resources/db/migrations/20260912_0001_create_userstatus_001.yaml:7-18`

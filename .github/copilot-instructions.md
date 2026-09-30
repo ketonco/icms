@@ -16,7 +16,8 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 ### A. Módulos Basados en Spring Web MVC (Bloqueantes / Servlets)
 - **Ámbito:** Microservicios con lógica de negocio tradicional y persistencia relacional (`user-auth`, `facturacion`, etc.).
 - **Contrato de Firma:** Métodos de servicios y controladores deben retornar tipos síncronos directos (`T`, `List<T>`, `Optional<T>`, `ResponseEntity<T>`).
-- **Aislamiento:** Está **estrictamente prohibido** importar dependencias reactivas (`spring-boot-starter-webflux`, `reactor-test`, `Mono`, `Flux`) en estos módulos.
+- **Aislamiento:** Está **estrictamente prohibido** importar dependencias reactivas (`spring-boot-starter-webflux`, `reactor-test`, `Mono`, `Flux`) en el código de producción (`src/main`) de estos módulos.
+- **Excepción en tests (`src/test`):** Se permite `spring-boot-starter-webflux` únicamente como cliente de pruebas (`WebTestClient`). Sigue prohibido exponer tipos reactivos (`Mono`, `Flux`) en firmas de producción.
 
 ### B. Módulos Basados en Spring WebFlux (Reactivos / No Bloqueantes)
 - **Ámbito:** API Gateway (`api`) y microservicios de alto rendimiento o streaming de eventos.
