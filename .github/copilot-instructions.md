@@ -43,8 +43,8 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 
 ### E. Mapeo y DTOs (MapStruct)
 - **DTOs:** Definidos mediante Java **`record`** con validaciones de `@jakarta.validation`.
-- **`BaseMapper<E, D>`:** Interfaz genérica para mapeos bidireccionales (`toDto`, `toEntity`, listas).
-- **Configuración MapStruct:** Usar interfaz `@MapperConfig` centralizada (`componentModel = "spring"`, `unmappedTargetPolicy = ReportingPolicy.IGNORE`).
+- **`BaseMapper<E, D>`:** Interfaz genérica para mapeos bidireccionales (`toDto`, `toEntity`, listas) más `updateEntityFromDto` con `@MappingTarget`.
+- **Configuración MapStruct:** Usar `MapperSetting` centralizada (`componentModel = "spring"`, `unmappedTargetPolicy = ReportingPolicy.IGNORE`, `nullValuePropertyMappingStrategy = IGNORE`).
 
 ### F. Reglas de Negocio (Validation Layer)
 - **`DaoRulesImpl<E>`:** Contrato de validación (`canSave`, `canUpdate`, `canDelete`).

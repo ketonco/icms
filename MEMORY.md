@@ -62,6 +62,8 @@ Este archivo almacena la memoria operativa, arquitectura backend, decisiones cla
 - **Excepción `WebTestClient` en tests MVC (P-01 resuelto):**
   - *Decisión:* `starter-webflux` permitido solo en `src/test` como cliente de pruebas; prohibido en `src/main` y en firmas de producción. Documentado en `copilot-instructions.md` sección A.
   - *Por qué:* futuros microservicios MVC también lo necesitarán en tests; la regla A quedaba en mentira sin la excepción.
+- **P-05 resuelto (opción A, solo texto):**
+  - *Decisión:* `copilot-instructions.md` sección E ahora dice `MapperSetting` (nombre real) y añade `updateEntityFromDto` al contrato de `BaseMapper`. Sin cambios en código.
 
 ---
 

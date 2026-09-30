@@ -101,33 +101,6 @@ desarrollador.
 
 **Nivel de acción requerido:** Bajo — solo documentación.
 
-## P-05 — E inexacto: `MapperConfig` no existe, es `MapperSetting`
-
-**Dónde:** `.github/copilot-instructions.md:46`
-
-**Ubicacion del TODO: no agregado** (solo documentación)
-
-**Problema:** el texto dice “interfaz `@MapperConfig` centralizada”, pero la
-clase real es `shared-kernel/.../config/mapper/MapperSetting.java:7-10`
-(`componentModel="spring"`, `unmappedTargetPolicy=IGNORE`,
-`nullValuePropertyMappingStrategy=IGNORE`). Además `BaseMapper.java:13` expone
-`updateEntityFromDto(D, E)` con `@MappingTarget`, que la instrucción no menciona.
-
-**Contexto / Explicación:** si Copilot busca `MapperConfig` no la encuentra y
-puede generar una clase duplicada.
-
-**Opciones estándar:**
-
-- A) Renombrar el texto a “`MapperSetting` centralizada (`spring`, `IGNORE`,
-  `nullValuePropertyMappingStrategy=IGNORE`)” y añadir `updateEntityFromDto`
-  al contrato de `BaseMapper` (recomendado).
-- B) Renombrar la clase Java a `MapperConfig` (innecesario y más invasivo).
-
-**Recomendación:** A.
-
-**Nivel de acción requerido:** Bajo — solo documentación, pero evita duplicados
-generados por IA.
-
 ## P-06 — Reglas de traducción: conteo mínimo, `!=` vs `equals` y mensaje descartado
 
 **Dónde:** `shared-kernel/src/main/java/com/icms/shared/rules/BaseDaoCatalogTranslationRules.java:35,46`,
