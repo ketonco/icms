@@ -1,19 +1,17 @@
 package com.icms.user_auth.rules;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.icms.user_auth.repository.UserRepository;
 
-@Component 
+@Component
 public class UserRules {
 
-    private UserRepository userRepository;
+    // private UserRepository userRepository; // not used yet
 
     @Autowired 
     public UserRules(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        // this.userRepository = userRepository; // field disabled, not used yet
     }
 
 }
