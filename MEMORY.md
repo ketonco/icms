@@ -4,6 +4,11 @@
 > No es bitácora de tareas: el historial vive en git y los pendientes activos
 > en `pending.md`. Tamaño máximo: 250 líneas; resumir o eliminar lo que deje
 > de aportar.
+>
+> Regla operativa inviolable: nunca ejecutar ni modificar nada sin preguntar
+> antes y mostrar el contenido exacto propuesto (plan + bloque/diff con
+> `archivo:línea`); solo actuar con autorización explícita del desarrollador.
+> Ni siquiera `pending.md` o `MEMORY.md` se tocan a primeras.
 
 ---
 
