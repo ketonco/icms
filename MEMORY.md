@@ -56,6 +56,12 @@
   - *Aprendizaje:* Comparar IDs `Long` con `!=` compara referencias y da falsos negativos fuera del rango cacheado; usar siempre `equals`.
 - **Secuencias huérfanas en Liquibase:**
   - *Aprendizaje:* `autoIncrement: true` y `defaultValueSequenceNext` son excluyentes por columna; crear `createSequence` + `autoIncrement` deja la secuencia huérfana.
+- **Plantilla de migraciones:**
+  - *Decisión:* `1guides/09-plantilla-migracion.md` es la guía copia/pega (tabla + `_aud` Envers + índices; relacionales sin `_aud`).
+  - *Por qué:* Nace de P-02 para evitar repetir las inconsistencias de secuencias e índices.
+- **Comando `/nueva-migracion`:**
+  - *Decisión:* `.opencode/commands/nueva-migracion.md` (agente `plan`) genera migraciones desde la clase entidad: valida `@Entity` + `@Table(name)`, deriva columnas de la herencia y detecta el módulo/BD por paquete.
+  - *Por qué:* Cada microservicio tendrá su BD propia; el comando evita asumir `user-auth` y frena si falta `@Table(name)`.
 
 ---
 
