@@ -2,26 +2,27 @@ package com.icms.user_auth.dto.user;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import com.icms.shared.dto.BaseMapper;
 
 import com.icms.shared.config.mapper.MapperSetting;
 import com.icms.user_auth.dto.userprofile.UserProfileMapper;
+import com.icms.user_auth.dto.userstatus.UserStatusMapper;
+import com.icms.user_auth.dto.usertype.UserTypeMapper;
 import com.icms.user_auth.entity.User;
 @Mapper(
     config = MapperSetting.class,
     builder = @Builder(disableBuilder = true),
-    uses = {UserProfileMapper.class}
+    uses = {UserProfileMapper.class, UserTypeMapper.class, UserStatusMapper.class}
 )
-public interface UserMapper extends BaseMapper<User,UserDto> {
+public interface UserMapper{
 
-    @Mapping(source = "status.name", target = "status")
-    UserDto toDto(User user);
-
-    @Mapping(source = "status", target = "status.name")
-    User toEntity(UserDto userDto);
+    CreateUserDto toCreateUseDto(User user);
 
     @Mapping(target = "status", ignore = true)
-    void updateEntityFromDto(UserDto userDto, @MappingTarget User user);
+    @Mapping(target = "types", ignore = true)
+    User toEntity(CreateUserDto userDto);
+
+    /* @Mapping(target = "status", ignore = true)
+    @Mapping(target = "types", ignore = true)
+    void updateEntityFromDto(CreateUserDto userDto, @MappingTarget User user); */
 
 }

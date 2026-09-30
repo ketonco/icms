@@ -22,4 +22,8 @@ public interface UserStatusMapper extends BaseMapper<UserStatus, UserStatusDto>{
     @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(UserStatusDto dto, @MappingTarget  UserStatus entity);
 
+    default String convertEntityToString(UserStatus userStatus){
+        return (userStatus != null)? userStatus.getCode() : null;
+    }
+
 }

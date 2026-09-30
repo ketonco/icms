@@ -1,32 +1,34 @@
 package com.icms.user_auth.dto.user;
-
-import com.icms.shared.dto.IdentifiableDtoImpl;
+import jakarta.validation.constraints.NotNull;
 import com.icms.user_auth.dto.userprofile.UserProfileDto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-
-import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.UUID;
 
-public record UserDto(
-    UUID id,
+public record CreateUserDto(
+
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters") 
     String username,
+
     @NotBlank(message = "Email cannot be blank")
-    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "Invalid email format")
+    @Email(message = "invalid format")
     @Size(max = 100, message = "Email must be at most 100 characters")
     String email,
-    boolean enabled,
-    boolean locked,
-    int failedLoginAttempts,
-    LocalDateTime lastLoginAttempt,
+
+    @NotBlank(message = "Status cannot be blank")
     String status,
-    Set<String> roles,
-    UserProfileDto userProfile
-) implements IdentifiableDtoImpl<UUID>{
+
+    @NotEmpty(message = "Roles cannot be empty")
+    Set<String> types,
+
+    @NotNull(message = "User profile cannot be null")
+    @Valid 
+    UserProfileDto profile
+) {
 
 }
