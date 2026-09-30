@@ -21,6 +21,7 @@ dependencies {
 	testImplementation libs.spring.boot.test.autoconfigure
 	testImplementation libs.mockito.core
 	testImplementation libs.instancio.junit
+    // TODO (pending P-01): starter-webflux solo para tests viola la regla A de aislamiento MVC; decidir documentar excepcion o migrar a MockMvc. Ver pending.md
     testImplementation libs.spring.boot.starter.webflux
     testImplementation libs.rest.assured
     testImplementation libs.rest.assured.mockmvc

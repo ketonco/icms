@@ -12,6 +12,7 @@ databaseChangeLog:
         - createTable:
             tableName: userstatus
             columns:
+              # TODO (pending P-02): secuencia huerfana; la columna id usa autoIncrement y nunca consume userstatus_seq. Ver manual en pending.md
               - column:
                   name: id
                   type: BIGINT

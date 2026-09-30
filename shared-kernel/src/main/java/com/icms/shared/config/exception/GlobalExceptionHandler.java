@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<RestResponse<Void>> handleNoResourceFound(NoResourceFoundException ex) {
+        // TODO (pending P-07): codigo "000" hardcodeado y mensaje en espanol sin i18n; crear codigos de negocio y resolver via MessageResolver. Ver pending.md
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
             .body(RestResponse.error(
@@ -38,6 +39,7 @@ public class GlobalExceptionHandler {
                 .body(RestResponse.error(
                     status.value(),
                     ex.getMessage(),
+                    // TODO (pending P-07): codigo "000" generico sin i18n en handler de Exception; definir codigo de negocio. Ver pending.md
                     "000", // Código de error para regla de negocio
                     uri,
                     status.getReasonPhrase() // Detailed error message like "Internal Server Error" or "Not Found"
