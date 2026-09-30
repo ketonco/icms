@@ -13,8 +13,8 @@ import lombok.Builder;
 @Builder
 public class Permission extends BaseCatalogEntity{
 
-    public Permission(String code, Boolean active, String description) {
-        super(code, active, description);
+    public Permission(String code, Boolean active, String name) {
+        super(code, active, name);
     }
 
 }

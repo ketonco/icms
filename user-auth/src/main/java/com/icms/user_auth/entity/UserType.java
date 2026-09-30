@@ -12,8 +12,8 @@ import lombok.Builder;
 @Builder 
 public class UserType extends BaseCatalogEntity{
 
-    public UserType(String code, Boolean active, String description) {
-        super(code, active, description);
+    public UserType(String code, Boolean active, String name) {
+        super(code, active, name);
     }
 
 }

@@ -13,7 +13,7 @@ import lombok.Builder;
 @Builder 
 public class UserStatus extends BaseCatalogEntity{
     
-    public UserStatus(String code, Boolean active, String description) {
-        super(code, active, description);
+    public UserStatus(String code, Boolean active, String name) {
+        super(code, active, name);
     }
 }
