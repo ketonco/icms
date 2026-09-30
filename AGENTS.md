@@ -30,7 +30,7 @@ ICMS es una plataforma backend empresarial de microservicios construida con Java
 - **Guías de Desarrollo y Documentación:** Todas las guías en formato Markdown, tutoriales y explicaciones creadas para el desarrollador DEBEN estar escritas en ESPAÑOL[cite: 8].
 - **Convenciones de Nombres:** Estricto `camelCase` para variables y métodos, `PascalCase` para clases y `SNAKE_CASE` para constantes[cite: 7].
 - **Estándar Javadoc:** Todo método no trivial debe incluir Javadoc que describa su propósito, `@param`, `@throws` y tipos de retorno `@return`[cite: 7].
-- **Directrices de Copilot:** El estilo y patrones de código deben alinearse estrictamente a `.github/copilot-instructions.md`[cite: 7, 9].
+- **Directrices de Copilot:** Antes de cualquier revisión, ajuste o creación de código, leer `.github/copilot-instructions.md` y alinearse estrictamente a sus convenciones vigentes (estilo, patrones, tests, migraciones y configuración)[cite: 7, 9].
 
 ## Reglas de dominio / trampas conocidas
 

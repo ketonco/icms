@@ -35,6 +35,9 @@ Este archivo almacena la memoria operativa, arquitectura backend, decisiones cla
 - **Gestión de BD y Migraciones con Liquibase:**
   - *Decisión:* Control de esquemas PostgreSQL mediante changelogs YAML en `:user-auth`.
   - *Por qué:* Garantiza trazabilidad y reproducibilidad del esquema de BD en entornos locales y de CI/CD.
+- **Lectura previa de `copilot-instructions.md`:**
+  - *Decisión:* `AGENTS.md` ordena leer `.github/copilot-instructions.md` antes de cualquier revisión, ajuste o creación de código.
+  - *Por qué:* La línea anterior (“alinearse en estilo y patrones”) no cubría tests, migraciones ni config (I/J/K); la nueva redacción lo hace exigible sin duplicar reglas.
 - **Estrategia Futura de Automatización e IA:**
   - *Decisión:* Integración planeada de n8n (Docker), Spring AI / Ollama y WhatsApp Cloud API en modo Sandbox.
   - *Por qué:* Permitirá simular flujos de comercio conversacional y pruebas de carrito/facturación sin costo de infraestructura.
