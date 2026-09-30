@@ -41,6 +41,7 @@ ICMS es una plataforma backend empresarial de microservicios construida con Java
 ## Forma de trabajar
 
 - **Planificar Primero:** Explicar siempre la solución propuesta, el desglose paso a paso y los archivos afectados ANTES de solicitar autorización (cite: 7).
+- **Mostrar Cada Cambio en el chat:** Cada cambio que se vaya a realizar o se esté realizando debe mostrarse en el chat con su contenido exacto (bloque de código o diff con `archivo:línea`), no solo describirlo. Indicar qué se agregó, qué se quitó y qué quedó igual, antes de darlo por finalizado.
 - **Gestión Automatizada de Calidad (`PENDING.md`):**
   - **Auditoría y Registro:** Tras cada revisión o generación de código, el agente debe auditar el estado del proyecto. Si detecta fallos, deudas técnicas o pruebas faltantes, debe registrarlos en `PENDING.md` siguiendo la plantilla estándar de reporte.
   - **Auto-Eliminación al Validar:** Cuando se le pida validar el proyecto o un punto específico, si el agente verifica que la corrección ya fue aplicada y probada en el código fuente, **debe eliminar automáticamente dicha entrada de `PENDING.md`** para mantener el archivo limpio únicamente con los pendientes reales activos.
