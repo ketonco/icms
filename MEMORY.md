@@ -38,6 +38,9 @@ Este archivo almacena la memoria operativa, arquitectura backend, decisiones cla
 - **Lectura previa de `copilot-instructions.md`:**
   - *Decisión:* `AGENTS.md` ordena leer `.github/copilot-instructions.md` antes de cualquier revisión, ajuste o creación de código.
   - *Por qué:* La línea anterior (“alinearse en estilo y patrones”) no cubría tests, migraciones ni config (I/J/K); la nueva redacción lo hace exigible sin duplicar reglas.
+- **Mostrar cada cambio en el chat:**
+  - *Decisión:* `AGENTS.md` (“Mostrar Cada Cambio Aquí”) obliga a exhibir el contenido exacto de cada cambio (bloque/diff con `archivo:línea`), no solo describirlo.
+  - *Por qué:* Pedido del desarrollador para auditar en el chat qué se agregó, quitó o quedó igual.
 - **Estrategia Futura de Automatización e IA:**
   - *Decisión:* Integración planeada de n8n (Docker), Spring AI / Ollama y WhatsApp Cloud API en modo Sandbox.
   - *Por qué:* Permitirá simular flujos de comercio conversacional y pruebas de carrito/facturación sin costo de infraestructura.
@@ -56,6 +59,9 @@ Este archivo almacena la memoria operativa, arquitectura backend, decisiones cla
   - *Aprendizaje:* Comparar IDs `Long` con `!=` compara referencias y da falsos negativos fuera del rango cacheado; usar siempre `equals` (detectado en `BaseDaoCatalogTranslationRules.java:35`, pendiente P-06).
 - **Secuencias huérfanas en Liquibase:**
   - *Aprendizaje:* `autoIncrement: true` y `defaultValueSequenceNext` son excluyentes por columna; crear `createSequence` + `autoIncrement` deja la secuencia huérfana. El patrón correcto es el de `20260909_0001_create_languages_001.yaml` (pendiente P-02).
+- **Excepción `WebTestClient` en tests MVC (P-01 resuelto):**
+  - *Decisión:* `starter-webflux` permitido solo en `src/test` como cliente de pruebas; prohibido en `src/main` y en firmas de producción. Documentado en `copilot-instructions.md` sección A.
+  - *Por qué:* futuros microservicios MVC también lo necesitarán en tests; la regla A quedaba en mentira sin la excepción.
 
 ---
 
