@@ -1,5 +1,6 @@
 package com.icms.user_auth.entity;
 import com.icms.shared.entity.UUIDAuditableEntity;
+import org.hibernate.envers.Audited;
 
 
 import org.hibernate.annotations.JdbcTypeCode;
@@ -26,6 +27,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor 
+@Audited
 @Builder 
 public class UserProfile extends UUIDAuditableEntity{
 

@@ -1,6 +1,7 @@
 package com.icms.user_auth.entity;
 
 import jakarta.persistence.Table;
+import org.hibernate.envers.Audited;
 import com.icms.shared.entity.UUIDAuditableEntity;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.CascadeType;
@@ -29,6 +30,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor 
+@Audited
 @Builder 
 public class User extends UUIDAuditableEntity{
 

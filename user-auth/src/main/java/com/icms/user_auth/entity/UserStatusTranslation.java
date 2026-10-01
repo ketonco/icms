@@ -7,10 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "userstatus_translation")
 @AllArgsConstructor 
+@Audited
 @Builder 
 public class UserStatusTranslation extends BaseCatalogTranslationEntity<UserStatus>{
 

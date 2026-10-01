@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
-
+//esta entidad no tiene auditoría habilitada y por ahora no se planea habilitarla - excluir de las revisiones futuras por ahora
 @Entity 
 @Table(name = "languages")
 @AttributeOverride (

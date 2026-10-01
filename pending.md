@@ -28,48 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-10 — Ninguna entidad lleva `@Audited`: Envers cableado pero inoperante
-
-**Dónde:** las 8 entidades (`shared-kernel/.../entity/Language.java`,
-`user-auth/.../entity/User.java`, `UserProfile.java`, `UserStatus.java`,
-`UserStatusTranslation.java`, `UserType.java`, `UserTypeTranslation.java`,
-`Permission.java`)
-
-**Ubicacion del TODO: no agregado** (requiere tu decisión antes de marcar código)
-
-**Problema:** Envers está cableado en las tres capas menos en la que lo activa:
-`BaseRepository` extiende `RevisionRepository`, existen `revinfo` y todas las
-tablas `_aud` (`languages_aud`, `user_types_aud`, etc.), y `User.java:77`
-declara `@AuditJoinTable(name = "user_types_aud")` — pero **ninguna** de las 8
-entidades tiene `@Audited` (`grep Audited` en `src/` devuelve 0 resultados).
-Sin `@Audited`, Envers no escribe ni una fila: toda la auditoría versionada es
-peso muerto.
-
-**Contexto / Explicación:** `@Audited` es el interruptor de Envers por entidad;
-`@AuditJoinTable` solo nombra la tabla de la colección auditada y también exige
-entidad auditada. El `@Builder` sí está en las 8/8 (verificado), y la auditoría
-Spring Data (`createdAt/...`, sección D) funciona sin Envers — son dos
-auditorías distintas y hoy solo vive la segunda.
-
-**Opciones estándar:**
-
-- A) Auditar (recomendado si se exige historial): añadir `@Audited` a las 7
-  entidades de dominio (`User`, `UserProfile`, catálogos y traducciones;
-  decidir si `Language` también) y documentar la regla en la sección D.
-- B) No auditar: retirar Envers (`RevisionRepository` → `JpaRepository`,
-  quitar `@AuditJoinTable`, eliminar `_aud`/`revinfo` con changesets nuevos).
-
-**Recomendación:** A — la inversión en `_aud`/`revinfo` ya está hecha en BD;
-solo falta el interruptor Java más una línea en la instrucción.
-
-**Nivel de acción requerido:** Alto — la auditoría versionada, objetivo
-declarado del diseño, hoy no registra nada.
-
-## Nota — Omitido a petición del desarrollador
-
-- Java 24 (doc) vs Java 25 (entorno): Gradle falla con
-  `IllegalArgumentException: 25` en `JavaVersion.parse`. Se deja así por ahora.
-
 ## P-11 — Falta una prueba para la configuración global de MapStruct
 
 **Dónde:** `shared-kernel/src/main/java/com/icms/shared/config/mapper/MapperSetting.java:13`
