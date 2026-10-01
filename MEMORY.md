@@ -67,6 +67,9 @@
 - **Comando `/nueva-migracion`:**
   - *Decisión:* `.opencode/commands/nueva-migracion.md` (agente `plan`) genera migraciones desde la clase entidad: valida `@Entity` + `@Table(name)`, deriva columnas de la herencia y detecta el módulo/BD por paquete.
   - *Por qué:* Cada microservicio tendrá su BD propia; el comando evita asumir `user-auth` y frena si falta `@Table(name)`.
+- **Comandos por ámbito (`commands/`):**
+  - *Decisión:* `commands.md` es índice; cada ámbito/módulo tiene su archivo (`gradle`, `user-auth`, `user-auth-tests`, `shared-kernel`, `api`). Tests y seeds se documentan como patrón (`--tests`, `--seed=`), no enumerados.
+  - *Por qué:* El archivo único crecía por cada test/seed/módulo nuevo; parametrizar + dividir evita ediciones constantes.
 
 ---
 
