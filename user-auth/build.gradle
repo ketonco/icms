@@ -42,6 +42,7 @@ liquibase {
             // Toma la propiedad por CLI (-PdbUrl=...) o usa la BD por defecto de este servicio
             url project.hasProperty('dbUrl') ? project.property('dbUrl') : 'jdbc:postgresql://localhost:25432/ICMS_UA'
             username project.hasProperty('dbUser') ? project.property('dbUser') : 'postgres'
+            // TODO (pending P-13): remove the fixed database password fallback from the Liquibase activity.
             password project.hasProperty('dbPassword') ? project.property('dbPassword') : 'adm123456'
         }
     }

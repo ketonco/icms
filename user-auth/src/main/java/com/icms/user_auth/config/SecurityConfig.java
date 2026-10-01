@@ -45,6 +45,7 @@ public class SecurityConfig {
 
                 .anyRequest().authenticated()
             )
+            // TODO (pending P-15): configure the intended authentication mechanism for protected endpoints.
             .formLogin(form -> form.disable())
             .httpBasic(httpBasic -> httpBasic.disable());
 
