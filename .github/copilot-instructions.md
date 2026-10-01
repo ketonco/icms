@@ -8,7 +8,7 @@
 - **Framework Principal:** Spring Boot 4.1.1. **Regla de oro:** Todas las importaciones de persistencia, validación y servlets deben usar el paquete `jakarta.*` (ej. `jakarta.persistence.Entity`, `jakarta.validation.constraints.NotNull`); NUNCA usar `javax.*`.
 - **Base de Datos y Persistencia:** PostgreSQL con Spring Data JPA. El versionado y estructura de la BD se gestionan de manera exclusiva mediante migraciones de Liquibase (`spring-boot-starter-liquibase`).
 - **API Gateway (Capa Reactiva):** Spring Cloud Gateway basado en WebFlux (Netty). Está **estrictamente prohibido** sugerir o agregar `spring-boot-starter-web` (Tomcat), dependencias MVC o repositorios bloqueantes (JPA) en este módulo.
-- **Microservicios Backend (Capa Bloqueante):** Basados en Spring Web MVC (Tomcat / Servlets clásicos). Heredan sus configuraciones aplicando los plugins de convención correspondientes (`spring-web-conventions`, `spring-jpa-conventions`, `migration-conventions`).
+- **Microservicios Backend (Capa Bloqueante):** Basados en Spring Web MVC (Tomcat / Servlets clásicos). Heredan sus configuraciones aplicando los plugins de convención correspondientes (`spring-web-conventions`, `spring-jpa-conventions`, `migration-conventions`). Ejemplo vigente: `user-auth/build.gradle` ya aplica los tres.
 
 ## 2. Arquitectura de Módulos y Patrón Abstraído (Web MVC vs WebFlux)
 
@@ -25,7 +25,7 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 
 - **Ámbito:** API Gateway (`api`) y microservicios de alto rendimiento o streaming de eventos.
 - **Contrato de Firma:** Métodos de controladores, filtros y servicios deben retornar **obligatoriamente** tipos de Project Reactor (`Mono<T>` para 0..1 elementos o `Flux<T>` para 0..N elementos).
-- **Persistencia y Capa de Datos:** Uso de Spring Data R2DBC o conectores no bloqueantes. Nunca bloquear el Event Loop de Netty con chamadas JDBC síncronas o JPA.
+- **Persistencia y Capa de Datos:** El gateway `api` no tiene persistencia propia, solo enruta a servicios downstream por HTTP no bloqueante. Nunca bloquear el Event Loop de Netty con llamadas JDBC síncronas o JPA. R2DBC o conectores no bloqueantes solo aplican si un módulo reactivo necesitara base de datos propia.
 - **Aislamiento:** Está **estrictamente prohibido** importar la dependencia bloqueante `spring-boot-starter-web` (Tomcat/MVC) en módulos reactivos para evitar conflictos de autoconfiguración.
 
 ### C. Abstracciones Genéricas Permitidas
@@ -79,6 +79,7 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 
 ### I. Convenciones de Pruebas
 
+- **Principio selectivo:** no re-testear comportamiento genérico heredado ya cubierto por otro hijo. Las clases base (`BaseRepository`, `BaseService`, `BaseMapper`) se validan una vez con un representativo como `Language*`. Solo se crea test por entidad si añade query propia, constraint, regla o lógica compleja. Se acepta cobertura parcial de `*RepositoryTest`, `Select.field(...)` solo cuando se fijan valores, y patrón `*IT` para IT de excepciones.
 - **Pruebas unitarias de servicio** (`src/test/.../service/*ServiceTest.java`): `@ExtendWith(MockitoExtension.class)`, `@Mock` para repositorio y mapper, `@InjectMocks` para el servicio bajo prueba. No se levanta contexto de Spring.
 - **Pruebas unitarias de mapper** (`src/test/.../mappers/*MapperTest.java`): instancian el mapper vía `Mappers.getMapper(XxxMapper.class)` (sin contexto Spring), usando `Instancio` para generar datos aleatorios y `Select.field(...)` para fijar valores puntuales de verificación.
 - **Pruebas de integración de repositorio** (`src/test/.../repository/*RepositoryTest.java`): `@DataJpaTest`, `@ActiveProfiles("test")`, `@Import(AuditConfig.class)`, `@AutoConfigureTestDatabase(replace = Replace.NONE)` (usa la BD real de test, no H2), `TestEntityManager` para `persistAndFlush`. Evitar `Instancio.create(Entity.class)` para el ID/PK: usar el constructor de negocio o limpiar el `id` explícitamente antes de persistir.
