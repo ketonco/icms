@@ -1,6 +1,7 @@
 plugins {
     id 'spring-jpa-conventions'
     id 'migration-conventions'
+    id 'spring-web-conventions'
 }
 
 group = 'com.icms'
@@ -14,7 +15,6 @@ dependencies {
 	// Módulo local del mismo proyecto Gradle; no es necesario declararlo como dependencia publicada.
 	implementation project(':shared-kernel')
 	implementation libs.spring.boot.starter.security
-	implementation libs.spring.boot.starter.webmvc
 
 	testImplementation libs.spring.boot.starter.security.test
 	testImplementation libs.spring.boot.starter.webmvc.test

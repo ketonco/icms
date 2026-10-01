@@ -28,39 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-04 — §1/B inexactos: convenciones web, typo y R2DBC
-
-**Dónde:** `.github/copilot-instructions.md:10` (§1), `:24` (typo) y `:24`
-(sección B, R2DBC)
-
-**Ubicacion del TODO: no agregado** (solo documentación)
-
-**Problema:** tres inexactitudes: (1) §1 dice que los backend “heredan aplicando
-los plugins correspondientes”, pero `user-auth/build.gradle:1-4` solo aplica
-`spring-jpa-conventions` + `migration-conventions` y declara `starter-webmvc`
-directo en `:17`; (2) typo “chamadas” (portugués) en `:24`; (3) la sección B
-exige “R2DBC o conectores no bloqueantes”, pero no existe ni una dependencia ni
-una clase R2DBC en el repo — `api` hoy no tiene persistencia propia, solo
-enruta (`spring.cloud.gateway.server.webflux`).
-
-**Contexto / Explicación:** el plugin `spring-web-conventions` existe y aporta
-`starter-web`, pero `user-auth` no lo usa; no es error funcional. La exigencia
-R2DBC es un estándar futuro que hoy nada cumple.
-
-**Opciones estándar:**
-
-- A) Aplicar `spring-web-conventions` en `user-auth` y quitar el
-  `starter-webmvc` directo; suavizar R2DBC a “el gateway no tiene persistencia;
-  los downstream se consumen por HTTP no bloqueante; si un módulo reactivo
-  necesitara BD, usar R2DBC”.
-- B) Documentar `webmvc` directo a propósito y dejar R2DBC como estándar futuro
-  (aceptando que hoy nada la cumple).
-
-**Recomendación:** A para R2DBC (texto honesto); convenciones a decisión del
-desarrollador.
-
-**Nivel de acción requerido:** Bajo — solo documentación.
-
 ## P-06 — Reglas de traducción: conteo mínimo, `!=` vs `equals` y mensaje descartado
 
 **Dónde:** `shared-kernel/src/main/java/com/icms/shared/rules/BaseDaoCatalogTranslationRules.java:35,46`,
