@@ -10,5 +10,5 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
 public interface MapperSetting {
- //TODO: create a test to validate the mapper settings to ignore unmapped targets and null value property mapping
+ // TODO (pending P-11): add tests for unmapped targets and null-value property mapping behavior.
 }

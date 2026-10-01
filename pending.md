@@ -265,3 +265,41 @@ declarado del diseño, hoy no registra nada.
 
 - Java 24 (doc) vs Java 25 (entorno): Gradle falla con
   `IllegalArgumentException: 25` en `JavaVersion.parse`. Se deja así por ahora.
+
+## P-11 — Falta una prueba para la configuración global de MapStruct
+
+**Dónde:** `shared-kernel/src/main/java/com/icms/shared/config/mapper/MapperSetting.java:13`
+
+**Ubicacion del TODO: agregado** en `MapperSetting.java:13`.
+
+**Problema:** no hay una prueba dedicada que compruebe que la configuración compartida de MapStruct ignora destinos sin mapear y que la estrategia `IGNORE` para valores `null` conserva los valores existentes en la entidad.
+
+**Contexto / Explicación:** `MapperSetting` configura el comportamiento global de los mapeadores; una regresión puede afectar los mapeos de todos los módulos que la reutilizan.
+
+**Opciones estándar:**
+
+- A) Añadir una prueba de mapeador que cubra ambos comportamientos (recomendado).
+- B) Validar el comportamiento únicamente mediante las pruebas de cada mapeador consumidor.
+
+**Recomendación:** A, para verificar la configuración compartida directamente.
+
+**Nivel de acción requerido:** Medio — la configuración se comparte y puede afectar múltiples mapeos.
+
+## P-12 — `UserMapperTest` inicializa Mockito manualmente
+
+**Dónde:** `user-auth/src/test/java/com/icms/user_auth/mappers/UserMapperTest.java:34-44`
+
+**Ubicacion del TODO: agregado** en `UserMapperTest.java:43`.
+
+**Problema:** el test inicializa Mockito mediante `MockitoAnnotations.openMocks(this)` en `@BeforeEach`, mientras que `.github/copilot-instructions.md` establece `@ExtendWith(MockitoExtension.class)` para pruebas unitarias con Mockito.
+
+**Contexto / Explicación:** el TODO anterior era genérico y no definía qué debía validarse; el patrón indicado evita la inicialización manual de los mocks.
+
+**Opciones estándar:**
+
+- A) Usar `@ExtendWith(MockitoExtension.class)` y retirar `@BeforeEach` con `openMocks` (recomendado).
+- B) Mantener la inicialización manual y documentar una excepción para esta prueba.
+
+**Recomendación:** A, para alinear el test con la convención del proyecto.
+
+**Nivel de acción requerido:** Bajo — consistencia de pruebas, sin impacto en producción.

@@ -40,7 +40,7 @@ public class UserMapperTest {
     @InjectMocks 
     UserMapperImpl mapper;
 
-    //TODO: validate better way or standar rather to do this test
+    // TODO (pending P-12): replace manual Mockito initialization with MockitoExtension per project test conventions.
     @BeforeEach 
     void setUp(){
         MockitoAnnotations.openMocks(this);
