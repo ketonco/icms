@@ -28,25 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-11 — Falta una prueba para la configuración global de MapStruct
-
-**Dónde:** `shared-kernel/src/main/java/com/icms/shared/config/mapper/MapperSetting.java:13`
-
-**Ubicacion del TODO: agregado** en `MapperSetting.java:13`.
-
-**Problema:** no hay una prueba dedicada que compruebe que la configuración compartida de MapStruct ignora destinos sin mapear y que la estrategia `IGNORE` para valores `null` conserva los valores existentes en la entidad.
-
-**Contexto / Explicación:** `MapperSetting` configura el comportamiento global de los mapeadores; una regresión puede afectar los mapeos de todos los módulos que la reutilizan.
-
-**Opciones estándar:**
-
-- A) Añadir una prueba de mapeador que cubra ambos comportamientos (recomendado).
-- B) Validar el comportamiento únicamente mediante las pruebas de cada mapeador consumidor.
-
-**Recomendación:** A, para verificar la configuración compartida directamente.
-
-**Nivel de acción requerido:** Medio — la configuración se comparte y puede afectar múltiples mapeos.
-
 ## P-12 — `UserMapperTest` inicializa Mockito manualmente
 
 **Dónde:** `user-auth/src/test/java/com/icms/user_auth/mappers/UserMapperTest.java:34-44`
