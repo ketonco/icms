@@ -10,12 +10,10 @@ import java.util.Set;
 
 import org.instancio.Instancio;
 import org.instancio.Select;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import com.icms.user_auth.dto.user.CreateUserDto;
 import com.icms.user_auth.dto.user.UserMapperImpl;
@@ -27,7 +25,10 @@ import com.icms.user_auth.dto.usertype.UserTypeMapper;
 import com.icms.user_auth.entity.User;
 import com.icms.user_auth.entity.UserStatus;
 import com.icms.user_auth.entity.UserType;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(MockitoExtension.class)
 public class UserMapperTest {
 
     @Mock 
@@ -39,12 +40,6 @@ public class UserMapperTest {
 
     @InjectMocks 
     UserMapperImpl mapper;
-
-    // TODO (pending P-12): replace manual Mockito initialization with MockitoExtension per project test conventions.
-    @BeforeEach 
-    void setUp(){
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test 
     @DisplayName ("test createuserdto mapped to entity correctly")

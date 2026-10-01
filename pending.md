@@ -28,25 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-12 — `UserMapperTest` inicializa Mockito manualmente
-
-**Dónde:** `user-auth/src/test/java/com/icms/user_auth/mappers/UserMapperTest.java:34-44`
-
-**Ubicacion del TODO: agregado** en `UserMapperTest.java:43`.
-
-**Problema:** el test inicializa Mockito mediante `MockitoAnnotations.openMocks(this)` en `@BeforeEach`, mientras que `.github/copilot-instructions.md` establece `@ExtendWith(MockitoExtension.class)` para pruebas unitarias con Mockito.
-
-**Contexto / Explicación:** el TODO anterior era genérico y no definía qué debía validarse; el patrón indicado evita la inicialización manual de los mocks.
-
-**Opciones estándar:**
-
-- A) Usar `@ExtendWith(MockitoExtension.class)` y retirar `@BeforeEach` con `openMocks` (recomendado).
-- B) Mantener la inicialización manual y documentar una excepción para esta prueba.
-
-**Recomendación:** A, para alinear el test con la convención del proyecto.
-
-**Nivel de acción requerido:** Bajo — consistencia de pruebas, sin impacto en producción.
-
 ## P-13 — Contraseña de base de datos predeterminada en configuración
 
 **Dónde:** `user-auth/src/main/resources/application.yml:8` y
