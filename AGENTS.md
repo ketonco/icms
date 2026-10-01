@@ -77,6 +77,7 @@ Fuente de verdad: `.github/copilot-instructions.md` prevalece sobre el código r
 ## Verificacion
 
 - Describir los casos exactos con Mockito, AssertJ o `WebTestClient` y `RestAssured` que validan la funcionalidad antes de darla por finalizada.
+- Aplicar principio selectivo de copilot §I: no repetir genéricos heredados ya cubiertos; solo testear queries propias, constraints o lógica compleja.
 
 ## Memoria
 
