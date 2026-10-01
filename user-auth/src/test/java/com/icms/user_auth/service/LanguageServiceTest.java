@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.context.annotation.Profile;
 
 import com.icms.user_auth.dto.language.LanguageMapper;
 import com.icms.user_auth.dto.language.LanguageDto;
@@ -19,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
-@Profile("test")
 public class LanguageServiceTest {
 
     @Mock 

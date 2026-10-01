@@ -56,36 +56,6 @@ de negocio trazable y mensaje multi-idioma, otras no.
 **Nivel de acción requerido:** Medio — consistencia de API y observabilidad,
 sin riesgo funcional.
 
-## P-08 — Sección I de tests no refleja la realidad
-
-**Dónde:** `.github/copilot-instructions.md:68-73` vs `user-auth/src/test`
-
-**Ubicacion del TODO: no agregado** (solo documentación)
-
-**Problema:** cuatro desvíos: (1) `LanguageServiceTest.java:10,22`,
-`UserStatusTranslationServiceTest.java:22` y `UserProfileServiceTest.java:8`
-llevan `@Profile("test")`, no documentado; (2) `Select.field(...)` solo lo usan
-`LanguageMapperTest` y `UserMapperTest`, el resto usa `Instancio.create`
-directo; (3) solo existe 1 `*RepositoryTest` (`LanguageRepositoryTest`);
-(4) la IT de excepciones vive en
-`exceptions/UserAuthGlobalExceptionsIT.java` (patrón `*IT`), no en
-`controller/*IntegrationTest`.
-
-**Contexto / Explicación:** `@Profile` en tests Mockito puros (sin contexto
-Spring) no hace nada; es inofensivo pero confunde. El resto son cobertura
-parcial y convención de nombres no aplicada.
-
-**Opciones estándar:**
-
-- A) Quitar `@Profile` de unitarios (o documentarlo como “marca sin efecto”),
-  relajar `Select.field` a “cuando se fijen valores”, documentar cobertura
-  parcial de repositorios y aceptar el patrón `*IT` (recomendado).
-- B) Crear los `*RepositoryTest` faltantes y mover la IT a `controller/`.
-
-**Recomendación:** A ahora; B como trabajo futuro.
-
-**Nivel de acción requerido:** Bajo — solo documentación (salvo que se elija B).
-
 ## P-09 — Nombres de archivo y `id` de changeset fuera de convención J
 
 **Dónde:** `user-auth/src/main/resources/db/migrations/20260910_0001_alter_lenguages_sequence_increment.yaml`

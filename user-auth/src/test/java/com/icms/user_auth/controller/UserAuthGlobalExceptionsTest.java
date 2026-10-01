@@ -1,4 +1,4 @@
-package com.icms.user_auth.exceptions;
+package com.icms.user_auth.controller;
 import static org.hamcrest.Matchers.emptyOrNullString;
 import static org.hamcrest.Matchers.not;
 
@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class UserAuthGlobalExceptionsIT {
+class UserAuthGlobalExceptionsTest {
 
     
     @LocalServerPort private int port;

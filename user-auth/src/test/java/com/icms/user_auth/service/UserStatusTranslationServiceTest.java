@@ -6,7 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.annotation.Profile;
 
 import com.icms.user_auth.dto.userstatus.UserStatusTranslationMapper;
 import com.icms.shared.entity.Language;
@@ -19,7 +18,6 @@ import com.icms.user_auth.rules.UserStatusTranslationRules;
 import com.icms.user_auth.service.daoservice.UserStatusTranslationService;
 
 @ExtendWith(MockitoExtension.class)
-@Profile("test")
 public class UserStatusTranslationServiceTest {
 
     @Mock 
