@@ -28,25 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-09 — Nombres de archivo y `id` de changeset según norma nueva J
-
-**Dónde:** `user-auth/src/main/resources/db/migrations/`; guía `1guides/09-plantilla-migracion.md:6-15` y `.github/copilot-instructions.md:92-93`
-
-**Ubicacion del TODO: no agregado** (BD local en desarrollo, se edita el archivo)
-
-**Problema:** norma anterior invertida pedía `YYYYMMDD_NNNN_descripcion_NNN.yaml`. Norma correcta: archivo `YYYYMMDD_NNNN_descripcion.yaml` sin segundo `_NNN`; `id` como `<filename>_001`, `<filename>_indexes_002`, `<filename>_revision_003`, `<filename>_revision_indexes_004`. Corregido el 2026-10-01: renombrados los 6 con sufijo final a formato sin sufijo, corregido typo `lenguages` → `languages` en `20260910`, corregido `id` distinto en `20260911` a `..._001`, corregido plural `permissions` → `permission` en `20260916_0001`, unificado `_index` → `_indexes` y `_revision_index` → `_revision_indexes`.
-
-**Contexto / Explicación:** en BD local se puede renombrar y editar; en compartida rompería checksums. Falta validar con `clearCheckSums` y arranque Liquibase en local.
-
-**Opciones estándar:**
-
-- A) Validar en local con `clearCheckSums` y cierre de P-09 (recomendado).
-- B) Dejar P-09 abierto hasta próxima migración que lo ejercite.
-
-**Recomendación:** A en local.
-
-**Nivel de acción requerido:** Bajo — convención, pendiente solo de validación local.
-
 ## P-10 — Ninguna entidad lleva `@Audited`: Envers cableado pero inoperante
 
 **Dónde:** las 8 entidades (`shared-kernel/.../entity/Language.java`,
