@@ -28,41 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-06 — Reglas de traducción: conteo mínimo, `!=` vs `equals` y mensaje descartado
-
-**Dónde:** `shared-kernel/src/main/java/com/icms/shared/rules/BaseDaoCatalogTranslationRules.java:35,46`,
-`shared-kernel/src/main/resources/i18n/messages.properties:28`,
-`shared-kernel/src/main/java/com/icms/shared/exceptions/EntityNotFoundException.java:8-10`
-
-**Ubicacion del TODO: no agregado** (a revisar por el desarrollador)
-
-**Problema:** tres inconsistencias: (1) el texto dice “exige mínimo dos
-traducciones antes de permitir un borrado”, pero el código (`:46`,
-`if (count < 2)`) bloquea solo si queda menos de 1 restante, y `Lan-006` dice
-“at least **one** translation”; (2) `:35` compara IDs con `!=` en vez de
-`equals` (falso negativo con `Long` fuera del rango cacheado; la clase vecina
-de catálogo ya usa `equals`); (3) `EntityNotFoundException` fuerza
-`super("Ent-001", message)` y `BaseException.getMessage()` re-resuelve por
-`code`, descartando el mensaje custom.
-
-**Contexto / Explicación:** el `!=` entre objetos `Long` compara referencias y
-puede permitir duplicados catalog+idioma; el criterio de borrado debe
-unificarse en un solo número (todo apunta a “no dejar un catálogo con cero
-traducciones” → “mínimo una”).
-
-**Opciones estándar:**
-
-- A) Unificar a “mínimo una” (código + `Lan-006` + doc), cambiar `!=` por
-  `equals` y decidir si `EntityNotFoundException` conserva el mensaje custom
-  (recomendado).
-- B) Unificar a “mínimo dos” real (`count <= 2`) si esa era la intención
-  original.
-
-**Recomendación:** A, a validar por el desarrollador.
-
-**Nivel de acción requerido:** Alto — el `!=` es riesgo de corrección real
-(duplicados permitidos).
-
 ## P-07 — `GlobalExceptionHandler` usa código `"000"` sin i18n
 
 **Dónde:** `shared-kernel/src/main/java/com/icms/shared/config/exception/GlobalExceptionHandler.java:19-27,41`

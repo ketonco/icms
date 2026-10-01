@@ -32,13 +32,13 @@ public class BaseDaoCatalogTranslationRules<E extends BaseCatalogTranslationEnti
 
         public void noRepeatedCatalogTranslation(E translationEntity) {
             E existingTranslation = repository.findByCatalogAndLanguage(translationEntity.getCatalog(), translationEntity.getLanguage()).orElse(null);
-            if (existingTranslation != null && existingTranslation.getId() != translationEntity.getId()) {
+            if (existingTranslation != null && !existingTranslation.getId().equals(translationEntity.getId())) {
                 throw new BusinessRuleException("Lan-007"); 
             }
         }
 
         /**
-         * Ensures that the given catalog entity has at least two translations before one can be deleted.
+         * Ensures that the given catalog entity has at least one translations before one can be deleted.
          * @param entity the catalog entity to check for translations
          */
         public void atLeastTwoTranslations(C catalog) {
