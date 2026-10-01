@@ -28,34 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-07 — `GlobalExceptionHandler` usa código `"000"` sin i18n
-
-**Dónde:** `shared-kernel/src/main/java/com/icms/shared/config/exception/GlobalExceptionHandler.java:19-27,41`
-
-**Ubicacion del TODO: agregado** en `:20` (handler `NoResourceFound`) y `:42`
-(handler genérico `Exception`)
-
-**Problema:** ambos handlers devuelven código de negocio `"000"` literal y el
-primero un mensaje hardcodeado en español (`"URL no encontrada: ..."`), fuera
-del sistema i18n (`MessageResolver` + `messages*.properties`) que ya usan
-`S-000/S-001/S-002` y los handlers de `EntityNotFound`/`BusinessRule`
-(`ex.getCode()`).
-
-**Contexto / Explicación:** respuestas de error inconsistentes: unas con código
-de negocio trazable y mensaje multi-idioma, otras no.
-
-**Opciones estándar:**
-
-- A) Crear códigos de negocio (p. ej. `S-404` recurso no encontrado, `S-500`
-  error inesperado) en `i18n/messages*.properties` y resolverlos con
-  `MessageResolver` (recomendado).
-- B) Dejar `"000"` como código genérico documentado.
-
-**Recomendación:** A.
-
-**Nivel de acción requerido:** Medio — consistencia de API y observabilidad,
-sin riesgo funcional.
-
 ## P-09 — Nombres de archivo y `id` de changeset fuera de convención J
 
 **Dónde:** `user-auth/src/main/resources/db/migrations/20260910_0001_alter_lenguages_sequence_increment.yaml`

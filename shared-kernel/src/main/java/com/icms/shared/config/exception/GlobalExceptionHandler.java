@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import com.icms.shared.Utils.MessageResolver;
 import com.icms.shared.dto.RestResponse;
 import com.icms.shared.exceptions.BusinessRuleException;
 import com.icms.shared.exceptions.EntityNotFoundException;
@@ -17,12 +18,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<RestResponse<Void>> handleNoResourceFound(NoResourceFoundException ex) {
-        // TODO (pending P-07): codigo "000" hardcodeado y mensaje en espanol sin i18n; crear codigos de negocio y resolver via MessageResolver. Ver pending.md
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
             .body(RestResponse.error(
                 HttpStatus.NOT_FOUND.value(),
-                "URL no encontrada: " + ex.getResourcePath(),
+                MessageResolver.resolveMessage("Res-001"),
                 "000",
                 null,
                 HttpStatus.NOT_FOUND.getReasonPhrase()));
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RestResponse<Void>> handleException(Exception ex, HttpServletRequest request) {
 
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;// HTTP code for internal server error
         String uri = request.getRequestURI();
 
         return ResponseEntity
@@ -39,8 +39,7 @@ public class GlobalExceptionHandler {
                 .body(RestResponse.error(
                     status.value(),
                     ex.getMessage(),
-                    // TODO (pending P-07): codigo "000" generico sin i18n en handler de Exception; definir codigo de negocio. Ver pending.md
-                    "000", // Código de error para regla de negocio
+                    "E-000", // Código de error para regla de negocio
                     uri,
                     status.getReasonPhrase() // Detailed error message like "Internal Server Error" or "Not Found"
                 ));
