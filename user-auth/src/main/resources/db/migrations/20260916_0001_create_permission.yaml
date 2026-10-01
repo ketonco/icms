@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 20260916_0001_create_permissions_001
+      id: 20260916_0001_create_permission_001
       comment: "Create permissions table"
       author: "Maximo"
       changes:
@@ -68,7 +68,7 @@ databaseChangeLog:
             sequenceName: permissions_seq
 
   - changeSet:
-      id: 20260916_0001_create_permissions_index_002
+      id: 20260916_0001_create_permission_indexes_002
       author: "Maximo"
       preConditions:
         - tableExists:
@@ -170,7 +170,7 @@ databaseChangeLog:
             tableName: permission_aud
 
   - changeSet:
-      id: 20260916_0001_create_permission_revision_index_004
+      id: 20260916_0001_create_permission_revision_indexes_004
       author: "Maximo"
       preConditions:
         - onFail: HALT

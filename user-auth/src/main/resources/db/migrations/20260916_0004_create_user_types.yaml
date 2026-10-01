@@ -44,7 +44,7 @@ databaseChangeLog:
             cascadeConstraints: true
 
   - changeSet:
-      id: 20260916_0004_create_user_types_index_002
+      id: 20260916_0004_create_user_types_indexes_002
       author: Maximo
       changes:
         - createIndex:

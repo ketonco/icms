@@ -1,40 +1,40 @@
 databaseChangeLog:
   - changeSet:
-      id: 20260914_0001_create_userstatus_translation_001
-      comment: "Create userstatus translation table"
+      id: 20260915_0001_create_usertype_001
+      comment: "Create user type table"
       author: "Maximo"
       changes:
         - createSequence:
-            sequenceName: userstatus_translation_seq
+            sequenceName: usertypes_seq
             startValue: 1
             incrementBy: 50
+        
         - createTable:
-            tableName: userstatus_translation
+            tableName: usertypes
             columns:
               - column:
                   name: id
                   type: BIGINT
-                  defaultValueSequenceNext: userstatus_translation_seq
+                  defaultValueSequenceNext: usertypes_seq
                   constraints:
                     primaryKey: true
               - column:
-                  name: catalog_id
-                  type: BIGINT
+                  name: code
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
-                  name: language_id
-                  type: BIGINT
+                  name: name
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
-                  name: translation
-                  type: VARCHAR(255)
+                  name: active
+                  type: BOOLEAN
                   constraints:
                     nullable: false
-              - column:
-                  name: description
-                  type: VARCHAR(255)
               - column:
                   name: "created_at"
                   type: "TIMESTAMP"
@@ -60,57 +60,45 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
-        - addForeignKeyConstraint:
-            baseTableName: userstatus_translation
-            baseColumnNames: catalog_id
-            referencedTableName: userstatus
-            referencedColumnNames: id
-            constraintName: fk_userstatus_translation_catalog_id
-            onDelete: CASCADE
-
-        - addForeignKeyConstraint:
-            baseTableName: userstatus_translation
-            baseColumnNames: language_id
-            referencedTableName: languages
-            referencedColumnNames: id
-            constraintName: fk_userstatus_translation_language_id
-            onDelete: CASCADE
-
       rollback:
         - dropTable:
             cascadeConstraints: false
-            tableName: userstatus_translation
+            tableName: usertypes
         - dropSequence:
-            sequenceName: userstatus_translation_seq
+            sequenceName: usertypes_seq
 
   - changeSet:
-      id: 20260914_0001_create_userstatus_translation_002
+      id: 20260915_0001_create_usertype_indexes_002
       author: "Maximo"
       preConditions:
         - tableExists:
-            tableName: userstatus_translation
+            tableName: usertypes
       changes:
         - createIndex:
-            indexName: idx_userstatus_translation_catalog_language_id
-            tableName: userstatus_translation
-            unique: true
+            indexName: idx_usertypes_code
+            tableName: usertypes
             columns:
               - column:
-                  name: catalog_id
+                  name: code
+        - createIndex:
+            indexName: idx_usertypes_id
+            tableName: usertypes
+            columns:
               - column:
-                  name: language_id
+                  name: id
 
       rollback:
         - dropIndex:
-            indexName: idx_userstatus_translation_catalog_language_id
-            tableName: userstatus_translation
+            indexName: idx_usertypes_code
+        - dropIndex:
+            indexName: idx_usertypes_id
 
   - changeSet:
-      id: 20260914_0001_create_userstatus_translation_revision_003
+      id: 20260915_0001_create_usertype_revision_003
       author: "Maximo"
       changes:
         - createTable:
-            tableName: userstatus_translation_aud
+            tableName: usertype_aud
             columns:
               - column:
                   name: id
@@ -118,23 +106,20 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: catalog_id
-                  type: BIGINT
+                  name: code
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
-                  name: language_id
-                  type: BIGINT
+                  name: name
+                  type: VARCHAR(50)
                   constraints:
                     nullable: false
               - column:
-                  name: translation
-                  type: VARCHAR(255)
+                  name: active
+                  type: BOOLEAN
                   constraints:
                     nullable: false
-              - column:
-                  name: description
-                  type: VARCHAR(255)
               - column:
                   name: created_at
                   type: TIMESTAMP
@@ -167,39 +152,48 @@ databaseChangeLog:
                     nullable: false
 
         - addPrimaryKey:
-            tableName: userstatus_translation_aud
+            tableName: usertype_aud
             columnNames: id, rev
-            constraintName: pk_userstatus_translation_aud
+            constraintName: pk_usertype_aud
 
         - addForeignKeyConstraint:
-            baseTableName: userstatus_translation_aud
+            baseTableName: usertype_aud
             baseColumnNames: rev
             referencedTableName: revinfo
             referencedColumnNames: rev
-            constraintName: fk_userstatus_translation_aud_revinfo
+            constraintName: fk_usertype_aud_revinfo
             onDelete: CASCADE
 
       rollback:
         - dropTable:
-            cascadeConstraints: false
-            tableName: userstatus_translation_aud
+            cascadeConstraints: true
+            tableName: usertype_aud
 
   - changeSet:
-      id: 20260914_0001_create_userstatus_translation_revision_indexes_004
+      id: 20260915_0001_create_usertype_revision_indexes_004
       author: "Maximo"
       preConditions:
         - onFail: HALT
         - tableExists:
-            tableName: userstatus_translation_aud
+            tableName: usertype_aud
       changes:
         - createIndex:
-            tableName: userstatus_translation_aud
-            indexName: idx_userstatus_translation_aud_rev
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_rev
             columns:
               - column:
                   name: rev
+        - createIndex:
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_id
+            columns:
+              - column:
+                  name: id
 
       rollback:
         - dropIndex:
-            tableName: userstatus_translation_aud
-            indexName: idx_userstatus_translation_aud_rev
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_rev
+        - dropIndex:
+            tableName: usertype_aud
+            indexName: idx_usertype_aud_id

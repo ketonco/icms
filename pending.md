@@ -28,35 +28,24 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-09 — Nombres de archivo y `id` de changeset fuera de convención J
+## P-09 — Nombres de archivo y `id` de changeset según norma nueva J
 
-**Dónde:** `user-auth/src/main/resources/db/migrations/20260910_0001_alter_lenguages_sequence_increment.yaml`
-(typo `lenguages`), `20260911_0001_alter_languages_code_length.yaml`,
-`20260916_0001_create_permission.yaml`, `20260916_0002_create_user.yaml`,
-`20260916_0003_create_user_profile.yaml`,
-`20260916_0004_create_user_types.yaml`; `.github/copilot-instructions.md:77-78`
+**Dónde:** `user-auth/src/main/resources/db/migrations/`; guía `1guides/09-plantilla-migracion.md:6-15` y `.github/copilot-instructions.md:92-93`
 
-**Ubicacion del TODO: no agregado** (renombrar requiere decisión; ver contexto)
+**Ubicacion del TODO: no agregado** (BD local en desarrollo, se edita el archivo)
 
-**Problema:** 6 archivos sin sufijo `_NNN` y la regla “`id` = filename sin
-extensión” solo vale para el primer changeset de archivos conformes (el resto
-añade sufijos `_indexes_002`, `_revision_003`). Casos: `20260911...` tiene un
-`id` totalmente distinto al archivo; `20260916_0001...` usa plural
-(`..._create_permissions_001`) vs singular del archivo.
+**Problema:** norma anterior invertida pedía `YYYYMMDD_NNNN_descripcion_NNN.yaml`. Norma correcta: archivo `YYYYMMDD_NNNN_descripcion.yaml` sin segundo `_NNN`; `id` como `<filename>_001`, `<filename>_indexes_002`, `<filename>_revision_003`, `<filename>_revision_indexes_004`. Corregido el 2026-10-01: renombrados los 6 con sufijo final a formato sin sufijo, corregido typo `lenguages` → `languages` en `20260910`, corregido `id` distinto en `20260911` a `..._001`, corregido plural `permissions` → `permission` en `20260916_0001`, unificado `_index` → `_indexes` y `_revision_index` → `_revision_indexes`.
 
-**Contexto / Explicación:** los archivos no se pueden renombrar sin romper
-checksums de BD ya migradas; si la BD es solo local, renombrar es seguro.
+**Contexto / Explicación:** en BD local se puede renombrar y editar; en compartida rompería checksums. Falta validar con `clearCheckSums` y arranque Liquibase en local.
 
 **Opciones estándar:**
 
-- A) Si la BD es solo local: renombrar a formato y corregir el typo
-  `lenguages` → `languages` (recomendado).
-- B) Si ya corrió en compartida: documentar la excepción y aplicar el formato
-  solo a archivos nuevos.
+- A) Validar en local con `clearCheckSums` y cierre de P-09 (recomendado).
+- B) Dejar P-09 abierto hasta próxima migración que lo ejercite.
 
-**Recomendación:** A o B según entorno, a revisar por el desarrollador.
+**Recomendación:** A en local.
 
-**Nivel de acción requerido:** Bajo — convención y decisión de entorno.
+**Nivel de acción requerido:** Bajo — convención, pendiente solo de validación local.
 
 ## P-10 — Ninguna entidad lleva `@Audited`: Envers cableado pero inoperante
 

@@ -89,11 +89,11 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 ### J. Migraciones (Liquibase)
 
 - Cada microservicio bloqueante tiene su propio `src/main/resources/db/migration-root.yaml`, que solo contiene un `includeAll` apuntando a `migrations/` (`relativeToChangelogFile: true`, `errorIfMissingOrEmpty: true`). No declarar changesets directamente en el root.
-- **Convención de nombres de archivo:** `YYYYMMDD_NNNN_descripcion_NNN.yaml` (fecha, secuencia del día de 4 dígitos, descripción en snake_case, secuencia de changeset de 3 dígitos). Varios changesets del mismo día incrementan ambas secuencias.
-- **Convención de `id` del changeSet:** igual al nombre de archivo sin extensión.
+- **Convención de nombres de archivo:** `YYYYMMDD_NNNN_descripcion.yaml` (fecha, secuencia del día de 4 dígitos, descripción en snake_case). Sin segundo `_NNN` final; el orden lo da el `NNNN` tras la fecha. Varios archivos del mismo día incrementan esa secuencia.
+- **Convención de `id` del changeSet:** `<filename>_001` para el primer changeset (`<filename>` sin extensión), luego `<filename>_indexes_002`, `<filename>_revision_003`, `<filename>_revision_indexes_004`.
 - Cada tabla de catálogo/entidad con PK `Long` debe crear su propia secuencia (`createSequence`) y usarla en la columna `id` vía `defaultValueSequenceNext`.
 - Las tablas de catálogo replican los campos de `BaseCatalogEntity` (`code` único, `active`, `name` único) y las de traducción los de `BaseCatalogTranslationEntity` (`catalog_id`, `language_id`, `translation`, `description`).
-- Envers requiere la tabla `revinfo` (ver `20260907_0001_create_revinfo_001.yaml`) como primer changeset del proyecto.
+- Envers requiere la tabla `revinfo` (ver `20260907_0001_create_revinfo.yaml`) como primer changeset del proyecto.
 
 ### K. Configuración (`application.yml`) — Microservicios Bloqueantes (MVC/JPA)
 

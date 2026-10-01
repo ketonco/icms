@@ -1,18 +1,19 @@
 # Plantilla de migración Liquibase (`user-auth`)
 
 Guía copia/pega para crear un archivo de migración nuevo. Todo ejemplo sale del
-patrón real de `20260909_0001_create_languages_001.yaml`.
+patrón real de `20260909_0001_create_languages.yaml`.
 
 ## 1. Nombre del archivo y `id`
 
-Formato: `YYYYMMDD_NNNN_descripcion_NNN.yaml`
+Formato: `YYYYMMDD_NNNN_descripcion.yaml`
 
-- Fecha + secuencia del día (4 dígitos) + descripción en `snake_case` +
-  secuencia de changeset (3 dígitos).
-- El `id` del **primer** changeset es el nombre del archivo sin extensión;
+- Fecha + secuencia del día (4 dígitos) + descripción en `snake_case`.
+- Sin segundo `_NNN` final; el orden lo da el `NNNN` tras la fecha.
+- El `id` del **primer** changeset es `<ARCHIVO>_001` (`<ARCHIVO>` sin extensión);
   los siguientes changesets del mismo archivo añaden sufijo
-  (`_<tema>_002`, `_revision_003`, `_revision_indexes_004`).
+  (`<ARCHIVO>_indexes_002`, `<ARCHIVO>_revision_003`, `<ARCHIVO>_revision_indexes_004`).
 - Nunca editar ni renombrar un changeset ya ejecutado en una BD compartida.
+  En BD local de desarrollo se edita el archivo directamente.
 
 ## 2. Qué changesets lleva cada caso
 
@@ -252,4 +253,4 @@ databaseChangeLog:
 - [ ] `_aud` con PK `(id, rev)` + FK a `revinfo` (`CASCADE`) + sus 2 índices.
 - [ ] Tablas relacionales sin secuencia y sin `_aud`.
 - [ ] `revinfo` existe como primer changeset del proyecto
-  (`20260907_0001_create_revinfo_001.yaml`).
+  (`20260907_0001_create_revinfo.yaml`).

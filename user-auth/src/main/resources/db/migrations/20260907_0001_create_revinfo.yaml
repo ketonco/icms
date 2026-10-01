@@ -54,7 +54,7 @@ databaseChangeLog:
             sequenceName: revinfo_seq
 
   - changeSet:
-      id: 20260907_0001_create_revinfo_002
+      id: 20260907_0001_create_revinfo_indexes_002
       author: system
       preConditions:
         - onFail: HALT

@@ -77,7 +77,7 @@ databaseChangeLog:
             tableName: user_profiles
 
   - changeSet:
-      id: 20260916_0003_create_user_profile_index_002
+      id: 20260916_0003_create_user_profile_indexes_002
       author: "Maximo"
       preConditions:
         - onFail: HALT
@@ -188,7 +188,7 @@ databaseChangeLog:
             tableName: user_profiles_aud
 
   - changeSet:
-      id: 20260916_0003_create_user_profile_revision_index_004
+      id: 20260916_0003_create_user_profile_revision_indexes_004
       author: "Maximo"
       preConditions:
         - onFail: HALT

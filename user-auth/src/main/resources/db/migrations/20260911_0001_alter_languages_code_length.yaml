@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: 20260911_0003_modify_language_code_length_both_tables
+      id: 20260911_0001_alter_languages_code_length_001
       author: maximo
       changes:
         - modifyDataType:
