@@ -20,3 +20,6 @@ Ante el alcance indicado por el usuario en su mensaje (un módulo, un paquete o 
    saltos) en todo `.md` que toques.
 6. Solo registra: no corrijas código ni documentación. Las correcciones las hace
    el equipo en sesiones de código.
+7. Reconcilia lo existente: si detectas que un pendiente de `pending.md` ya está
+   corregido en el código, elimínalo. Si a una entrada le falta un detalle
+   (ubicación, evidencia, opción), actualízala en vez de duplicarla.
