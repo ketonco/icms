@@ -2,31 +2,54 @@
 
 ## Java 24
 
-Los modulos usan Java 24 mediante Gradle toolchains:
+La versión de Java se define en `gradle/libs.versions.toml`:
 
-```groovy
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(24)
-    }
-}
+```toml
+[versions]
+java = "24"
 ```
 
-Comprobar el JDK local:
+El plugin de convención `buildSrc/src/main/kotlin/java-common-conventions.gradle.kts` lee esa versión y la aplica como toolchain a los módulos Java. Para cambiar la versión, actualiza el catálogo y comprueba la compatibilidad de las herramientas de compilación.
+
+Comprueba el JDK disponible en PowerShell:
 
 ```powershell
 java -version
 Write-Output $env:JAVA_HOME
 ```
 
-## Wrapper
+`JAVA_HOME` indica qué JDK usa Gradle para arrancar. El toolchain indica qué versión de Java usa para compilar. Asegúrate de que Java 24 esté instalado y disponible para Gradle.
+
+## Gradle Wrapper
+
+El proyecto fija la versión de Gradle en `gradle/wrapper/gradle-wrapper.properties`. Actualmente usa Gradle 8.14.3. Ejecuta las tareas con el wrapper para utilizar esa versión:
 
 ```powershell
+.\gradlew.bat --version
+.\gradlew.bat projects
 .\gradlew.bat tasks
-.\gradlew.bat :user-auth:compileJava
-.\gradlew.bat :api:bootJar
 ```
 
-`JAVA_HOME` indica con que JDK arranca Gradle; `JavaLanguageVersion.of(24)` indica con que version se compilan las tareas Java. Si un daemon viejo causa confusion, ejecutar `.\gradlew.bat --stop`.
+Comandos útiles para compilar módulos:
 
-Si Gradle pide Java 21, revisar los `build.gradle` y corregir el toolchain del modulo a `JavaLanguageVersion.of(24)`. No cambiar el wrapper para resolverlo.
+```powershell
+.\gradlew.bat :user-auth:compileJava
+.\gradlew.bat :api:bootJar
+.\gradlew.bat build
+```
+
+Para ejecutar las pruebas:
+
+```powershell
+.\gradlew.bat test
+```
+
+## Diagnóstico básico
+
+Si Gradle no detecta el JDK esperado, comprueba `java -version`, `JAVA_HOME` y la versión del toolchain en `gradle/libs.versions.toml`. Después de cambiar el JDK, puedes detener los daemons para que Gradle los inicie de nuevo:
+
+```powershell
+.\gradlew.bat --stop
+```
+
+No cambies el wrapper para resolver un problema de selección del JDK: el wrapper fija la versión de Gradle y el toolchain configura la versión de Java para compilar.
