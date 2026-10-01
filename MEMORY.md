@@ -73,6 +73,9 @@
 - **Skills Codex (referencia):**
   - *Decisión:* `.agents/skills/new-migration/SKILL.md` y `.agents/skills/update-guides/SKILL.md` replican ambos comandos para Codex (`name` + `description` en inglés, cuerpo en español); se invocan con `$` o por coincidencia.
   - *Por qué:* Codex no usa comandos `/` ni `$ARGUMENTS`; las skills son su formato nativo de repo (`.agents/skills`).
+- **Skill `update-pending` (Codex audita, equipo ejecuta):**
+  - *Decisión:* `.agents/skills/update-pending/SKILL.md` revisa código contra instrucciones y estándares, registra en `pending.md` con plantilla y marca `TODO`s. Solo registra, no corrige.
+  - *Por qué:* Las revisiones se delegan a Codex; las tareas de código quedan en nuestras sesiones.
 - **Comandos por ámbito (`commands/`):**
   - *Decisión:* `commands.md` es índice; cada ámbito/módulo tiene su archivo (`gradle`, `user-auth`, `user-auth-tests`, `shared-kernel`, `api`). Tests y seeds se documentan como patrón (`--tests`, `--seed=`), no enumerados.
   - *Por qué:* El archivo único crecía por cada test/seed/módulo nuevo; parametrizar + dividir evita ediciones constantes.
