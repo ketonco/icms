@@ -12,11 +12,10 @@ databaseChangeLog:
         - createTable:
             tableName: usertypes
             columns:
-              # TODO (pending P-02): secuencia huerfana; la columna id usa autoIncrement y nunca consume usertypes_seq. Ver manual en pending.md
               - column:
                   name: id
                   type: BIGINT
-                  autoIncrement: true
+                  defaultValueSequenceNext: usertypes_seq
                   constraints:
                     primaryKey: true
               - column:
