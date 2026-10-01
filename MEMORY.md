@@ -2,72 +2,84 @@
 
 > Alcance: solo decisiones esenciales del proyecto para futuros ajustes.
 > No es bitácora de tareas: el historial vive en git y los pendientes activos
-> en `pending.md` (los bugs abiertos también viven ahí; aquí solo queda la
-> lección cuando se cierran). Tamaño máximo: 250 líneas; resumir o eliminar lo
-> que deje de aportar.
+> en `pending.md` en minúsculas. El duplicado `PENDING.md` en mayúsculas es
+> histórico y lo elimina el desarrollador con Git.
+> Tamaño máximo: 250 líneas; resumir o eliminar lo que deje de aportar.
 >
-> Regla operativa inviolable: nunca ejecutar ni modificar nada sin preguntar
-> antes y mostrar el contenido exacto propuesto (plan + bloque/diff con
-> `archivo:línea`); solo actuar con autorización explícita del desarrollador.
-> Ni siquiera `pending.md` o `MEMORY.md` se tocan a primeras.
+> Precedencia: `.github/copilot-instructions.md` prevalece sobre el código real,
+> que prevalece sobre `AGENTS.md`, que prevalece sobre este archivo.
+> Lo ya implementado en el esqueleto es ley.
+>
+> Regla operativa: la inspección de solo lectura con `read`, `glob` y `grep`
+> está siempre permitida. `shell`, `edit` y `write` requieren plan previo con
+> `archivo:línea` y autorización explícita. `pending.md` y `MEMORY.md` solo se
+> tocan sin pregunta extra cuando la tarea, skill o comando en curso lo ordena.
 
 ---
 
 ## 1. Estado Actual del Proyecto
 
-- **Arquitectura Backend:** Monorepo multimódulo en Java 24 y Spring Boot 3.x sin frontend integrado (cliente basado en tests unitarios y de integración).
+- **Arquitectura Backend:** Monorepo multimódulo en Java 24 y Spring Boot 4.1.1 según `gradle/libs.versions.toml:2-3`, sin frontend integrado.
 - **Estructura de Módulos:**
-  - `:shared-kernel`: Librería Java interna con entidades base, DTOs, mappers (MapStruct) y excepciones globales.
-  - `:api`: API Gateway reactivo con Spring Cloud Gateway y Spring WebFlux (Netty).
-  - `:user-auth`: Microservicio de autenticación, usuarios y seguridad basado en Spring Web MVC, Spring Data JPA y Liquibase.
+  - `:shared-kernel`: Librería Java interna con entidades base, DTOs, mappers MapStruct y excepciones globales.
+  - `:api`: API Gateway reactivo con Spring Cloud Gateway y Spring WebFlux sobre Netty, sin persistencia propia.
+  - `:user-auth`: Microservicio de autenticación, usuarios y seguridad con Spring Web MVC, Spring Data JPA y Liquibase.
 - **Etapa de Desarrollo Activa:**
   - Implementación de la entidad `Usuario` y sus funcionalidades asociadas en `:user-auth`.
-  - Construcción y configuración del módulo de seguridad (Spring Security).
-  - Estandarización de la suite de pruebas (unitarias e integración).
+  - Construcción y configuración del módulo de seguridad con Spring Security.
+  - Estandarización de la suite de pruebas unitarias y de integración.
   - Optimización y diseño de DTOs ajustados por roles y proyecciones de consultas.
 - **Gestión de Construcción:**
-  - Centralización de dependencias parcialmente finalizada utilizando `gradle/libs.versions.toml` y plugins de convención en `buildSrc/`.
+  - Catálogo centralizado en `gradle/libs.versions.toml` y plugins Kotlin DSL en `buildSrc/src/main/kotlin/`.
+  - Excepción conocida P-03: quedan dos versiones fuera del catálogo, `mavenBom 4.1.1` y `picocli 4.7.6`, pendientes de decisión del desarrollador.
+- **Comandos canónicos:** `.opencode/commands/` en inglés. La carpeta `commands/` en raíz es legado. Guías en español en `1guides/`.
 
 ---
 
-## 2. Decisiones Arquitectónicas (y el Porqué)
+## 2. Decisiones Arquitectónicas y el Porqué
 
-- **Aislamiento de Pilas (Reactive vs Servlet):**
-  - *Decisión:* Mantenimiento estricto de WebFlux en `:api` y Web MVC (Servlet) en `:user-auth` (`src/main`); `starter-webflux` permitido solo en `src/test` como cliente `WebTestClient`.
-  - *Por qué:* Previene bloqueos de hilos Netty y conflictos de dependencias entre Tomcat y Netty.
+- **Aislamiento de Pilas Reactive contra Servlet:**
+  - *Decisión:* WebFlux en `:api` y Web MVC en `:user-auth` en `src/main`; `starter-webflux` solo en `src/test` como cliente `WebTestClient`.
+  - *Por qué:* Previene bloqueos del Event Loop de Netty y conflictos entre Tomcat y Netty.
+- **Gateway sin Persistencia:**
+  - *Decisión:* `:api` solo enruta por HTTP no bloqueante. R2DBC solo si un módulo reactivo necesitara base de datos.
+  - *Por qué:* Evita exigir una dependencia que hoy nada usa.
 - **DTOs Basados en Roles y Proyecciones:**
-  - *Decisión:* Separación explícita entre DTOs de entrada/salida y DTOs según la jerarquía de roles (Admin, Usuario, etc.).
-  - *Por qué:* Evita la sobreexposición de datos sensibles (campos como contraseñas hash, tokens o metadatos internos) y optimiza las consultas SQL.
-- **Java 24 + Spring Boot 3.x:**
-  - *Decisión:* Mantener compilación y toolchain en Java 24 aplicando banderas `--add-opens` en `JavaCompile`.
-  - *Por qué:* Permite explorar las últimas características de Java mientras se otorga acceso por reflexión a Lombok y MapStruct sobre el AST.
-- **Gestión de BD y Migraciones con Liquibase:**
-  - *Decisión:* Control de esquemas PostgreSQL mediante changelogs YAML en `:user-auth`, con secuencias explícitas (`defaultValueSequenceNext`, patrón de `20260909_0001_create_languages_001.yaml`).
-  - *Por qué:* Garantiza trazabilidad y reproducibilidad del esquema de BD en entornos locales y de CI/CD.
-- **Estrategia Futura de Automatización e IA:**
-  - *Decisión:* Integración planeada de n8n (Docker), Spring AI / Ollama y WhatsApp Cloud API en modo Sandbox.
-  - *Por qué:* Permitirá simular flujos de comercio conversacional y pruebas de carrito/facturación sin costo de infraestructura.
+  - *Decisión:* Separación explícita entre DTOs de entrada y salida según jerarquía de roles.
+  - *Por qué:* Evita sobreexposición de datos sensibles y optimiza consultas SQL.
+- **Java 24 y Spring Boot 4.1.1:**
+  - *Decisión:* Toolchain en Java 24 con banderas `--add-opens` en `JavaCompile` y versiones en `libs.versions.toml`.
+  - *Por qué:* Explora el Java actual con acceso por reflexión para Lombok y MapStruct sobre el AST.
+- **Gestión de BD con Liquibase:**
+  - *Decisión:* Esquema PostgreSQL con changelogs YAML en `:user-auth` y secuencias explícitas.
+  - *Por qué:* Garantiza trazabilidad y reproducibilidad en local y CI-CD.
+- **Estrategia Futura de IA:**
+  - *Decisión:* n8n en Docker, Spring AI con Ollama, WhatsApp Cloud API y Stripe Sandbox.
+  - *Por qué:* Simula comercio conversacional y carrito o facturación sin costo de infraestructura.
+- **Nota de Entorno Java 25:**
+  - *Decisión:* El estándar sigue en Java 24 aunque el entorno local reporte Java 25 y Gradle falle con `IllegalArgumentException: 25`.
+  - *Por qué:* Es una excepción temporal de entorno, no un cambio de versión.
 
 ---
 
 ## 3. Aprendizajes y Errores a Evitar
 
 - **Falsas Dependencias en Spring Boot:**
-  - *Aprendizaje:* Spring Boot no ofrece starters de prueba individuales como `spring-boot-starter-data-jpa-test` o `spring-boot-starter-webmvc-test`. Toda la suite de prueba autoconfigurada proviene de `spring-boot-starter-test` y `spring-security-test`.
-- **Incompatibilidad de Imports (`javax` vs `jakarta`):**
-  - *Aprendizaje:* En Spring Boot 3.x / Jakarta EE es obligatorio usar `jakarta.persistence.*` y `jakarta.validation.*`. El uso de `javax.*` genera fallos de compilación o escaneo de anotaciones.
+  - *Aprendizaje:* Spring Boot no ofrece starters de prueba individuales como `spring-boot-starter-data-jpa-test` o `spring-boot-starter-webmvc-test`. La suite autoconfigurada proviene de `spring-boot-starter-test` y `spring-security-test`.
+- **Incompatibilidad de Imports `javax` contra `jakarta`:**
+  - *Aprendizaje:* En Spring Boot con Jakarta EE es obligatorio usar `jakarta.persistence.*` y `jakarta.validation.*`. El uso de `javax.*` genera fallos de compilación o escaneo.
 - **Duplicidad en Módulos de Gradle:**
-  - *Aprendizaje:* Declarar dependencias presentes en `implementation` dentro del bloque `testImplementation` es redundante, ya que el *classpath* de pruebas hereda automáticamente la configuración principal.
+  - *Aprendizaje:* Declarar en `testImplementation` dependencias ya presentes en `implementation` es redundante, porque el classpath de pruebas hereda la configuración principal.
 - **Comparación `Long` con `!=`:**
   - *Aprendizaje:* Comparar IDs `Long` con `!=` compara referencias y da falsos negativos fuera del rango cacheado; usar siempre `equals`.
 - **Secuencias huérfanas en Liquibase:**
-  - *Aprendizaje:* `autoIncrement: true` y `defaultValueSequenceNext` son excluyentes por columna; crear `createSequence` + `autoIncrement` deja la secuencia huérfana.
+  - *Aprendizaje:* `autoIncrement: true` y `defaultValueSequenceNext` son excluyentes por columna; crear `createSequence` más `autoIncrement` deja la secuencia huérfana.
 
 ---
 
 ## 4. Próximos Pasos
 
-1. **Entidad `Usuario` y Repositorios:** Finalizar el modelado de la entidad `Usuario`, sus enums/roles y la capa de persistencia con Spring Data JPA.
-2. **Módulo de Seguridad (Spring Security):** Implementar la configuración de seguridad, gestión de tokens (JWT/OAuth2) y filtros de autenticación/autorización.
-3. **Estandarización de Pruebas:** Definir las clases base y patrones para tests unitarios (Mockito/AssertJ/Instancio) y de integración (`@SpringBootTest` / `@DataJpaTest`).
-4. **Optimización de DTOs y Mappers:** Diseñar la jerarquía de DTOs según el rol del usuario y mapeadores con MapStruct.
+1. **Entidad `Usuario` y Repositorios:** Finalizar el modelado de la entidad `Usuario`, sus enums y roles y la persistencia con Spring Data JPA.
+2. **Módulo de Seguridad con Spring Security:** Implementar configuración, tokens JWT u OAuth2 y filtros de autenticación y autorización.
+3. **Estandarización de Pruebas:** Definir clases base y patrones para tests unitarios con Mockito, AssertJ e Instancio y de integración con `@SpringBootTest` o `@DataJpaTest`.
+4. **Optimización de DTOs y Mappers:** Diseñar jerarquía de DTOs según rol con MapStruct y configuración central `MapperSetting`.
