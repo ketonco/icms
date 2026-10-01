@@ -2,8 +2,9 @@
 
 > Alcance: solo decisiones esenciales del proyecto para futuros ajustes.
 > No es bitácora de tareas: el historial vive en git y los pendientes activos
-> en `pending.md`. Tamaño máximo: 250 líneas; resumir o eliminar lo que deje
-> de aportar.
+> en `pending.md` (los bugs abiertos también viven ahí; aquí solo queda la
+> lección cuando se cierran). Tamaño máximo: 250 líneas; resumir o eliminar lo
+> que deje de aportar.
 >
 > Regla operativa inviolable: nunca ejecutar ni modificar nada sin preguntar
 > antes y mostrar el contenido exacto propuesto (plan + bloque/diff con
@@ -61,24 +62,6 @@
   - *Aprendizaje:* Comparar IDs `Long` con `!=` compara referencias y da falsos negativos fuera del rango cacheado; usar siempre `equals`.
 - **Secuencias huérfanas en Liquibase:**
   - *Aprendizaje:* `autoIncrement: true` y `defaultValueSequenceNext` son excluyentes por columna; crear `createSequence` + `autoIncrement` deja la secuencia huérfana.
-- **Plantilla de migraciones:**
-  - *Decisión:* `1guides/09-plantilla-migracion.md` es la guía copia/pega (tabla + `_aud` Envers + índices; relacionales sin `_aud`).
-  - *Por qué:* Nace de P-02 para evitar repetir las inconsistencias de secuencias e índices.
-- **Comando `/new-migration`:**
-  - *Decisión:* `.opencode/commands/new-migration.md` (agente `plan`) genera migraciones desde la clase entidad: valida `@Entity` + `@Table(name)`, deriva columnas de la herencia y detecta el módulo/BD por paquete.
-  - *Por qué:* Cada microservicio tendrá su BD propia; el comando evita asumir `user-auth` y frena si falta `@Table(name)`.
-- **Comando `/update-guides`:**
-  - *Decisión:* `.opencode/commands/update-guides.md` (agente `plan`) verifica o propone guías en `1guides/` por tema; con `all` solo lista las desactualizadas sin tocarlas.
-  - *Por qué:* Las guías se revisan 1 a 1 y cada una se actualiza con el mismo comando.
-- **Skills Codex (referencia):**
-  - *Decisión:* `.agents/skills/new-migration/SKILL.md` y `.agents/skills/update-guides/SKILL.md` replican ambos comandos para Codex (`name` + `description` en inglés, cuerpo en español); se invocan con `$` o por coincidencia.
-  - *Por qué:* Codex no usa comandos `/` ni `$ARGUMENTS`; las skills son su formato nativo de repo (`.agents/skills`).
-- **Skill `update-pending` (Codex audita, equipo ejecuta):**
-  - *Decisión:* `.agents/skills/update-pending/SKILL.md` revisa código contra instrucciones y estándares, registra en `pending.md` con plantilla y marca `TODO`s. Solo registra, no corrige.
-  - *Por qué:* Las revisiones se delegan a Codex; las tareas de código quedan en nuestras sesiones.
-- **Comandos por ámbito (`commands/`):**
-  - *Decisión:* `commands.md` es índice; cada ámbito/módulo tiene su archivo (`gradle`, `user-auth`, `user-auth-tests`, `shared-kernel`, `api`). Tests y seeds se documentan como patrón (`--tests`, `--seed=`), no enumerados.
-  - *Por qué:* El archivo único crecía por cada test/seed/módulo nuevo; parametrizar + dividir evita ediciones constantes.
 
 ---
 
