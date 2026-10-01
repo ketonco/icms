@@ -64,9 +64,12 @@
 - **Plantilla de migraciones:**
   - *Decisión:* `1guides/09-plantilla-migracion.md` es la guía copia/pega (tabla + `_aud` Envers + índices; relacionales sin `_aud`).
   - *Por qué:* Nace de P-02 para evitar repetir las inconsistencias de secuencias e índices.
-- **Comando `/nueva-migracion`:**
-  - *Decisión:* `.opencode/commands/nueva-migracion.md` (agente `plan`) genera migraciones desde la clase entidad: valida `@Entity` + `@Table(name)`, deriva columnas de la herencia y detecta el módulo/BD por paquete.
+- **Comando `/new-migration`:**
+  - *Decisión:* `.opencode/commands/new-migration.md` (agente `plan`) genera migraciones desde la clase entidad: valida `@Entity` + `@Table(name)`, deriva columnas de la herencia y detecta el módulo/BD por paquete.
   - *Por qué:* Cada microservicio tendrá su BD propia; el comando evita asumir `user-auth` y frena si falta `@Table(name)`.
+- **Comando `/update-guides`:**
+  - *Decisión:* `.opencode/commands/update-guides.md` (agente `plan`) verifica o propone guías en `1guides/` por tema; con `all` solo lista las desactualizadas sin tocarlas.
+  - *Por qué:* Las guías se revisan 1 a 1 y cada una se actualiza con el mismo comando.
 - **Comandos por ámbito (`commands/`):**
   - *Decisión:* `commands.md` es índice; cada ámbito/módulo tiene su archivo (`gradle`, `user-auth`, `user-auth-tests`, `shared-kernel`, `api`). Tests y seeds se documentan como patrón (`--tests`, `--seed=`), no enumerados.
   - *Por qué:* El archivo único crecía por cada test/seed/módulo nuevo; parametrizar + dividir evita ediciones constantes.
