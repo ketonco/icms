@@ -70,6 +70,9 @@
 - **Comando `/update-guides`:**
   - *Decisión:* `.opencode/commands/update-guides.md` (agente `plan`) verifica o propone guías en `1guides/` por tema; con `all` solo lista las desactualizadas sin tocarlas.
   - *Por qué:* Las guías se revisan 1 a 1 y cada una se actualiza con el mismo comando.
+- **Skills Codex (referencia):**
+  - *Decisión:* `.agents/skills/new-migration/SKILL.md` y `.agents/skills/update-guides/SKILL.md` replican ambos comandos para Codex (`name` + `description` en inglés, cuerpo en español); se invocan con `$` o por coincidencia.
+  - *Por qué:* Codex no usa comandos `/` ni `$ARGUMENTS`; las skills son su formato nativo de repo (`.agents/skills`).
 - **Comandos por ámbito (`commands/`):**
   - *Decisión:* `commands.md` es índice; cada ámbito/módulo tiene su archivo (`gradle`, `user-auth`, `user-auth-tests`, `shared-kernel`, `api`). Tests y seeds se documentan como patrón (`--tests`, `--seed=`), no enumerados.
   - *Por qué:* El archivo único crecía por cada test/seed/módulo nuevo; parametrizar + dividir evita ediciones constantes.
