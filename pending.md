@@ -59,32 +59,6 @@ rutas protegidas.
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
 
-## P-17 — Respuestas genéricas de error inconsistentes y con detalle interno
-
-**Dónde:**
-`shared-kernel/src/main/java/com/icms/shared/config/exception/GlobalExceptionHandler.java:19-28,31-45`
-
-**Ubicación del TODO: no agregado.**
-
-**Problema:** los recursos inexistentes responden con el código de negocio
-`000`, y el handler genérico incluye `ex.getMessage()` en la respuesta.
-
-**Contexto y explicación:** el código `000` no identifica el error según las
-convenciones del proyecto. El mensaje de una excepción inesperada puede
-contener detalles internos que no deben exponerse en la respuesta HTTP.
-
-**Opciones estándar:**
-
-- A) Asignar códigos coherentes y resolver un mensaje genérico localizado para
-  errores inesperados (recomendado).
-- B) Mantener el mensaje de excepción solo en registros internos y devolver un
-  mensaje fijo al cliente.
-
-**Recomendación:** A, manteniendo detalles técnicos fuera de la respuesta.
-
-**Nivel de acción requerido:** Medio — afecta el contrato de errores y puede
-exponer información interna.
-
 ## P-18 — Código de error incorrecto para nombres de idioma duplicados
 
 **Dónde:**

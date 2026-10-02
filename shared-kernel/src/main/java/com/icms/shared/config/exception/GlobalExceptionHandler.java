@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
             .body(RestResponse.error(
                 HttpStatus.NOT_FOUND.value(),
                 MessageResolver.resolveMessage("Res-001"),
-                "000",
+                "Res-001",
                 null,
                 HttpStatus.NOT_FOUND.getReasonPhrase()));
     }
