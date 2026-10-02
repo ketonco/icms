@@ -1,7 +1,7 @@
-# PENDING.md — Pendientes activos del proyecto ICMS
+# Pendientes activos del proyecto ICMS
 
-Validación de `.github/copilot-instructions.md` vs código real. Fecha: 2026-09-30.
-Solo lectura y marcadores `TODO`; nada de lo listado está corregido todavía.
+Revisión integral de `.github/copilot-instructions.md` frente al código real.
+Fecha: 2026-10-02.
 
 ## P-03 — Versiones hardcodeadas fuera de `libs.versions.toml`
 
@@ -58,3 +58,129 @@ rutas protegidas.
 
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
+
+## P-16 — UserProfile lanza una excepción ajena al dominio
+
+**Dónde:**
+`user-auth/src/main/java/com/icms/user_auth/service/daoservice/UserProfileService.java:57-58`
+
+**Ubicación del TODO: no agregado.**
+
+**Problema:** el servicio importa `jakarta.persistence.EntityNotFoundException`
+en lugar de la excepción `EntityNotFoundException` compartida por el proyecto.
+
+**Contexto y explicación:** el handler global captura la excepción compartida.
+La excepción JPA no sigue esa ruta, por lo que la ausencia de usuario o perfil
+puede terminar tratándose como error interno en vez de como entidad inexistente.
+
+**Opciones estándar:**
+
+- A) Usar la excepción de dominio compartida (recomendado).
+- B) Añadir manejo explícito de la excepción JPA al handler global.
+
+**Recomendación:** A, conservando una sola excepción de dominio para respuestas
+404 y códigos i18n.
+
+**Nivel de acción requerido:** Medio — produce una respuesta HTTP incorrecta
+cuando no existe el usuario o perfil buscado.
+
+## P-17 — Respuestas genéricas de error inconsistentes y con detalle interno
+
+**Dónde:**
+`shared-kernel/src/main/java/com/icms/shared/config/exception/GlobalExceptionHandler.java:19-28,31-45`
+
+**Ubicación del TODO: no agregado.**
+
+**Problema:** los recursos inexistentes responden con el código de negocio
+`000`, y el handler genérico incluye `ex.getMessage()` en la respuesta.
+
+**Contexto y explicación:** el código `000` no identifica el error según las
+convenciones del proyecto. El mensaje de una excepción inesperada puede
+contener detalles internos que no deben exponerse en la respuesta HTTP.
+
+**Opciones estándar:**
+
+- A) Asignar códigos coherentes y resolver un mensaje genérico localizado para
+  errores inesperados (recomendado).
+- B) Mantener el mensaje de excepción solo en registros internos y devolver un
+  mensaje fijo al cliente.
+
+**Recomendación:** A, manteniendo detalles técnicos fuera de la respuesta.
+
+**Nivel de acción requerido:** Medio — afecta el contrato de errores y puede
+exponer información interna.
+
+## P-18 — Código de error incorrecto para nombres de idioma duplicados
+
+**Dónde:**
+`user-auth/src/main/java/com/icms/user_auth/rules/dao/LanguageRules.java:41`
+
+**Ubicación del TODO: no agregado.**
+
+**Problema:** un nombre de idioma duplicado genera `Ent-005`, cuyo mensaje
+localizado indica que la entidad no puede eliminarse.
+
+**Contexto y explicación:** el cliente recibe una explicación que no corresponde
+a la regla que falló, dificultando la corrección de la solicitud.
+
+**Opciones estándar:**
+
+- A) Definir y usar un código i18n para nombre duplicado (recomendado).
+- B) Reutilizar otro código existente que describa correctamente la duplicidad.
+
+**Recomendación:** A, si no existe un código de duplicidad apropiado.
+
+**Nivel de acción requerido:** Bajo — el rechazo funciona, pero el mensaje es
+engañoso.
+
+## P-19 — UserProfileService no tiene pruebas para su lógica propia
+
+**Dónde:**
+`user-auth/src/test/java/com/icms/user_auth/service/UserProfileServiceTest.java:6-8`
+
+**Ubicación del TODO: no agregado.**
+
+**Problema:** la clase de prueba está vacía, aunque `UserProfileService` tiene
+lógica propia para guardar, actualizar y resolver usuario y perfil.
+
+**Contexto y explicación:** los casos de ausencia de usuario o perfil y la
+conversión del DTO no tienen cobertura específica conforme al principio
+selectivo de pruebas de §I.
+
+**Opciones estándar:**
+
+- A) Añadir pruebas unitarias con Mockito y AssertJ para las rutas propias
+  (recomendado).
+- B) Mantener la clase vacía y confiar únicamente en pruebas de integración.
+
+**Recomendación:** A, verificando guardado/actualización y excepciones cuando
+falte el usuario o perfil.
+
+**Nivel de acción requerido:** Medio — lógica propia de servicio sin pruebas
+específicas.
+
+## P-20 — Prueba de gateway depende de un servicio externo iniciado aparte
+
+**Dónde:**
+`api/src/test/java/com/icms/api/userauth/UserAuthGatewayRoutingIntegrationTest.java:36,55,82`
+
+**Ubicación del TODO: no agregado.**
+
+**Problema:** las pruebas de integración requieren que `user-auth` esté
+ejecutándose previamente en `localhost:8081`.
+
+**Contexto y explicación:** la prueba combina el gateway con un proceso externo
+y datos de ese servicio, por lo que no es aislada ni determinista al ejecutar
+la suite del módulo API.
+
+**Opciones estándar:**
+
+- A) Proveer un downstream controlado durante la prueba (recomendado).
+- B) Mantener una suite explícita de sistema que arranque ambos servicios como
+  parte de su configuración.
+
+**Recomendación:** A para la prueba del módulo; reservar B para una suite de
+extremo a extremo independiente.
+
+**Nivel de acción requerido:** Medio — la prueba falla si no se prepara un
+servicio externo y su estado esperado.
