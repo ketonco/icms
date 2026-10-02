@@ -56,6 +56,11 @@
 - **Gestión de BD con Liquibase:**
   - *Decisión:* Esquema PostgreSQL con changelogs YAML en `:user-auth` y secuencias explícitas.
   - *Por qué:* Garantiza trazabilidad y reproducibilidad en local y CI-CD.
+  - *Flujo local de desarrollo:* las migraciones pueden cambiar repetidamente;
+    se reinicia la base local con `dropAll` y luego `update` para aplicar el
+    estado actual del changelog.
+  - *Alcance:* este flujo aplica a la base local de desarrollo, no a entornos
+    compartidos o productivos.
 - **Estrategia Futura de IA:**
   - *Decisión:* n8n en Docker, Spring AI con Ollama, WhatsApp Cloud API y Stripe Sandbox.
   - *Por qué:* Simula comercio conversacional y carrito o facturación sin costo de infraestructura.
