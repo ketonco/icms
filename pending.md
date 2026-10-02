@@ -59,29 +59,6 @@ rutas protegidas.
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
 
-## P-18 — Código de error incorrecto para nombres de idioma duplicados
-
-**Dónde:**
-`user-auth/src/main/java/com/icms/user_auth/rules/dao/LanguageRules.java:41`
-
-**Ubicación del TODO: no agregado.**
-
-**Problema:** un nombre de idioma duplicado genera `Ent-005`, cuyo mensaje
-localizado indica que la entidad no puede eliminarse.
-
-**Contexto y explicación:** el cliente recibe una explicación que no corresponde
-a la regla que falló, dificultando la corrección de la solicitud.
-
-**Opciones estándar:**
-
-- A) Definir y usar un código i18n para nombre duplicado (recomendado).
-- B) Reutilizar otro código existente que describa correctamente la duplicidad.
-
-**Recomendación:** A, si no existe un código de duplicidad apropiado.
-
-**Nivel de acción requerido:** Bajo — el rechazo funciona, pero el mensaje es
-engañoso.
-
 ## P-19 — UserProfileService no tiene pruebas para su lógica propia
 
 **Dónde:**
