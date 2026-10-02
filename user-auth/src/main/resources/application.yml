@@ -1,6 +1,8 @@
 spring:
   application:
     name: user-auth
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:25432}/${DB_USER_AUTH_NAME:ICMS_UA}
     username: ${DB_USER:postgres}
@@ -20,10 +22,12 @@ spring:
         revision_type_field_name: revtype
         store_data_at_delete: true
   # Configuración de Spring MVC, this includes settings for handling web requests and responses which means you can customize how your application handles HTTP requests and responses.
+  # always include stacktrace in the response for debugging purposes when the parameter is set
+  # on_param means the stacktrace will be included only if the request parameter 'includeStacktrace' is set to true. e.g., /api/resource?includeStacktrace=true
+  # never include stacktrace unless explicitly requested via the parameter 'includeStacktrace' in the request.
   mvc:
     problem:
-      # TODO (pending P-14): restrict stack trace inclusion to development or diagnostic profiles.
-      include-stacktrace: always # Always include stacktrace in the response for debugging purposes
+      include-stacktrace: on_param # Always include stacktrace in the response for debugging purposes
 
 server:
   port: ${PORT_USER_AUTH:8081}
@@ -50,3 +54,13 @@ spring:
       on-profile: task
   main:
     web-application-type: none
+
+---
+spring:
+  config:
+    activate:
+      on-profile: task
+
+  mvc:
+    problem:
+      include-stacktrace: always # Always include stacktrace in the response for debugging purposes

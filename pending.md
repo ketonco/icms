@@ -28,33 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-14 — Stack traces habilitados en la configuración base
-
-**Dónde:** `user-auth/src/main/resources/application.yml:26`
-
-**Ubicacion del TODO: agregado** en la propiedad
-`spring.mvc.problem.include-stacktrace`.
-
-**Problema:** `include-stacktrace: always` está declarado en la configuración
-base y no limitado a perfiles de desarrollo o diagnóstico, como requiere la
-sección K de `.github/copilot-instructions.md`.
-
-**Contexto / Explicación:** los perfiles activos heredan la configuración
-base; las respuestas de error podrían revelar rutas internas, nombres de
-clases y detalles de implementación.
-
-**Opciones estándar:**
-
-- A) Activar los stack traces solo mediante una configuración de perfil de
-  desarrollo o diagnóstico (recomendado).
-- B) Deshabilitarlos en la configuración base y habilitarlos explícitamente al depurar.
-
-**Recomendación:** A, manteniendo el diagnóstico detallado fuera de perfiles
-compartidos o productivos.
-
-**Nivel de acción requerido:** Alto — puede exponer información interna en
-respuestas de error.
-
 ## P-15 — Rutas protegidas sin mecanismo de autenticación visible
 
 **Dónde:**
