@@ -64,9 +64,12 @@
 - **Estrategia Futura de IA:**
   - *Decisión:* n8n en Docker, Spring AI con Ollama, WhatsApp Cloud API y Stripe Sandbox.
   - *Por qué:* Simula comercio conversacional y carrito o facturación sin costo de infraestructura.
-- **Nota de Entorno Java 25:**
-  - *Decisión:* El estándar sigue en Java 24 aunque el entorno local reporte Java 25 y Gradle falle con `IllegalArgumentException: 25`.
-  - *Por qué:* Es una excepción temporal de entorno, no un cambio de versión.
+- **Entorno Java validado en Java 24 (2026-10-02):**
+  - *Decisión:* El estándar es Java 24; `JAVA_HOME` (Usuario) y `org.gradle.java.home` (`~/.gradle/gradle.properties`) apuntan a `jdk-24`. El `java` del PATH global sigue en 25 pero no afecta (toolchain `jvmToolchain(24)`).
+  - *Por qué:* Con esto Gradle 8.14.3 configura el proyecto sin el fallo `IllegalArgumentException: 25` (validado con `gradlew help` → BUILD SUCCESSFUL).
+- **MCP de Postgres para validación:**
+  - *Decisión:* `@microsoft/postgres-mcp` vía `opencode.json` (raíz, sin credenciales), con un perfil por módulo (`user-auth` → `ICMS_UA`) y contraseña en el keyring de Windows. Comando `/rebuild-db` ejecuta dropAll + update + seed y valida con el MCP.
+  - *Por qué:* Varias BD por microservicio sin duplicar config; cumple la prohibición de contraseñas en archivos versionados.
 
 ---
 

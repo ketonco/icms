@@ -1,0 +1,9 @@
+{
+  "mcp": {
+    "postgres": {
+      "type": "local",
+      "command": ["npx", "-y", "@microsoft/postgres-mcp", "run"],
+      "enabled": true
+    }
+  }
+}
