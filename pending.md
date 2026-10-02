@@ -59,31 +59,6 @@ rutas protegidas.
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
 
-## P-16 — UserProfile lanza una excepción ajena al dominio
-
-**Dónde:**
-`user-auth/src/main/java/com/icms/user_auth/service/daoservice/UserProfileService.java:57-58`
-
-**Ubicación del TODO: no agregado.**
-
-**Problema:** el servicio importa `jakarta.persistence.EntityNotFoundException`
-en lugar de la excepción `EntityNotFoundException` compartida por el proyecto.
-
-**Contexto y explicación:** el handler global captura la excepción compartida.
-La excepción JPA no sigue esa ruta, por lo que la ausencia de usuario o perfil
-puede terminar tratándose como error interno en vez de como entidad inexistente.
-
-**Opciones estándar:**
-
-- A) Usar la excepción de dominio compartida (recomendado).
-- B) Añadir manejo explícito de la excepción JPA al handler global.
-
-**Recomendación:** A, conservando una sola excepción de dominio para respuestas
-404 y códigos i18n.
-
-**Nivel de acción requerido:** Medio — produce una respuesta HTTP incorrecta
-cuando no existe el usuario o perfil buscado.
-
 ## P-17 — Respuestas genéricas de error inconsistentes y con detalle interno
 
 **Dónde:**

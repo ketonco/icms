@@ -2,8 +2,8 @@ package com.icms.user_auth.service.daoservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.persistence.EntityNotFoundException;
 import com.icms.user_auth.entity.User;
+import com.icms.shared.exceptions.EntityNotFoundException;
 import com.icms.shared.service.BaseService;
 import com.icms.user_auth.rules.dao.UserProfileRules;
 
