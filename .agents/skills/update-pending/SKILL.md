@@ -22,6 +22,3 @@ Ante el alcance indicado por el usuario en su mensaje (un módulo, un paquete o 
    corregido en el código, elimínalo. Si a una entrada le falta un detalle
    (ubicación, evidencia, opción), actualízala en vez de duplicarla. Si el
    alcance no arroja hallazgos ni olvidos, no registres nada.
-8. Validación de runtime: no te corresponde. Si en el código no hay nada que
-   indique que un cambio falló o quedó incompleto, entiende que se aplicó
-   correctamente. Verificar que funciona es tarea del desarrollador.
