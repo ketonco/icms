@@ -16,6 +16,10 @@ Test-Path .\user-auth\src\main\resources\db\migration-root.yaml
 
 Al ejecutar `:user-auth:update` desde la raiz, el `changelogFile` debe ser `user-auth/src/main/resources/db/migration-root.yaml`. No editar copias dentro de `build/` o `bin/`.
 
+## Falta `DB_PASSWORD` o `-PdbPassword`
+
+La base exige variable de usuario `DB_PASSWORD`; `update` acepta `-PdbPassword` o `DB_PASSWORD`. Si ves `Could not resolve placeholder 'DB_PASSWORD'` o `Missing database password`, crea las variables de `02-java-y-gradle.md` y reinicia la terminal. En Docker revisa `api/.env`.
+
 ## 404 ResourceWebHandler
 
 Revisar que se use `spring.cloud.gateway.server.webflux`, que `routes` este dentro de `webflux`, que el `Path` coincida y que la imagen del gateway se haya reconstruido.

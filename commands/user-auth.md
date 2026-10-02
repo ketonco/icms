@@ -1,20 +1,30 @@
 # Módulo `user-auth`
 
-## Levantar unicamente el servicio local
+## Variables de usuario (1 vez por PC, sin secretos en repo)
+
+```powershell
+[Environment]::SetEnvironmentVariable("DB_HOST","localhost","User")
+[Environment]::SetEnvironmentVariable("DB_PORT","25432","User")
+[Environment]::SetEnvironmentVariable("DB_USER","postgres","User")
+[Environment]::SetEnvironmentVariable("DB_USER_AUTH_NAME","ICMS_UA","User")
+[Environment]::SetEnvironmentVariable("DB_PASSWORD","xxx","User")
+```
+
+Reinicia la terminal. Si falta `DB_PASSWORD`, `bootRun` y `update` fallan.
+
+## Levantar el servicio (usa variables de usuario)
 
 ```powershell
 ./gradlew :user-auth:bootRun
+./gradlew :user-auth:bootRun --args='--spring.profiles.active=prod'
 ```
 
-Levantar unicamente el servicio de user-auth local en el puerto indicado.
-
-## Actualizar la base de datos
+## Actualizar la base de datos (usa variables de usuario)
 
 ```powershell
 .\gradlew.bat :user-auth:update
+.\gradlew.bat :user-auth:update -PdbUrl=jdbc:postgresql://host:puerto/DB -PdbUser=postgres -PdbPassword=xxx
 ```
-
-Ejecuta la tarea `update` del módulo `user-auth`.
 
 ## Eliminar todos los datos
 

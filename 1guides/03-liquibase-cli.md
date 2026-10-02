@@ -22,13 +22,14 @@ La ultima linea permite encontrar los recursos del modulo al ejecutar Liquibase 
 
 La actividad `main` usa `user-auth/src/main/resources/db/migration-root.yaml`. La ruta es relativa a la raiz al ejecutar `:user-auth:update`.
 
-Se pueden pasar parametros CLI:
+Se pueden pasar parametros CLI. Sin secretos en el repo (P-13); orden: `-PdbPassword`, luego variable de usuario `DB_PASSWORD`.
 
 ```powershell
+.\gradlew.bat :user-auth:update
 .\gradlew.bat :user-auth:update `
-  -PdbUrl=jdbc:postgresql://localhost:25432/ICMS_UA `
+  -PdbUrl=jdbc:postgresql://host:puerto/DB `
   -PdbUser=postgres `
-  -PdbPassword=adm123456
+  -PdbPassword=xxx
 ```
 
 Si aparece un error de `exec()`, revisar la compatibilidad del plugin `2.2.2` con Gradle y usar la version 8.x del wrapper.

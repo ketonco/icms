@@ -51,3 +51,7 @@ Gradle genera un reporte web detallado e interactivo de todo el árbol de depend
 Compila el módulo `api` y genera su archivo JAR ejecutable de Spring Boot. La
 opción `--no-daemon` ejecuta Gradle sin utilizar un proceso daemon persistente,
 por lo que resulta útil en compilaciones puntuales o entornos de CI.
+
+## Nota de credenciales (sin secretos en repo)
+
+`user-auth` exige `DB_PASSWORD` de usuario Windows; `update` usa `-PdbPassword` o `DB_PASSWORD`. Detalle en `commands/user-auth.md`.

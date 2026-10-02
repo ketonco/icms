@@ -38,12 +38,21 @@ liquibase {
     activities {
         main {
             changelogFile 'user-auth/src/main/resources/db/migration-root.yaml'
-            
-            // Toma la propiedad por CLI (-PdbUrl=...) o usa la BD por defecto de este servicio
-            url project.hasProperty('dbUrl') ? project.property('dbUrl') : 'jdbc:postgresql://localhost:25432/ICMS_UA'
+
+            // No hardcoded credentials (P-13). Order: -PdbPassword, then User env DB_PASSWORD.
+            def resolvedDbUrl = project.hasProperty('dbUrl') ? project.property('dbUrl').toString() : 'jdbc:postgresql://localhost:25432/ICMS_UA'
+            def envDbPassword = System.getenv('DB_PASSWORD')
+            def resolvedDbPassword
+            if (project.hasProperty('dbPassword')) {
+                resolvedDbPassword = project.property('dbPassword')
+            } else if (envDbPassword != null && !envDbPassword.isEmpty()) {
+                resolvedDbPassword = envDbPassword
+            } else {
+                throw new GradleException("Missing database password: use -PdbPassword=xxx or set User env DB_PASSWORD (current URL: ${resolvedDbUrl})")
+            }
+            url resolvedDbUrl
             username project.hasProperty('dbUser') ? project.property('dbUser') : 'postgres'
-            // TODO (pending P-13): remove the fixed database password fallback from the Liquibase activity.
-            password project.hasProperty('dbPassword') ? project.property('dbPassword') : 'adm123456'
+            password resolvedDbPassword
         }
     }
 }

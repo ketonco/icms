@@ -14,3 +14,13 @@ docker compose -f .\api\docker-compose.yml down
 ```
 
 Dentro de Docker, `user-auth:8081` es un DNS valido. Desde el navegador se usa `http://localhost:8080`; no usar `user-auth` desde el navegador porque ese nombre solo existe en la red interna.
+
+## Variables en Docker
+
+Docker no usa variables de usuario Windows ni la tarea `update` de Gradle. `api/docker-compose.yml` pasa explícito `SPRING_DATASOURCE_URL/USERNAME/PASSWORD` desde `api/.env`:
+
+```powershell
+docker compose -f .\api\docker-compose.yml up --build -d
+```
+
+Mantén en `api/.env` `SPRING_PROFILES_ACTIVE=dev` (nunca `local`) y `DB_HOST=postgreSQL_DB` (no `localhost`). Si falta `DB_PASSWORD` en `.env`, el contenedor falla en vez de usar la fija. `api/.env` es solo-local; versiona solo `api/.env.example` con valores vacíos.

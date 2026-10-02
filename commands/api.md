@@ -6,7 +6,7 @@
 ./gradlew :api:bootRun
 ```
 
-Levantar unicamente el servicio de api-gateway local en el puerto indicado.
+Levantar unicamente el servicio de api-gateway local en el puerto indicado. No usa base de datos propia.
 
 ## Levantar los servicios con Docker Compose
 
@@ -17,7 +17,9 @@ docker compose -f .\api\docker-compose.yml up --build -d api-gateway
 ```
 
 Construye las imágenes y levanta en segundo plano los servicios definidos en
-`api/docker-compose.yml`.
+`api/docker-compose.yml`. Toma las variables de `api/.env` con
+`SPRING_PROFILES_ACTIVE=dev` (nunca `local`); no usa el default local ni la
+tarea `update` de Gradle.
 
 ## Ejecutar todos los tests
 

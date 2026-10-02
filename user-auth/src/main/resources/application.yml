@@ -4,8 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:25432}/${DB_USER_AUTH_NAME:ICMS_UA}
     username: ${DB_USER:postgres}
-    # TODO (pending P-13): remove the fixed database password fallback from runtime configuration.
-    password: ${DB_PASSWORD:adm123456}
+    password: ${DB_PASSWORD}
   liquibase:
     change-log: classpath:db/migration-root.yaml
     enabled: ${LIQUIBASE_ENABLED:false}  
@@ -28,7 +27,6 @@ spring:
 
 server:
   port: ${PORT_USER_AUTH:8081}
-
 
 ---
 spring:
