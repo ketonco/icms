@@ -28,37 +28,6 @@ centralizado se desincronizan con el tiempo y rompen la regla de §1.
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
 
-## P-13 — Contraseña de base de datos predeterminada en configuración
-
-**Dónde:** `user-auth/src/main/resources/application.yml:8` y
-`user-auth/build.gradle:46`
-
-**Ubicacion del TODO: agregado** en ambos valores de contraseña
-predeterminados.
-
-**Problema:** la configuración de ejecución y la actividad Liquibase contienen
-un valor de contraseña fijo como alternativa cuando no se proporciona
-`DB_PASSWORD` o `dbPassword`. `AGENTS.md` prohíbe incluir contraseñas
-hardcodeadas en archivos de configuración que no sean de ejemplo.
-
-**Contexto / Explicación:** si una ejecución no establece explícitamente la
-variable o propiedad, la aplicación o Liquibase intentarán autenticarse con la
-contraseña predeterminada. El valor versionado no debe servir como credencial
-de entornos compartidos.
-
-**Opciones estándar:**
-
-- A) Exigir la variable o propiedad fuera de los entornos locales y mantener
-  los valores locales fuera de la configuración versionada (recomendado).
-- B) Mover los valores de desarrollo a un archivo de ejemplo no usado
-  directamente por la aplicación.
-
-**Recomendación:** A, para que las ejecuciones no locales fallen si falta una
-credencial externa.
-
-**Nivel de acción requerido:** Alto — evita el uso accidental de una
-contraseña fija en entornos no locales.
-
 ## P-14 — Stack traces habilitados en la configuración base
 
 **Dónde:** `user-auth/src/main/resources/application.yml:26`
