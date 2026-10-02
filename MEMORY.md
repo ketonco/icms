@@ -33,6 +33,9 @@
   - Catálogo centralizado en `gradle/libs.versions.toml` y plugins Kotlin DSL en `buildSrc/src/main/kotlin/`.
   - Excepción conocida P-03: quedan dos versiones fuera del catálogo, `mavenBom 4.1.1` y `picocli 4.7.6`, pendientes de decisión del desarrollador.
 - **Comandos canónicos:** `.opencode/commands/` en inglés. La carpeta `commands/` en raíz es legado. Guías en español en `1guides/`.
+- **Skill QA de Codex:**
+  - *Decisión:* `.agents/skills/qa-review/SKILL.md` es la única skill de QA (absorbió a `update-pending`): revisa arquitectura, código y tests, usa `qa_historic.md` para revisar solo desde la última corrida y solo puede escribir `pending.md`, `qa_historic.md` y `MEMORY.md`.
+  - *Por qué:* Un solo punto de entrada QA; los tests commiteados se asumen pasados y los tres archivos fuente quedan protegidos.
 
 ---
 
