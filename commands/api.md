@@ -27,7 +27,9 @@ tarea `update` de Gradle.
 .\gradlew.bat :api:test
 ```
 
-Ejecuta todos los `Test` del modulo de `api`.
+Ejecuta todos los `Test` del modulo de `api`. Los tests del gateway usan
+downstream controlado (WireMock) y no requieren `user-auth` vivo; detalle en
+`1guides/10-gateway-tests.md`.
 
 ## Pruebas puntuales (patrón `--tests`, acepta comodines `*`)
 

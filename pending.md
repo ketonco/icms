@@ -84,29 +84,3 @@ falte el usuario o perfil.
 
 **Nivel de acción requerido:** Medio — lógica propia de servicio sin pruebas
 específicas.
-
-## P-20 — Prueba de gateway depende de un servicio externo iniciado aparte
-
-**Dónde:**
-`api/src/test/java/com/icms/api/userauth/UserAuthGatewayRoutingIntegrationTest.java:36,55,82`
-
-**Ubicación del TODO: no agregado.**
-
-**Problema:** las pruebas de integración requieren que `user-auth` esté
-ejecutándose previamente en `localhost:8081`.
-
-**Contexto y explicación:** la prueba combina el gateway con un proceso externo
-y datos de ese servicio, por lo que no es aislada ni determinista al ejecutar
-la suite del módulo API.
-
-**Opciones estándar:**
-
-- A) Proveer un downstream controlado durante la prueba (recomendado).
-- B) Mantener una suite explícita de sistema que arranque ambos servicios como
-  parte de su configuración.
-
-**Recomendación:** A para la prueba del módulo; reservar B para una suite de
-extremo a extremo independiente.
-
-**Nivel de acción requerido:** Medio — la prueba falla si no se prepara un
-servicio externo y su estado esperado.

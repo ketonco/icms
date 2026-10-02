@@ -3,13 +3,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -17,12 +28,49 @@ public class UserAuthGatewayRoutingIntegrationTest {
 
     @LocalServerPort 
     private int port;
+    private static WireMockServer wireMockServer;
     private WebTestClient webTestClient;
+
+    @BeforeAll
+    static void startStub() {
+        wireMockServer = new WireMockServer(WireMockConfiguration.options().dynamicPort());
+        wireMockServer.start();
+    }
+
+    @AfterAll
+    static void stopStub() {
+        wireMockServer.stop();
+    }
+
+    /*
+        Point the gateway to the stub before the context starts (why: the URI is resolved when routes are created; 
+        by @BeforeEach it is too late, and the dynamic port is not known in fixed annotations):
+    */
+
+    @DynamicPropertySource
+    static void routeToStub(DynamicPropertyRegistry registry) {
+        registry.add("HOST_USER_AUTH", () -> "localhost");
+        registry.add("PORT_USER_AUTH", wireMockServer::port);
+    }
 
     @BeforeEach
     void setUp() {
+        wireMockServer.resetAll();
+        // Stub the User-Auth service endpoints
+
+        // 1. Stub for /api/v1/auth/test endpoint through the API Gateway
+        // 2. Stub for /api/v1/auth/languages endpoint through the API Gateway
+        // 3. Stub for /api/v1/auth/languages/code/en-US endpoint through the API Gateway
+        wireMockServer.stubFor(get(urlEqualTo("/api/v1/auth/test"))
+                .willReturn(ok("User-Auth Service is running")));
+        wireMockServer.stubFor(get(urlEqualTo("/api/v1/auth/languages"))
+                .willReturn(okJson("{\"status\":200,\"message\":\"OK\",\"data\":[{\"code\":\"en-US\",\"name\":\"English\"}]}")));
+        wireMockServer.stubFor(get(urlEqualTo("/api/v1/auth/languages/code/en-US"))
+                .willReturn(okJson("{\"status\":200,\"message\":\"OK\",\"data\":{\"code\":\"en-US\",\"name\":\"English\"}}")));
+        
+        // Initialize the WebTestClient to point to the WireMock server
         webTestClient = WebTestClient.bindToServer()
-                .baseUrl("http://localhost:" + port)
+                .baseUrl("http://localhost:" + wireMockServer.port())
                 .build();
     }
 
@@ -33,7 +81,6 @@ public class UserAuthGatewayRoutingIntegrationTest {
     @Test
     @DisplayName("GET /api/v1/auth/test - Gateway debe redirigir la petición a User-Auth")
     void testGatewayRoutingToUserAuth() {
-        // NOTE: In order for this test to pass, the 'user-auth' service must be running on localhost:8081
         webTestClient.get()
                 .uri("/api/v1/auth/test")
                 .exchange()
@@ -52,7 +99,6 @@ public class UserAuthGatewayRoutingIntegrationTest {
     @Test
     @DisplayName("GET /api/v1/auth/languages - Gateway debe redirigir la petición a User-Auth")
     void testGatewayRoutingToUserAuthLanguages() {
-        // NOTE: In order for this test to pass, the 'user-auth' service must be running on localhost:8081
         webTestClient.get()
                 .uri("/api/v1/auth/languages")
                 .exchange()
@@ -79,7 +125,6 @@ public class UserAuthGatewayRoutingIntegrationTest {
     @Test
     @DisplayName("GET /api/v1/auth/languages/code/{code} - Gateway debe redirigir la petición a User-Auth")
     void testGatewayRoutingToUserAuthLanguageByCode() {
-        // NOTE: In order for this test to pass, the 'user-auth' service must be running on localhost:8081
         webTestClient.get()
                 .uri("/api/v1/auth/languages/code/en-US")
                 .exchange()

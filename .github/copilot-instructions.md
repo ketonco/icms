@@ -84,6 +84,7 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 - **Pruebas unitarias de mapper** (`src/test/.../mappers/*MapperTest.java`): instancian el mapper vía `Mappers.getMapper(XxxMapper.class)` (sin contexto Spring), usando `Instancio` para generar datos aleatorios y `Select.field(...)` para fijar valores puntuales de verificación.
 - **Pruebas de integración de repositorio** (`src/test/.../repository/*RepositoryTest.java`): `@DataJpaTest`, `@ActiveProfiles("test")`, `@Import(AuditConfig.class)`, `@AutoConfigureTestDatabase(replace = Replace.NONE)` (usa la BD real de test, no H2), `TestEntityManager` para `persistAndFlush`. Evitar `Instancio.create(Entity.class)` para el ID/PK: usar el constructor de negocio o limpiar el `id` explícitamente antes de persistir.
 - **Pruebas de integración de controlador** (`src/test/.../controller/*IntegrationTest.java`): `@SpringBootTest(webEnvironment = RANDOM_PORT)`, `@ActiveProfiles("test")`, `@LocalServerPort`, peticiones HTTP reales vía `RestAssured`.
+- **Pruebas del gateway** (`api/src/test/.../*IntegrationTest.java`): `@SpringBootTest(webEnvironment = RANDOM_PORT)` con cliente `WebTestClient` y downstream controlado (WireMock + `@DynamicPropertySource` para `HOST_*`/`PORT_*`); nunca exigen el microservicio real levantado ni asertan sus seeds. Las pruebas con servicio vivo pertenecen a una suite de sistema aparte, excluida de `./gradlew test`.
 - El perfil `test` (ver `application.yml`) desactiva Liquibase, sesión y caché para aislar las pruebas.
 
 ### J. Migraciones (Liquibase)
