@@ -81,7 +81,7 @@ databaseChangeLog:
               - column:
                   name: code
         - createIndex:
-            indexName: idx_permission_id
+            indexName: idx_permissions_id
             tableName: permissions
             columns:
               - column:
@@ -91,14 +91,14 @@ databaseChangeLog:
         - dropIndex:
             indexName: idx_permissions_code
         - dropIndex:
-            indexName: idx_permission_id
+            indexName: idx_permissions_id
 
   - changeSet:
       id: 20260916_0001_create_permission_revision_003
       author: "Maximo"
       changes:
         - createTable:
-            tableName: permission_aud
+            tableName: permissions_aud
             columns:
               - column:
                   name: id
@@ -152,22 +152,22 @@ databaseChangeLog:
                     nullable: false
 
         - addPrimaryKey:
-            tableName: permission_aud
+            tableName: permissions_aud
             columnNames: id, rev
-            constraintName: pk_permission_aud
+            constraintName: pk_permissions_aud
 
         - addForeignKeyConstraint:
-            baseTableName: permission_aud
+            baseTableName: permissions_aud
             baseColumnNames: rev
             referencedTableName: revinfo
             referencedColumnNames: rev
-            constraintName: fk_permission_aud_rev
+            constraintName: fk_permissions_aud_rev
             onDelete: CASCADE
 
       rollback:
         - dropTable:
             cascadeConstraints: true
-            tableName: permission_aud
+            tableName: permissions_aud
 
   - changeSet:
       id: 20260916_0001_create_permission_revision_indexes_004
@@ -175,25 +175,25 @@ databaseChangeLog:
       preConditions:
         - onFail: HALT
         - tableExists:
-            tableName: permission_aud
+            tableName: permissions_aud
       changes:
         - createIndex:
-            tableName: permission_aud
-            indexName: idx_permission_aud_rev
+            tableName: permissions_aud
+            indexName: idx_permissions_aud_rev
             columns:
               - column:
                   name: rev
         - createIndex:
-            tableName: permission_aud
-            indexName: idx_permission_aud_id
+            tableName: permissions_aud
+            indexName: idx_permissions_aud_id
             columns:
               - column:
                   name: id
 
       rollback:
         - dropIndex:
-            tableName: permission_aud
-            indexName: idx_permission_aud_rev
+            tableName: permissions_aud
+            indexName: idx_permissions_aud_rev
         - dropIndex:
-            tableName: permission_aud
-            indexName: idx_permission_aud_id
+            tableName: permissions_aud
+            indexName: idx_permissions_aud_id

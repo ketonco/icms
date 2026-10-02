@@ -98,7 +98,7 @@ databaseChangeLog:
       author: "Maximo"
       changes:
         - createTable:
-            tableName: usertype_aud
+            tableName: usertypes_aud
             columns:
               - column:
                   name: id
@@ -152,22 +152,22 @@ databaseChangeLog:
                     nullable: false
 
         - addPrimaryKey:
-            tableName: usertype_aud
+            tableName: usertypes_aud
             columnNames: id, rev
-            constraintName: pk_usertype_aud
+            constraintName: pk_usertypes_aud
 
         - addForeignKeyConstraint:
-            baseTableName: usertype_aud
+            baseTableName: usertypes_aud
             baseColumnNames: rev
             referencedTableName: revinfo
             referencedColumnNames: rev
-            constraintName: fk_usertype_aud_revinfo
+            constraintName: fk_usertypes_aud_revinfo
             onDelete: CASCADE
 
       rollback:
         - dropTable:
             cascadeConstraints: true
-            tableName: usertype_aud
+            tableName: usertypes_aud
 
   - changeSet:
       id: 20260915_0001_create_usertype_revision_indexes_004
@@ -175,25 +175,25 @@ databaseChangeLog:
       preConditions:
         - onFail: HALT
         - tableExists:
-            tableName: usertype_aud
+            tableName: usertypes_aud
       changes:
         - createIndex:
-            tableName: usertype_aud
-            indexName: idx_usertype_aud_rev
+            tableName: usertypes_aud
+            indexName: idx_usertypes_aud_rev
             columns:
               - column:
                   name: rev
         - createIndex:
-            tableName: usertype_aud
-            indexName: idx_usertype_aud_id
+            tableName: usertypes_aud
+            indexName: idx_usertypes_aud_id
             columns:
               - column:
                   name: id
 
       rollback:
         - dropIndex:
-            tableName: usertype_aud
-            indexName: idx_usertype_aud_rev
+            tableName: usertypes_aud
+            indexName: idx_usertypes_aud_rev
         - dropIndex:
-            tableName: usertype_aud
-            indexName: idx_usertype_aud_id
+            tableName: usertypes_aud
+            indexName: idx_usertypes_aud_id
