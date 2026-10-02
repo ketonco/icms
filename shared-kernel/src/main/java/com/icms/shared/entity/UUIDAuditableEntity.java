@@ -6,8 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.UUID;
 import jakarta.persistence.GeneratedValue;
+import org.hibernate.envers.Audited;
 
 @MappedSuperclass
+@Audited
 @Getter
 @Setter
 public class UUIDAuditableEntity extends AuditableEntity implements IdentifiableImpl<UUID> {

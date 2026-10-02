@@ -6,8 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.MappedSuperclass;
+import org.hibernate.envers.Audited;
 
 @MappedSuperclass
+@Audited
 @Getter
 @Setter
 public class LongAuditableEntity extends AuditableEntity implements IdentifiableImpl<Long> {

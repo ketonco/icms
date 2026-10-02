@@ -9,8 +9,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 @MappedSuperclass
+@Audited
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,6 +24,7 @@ public class BaseCatalogTranslationEntity<C extends BaseCatalogEntity> extends L
     @JoinColumn(updatable = false, nullable = false, name="catalog_id")
     private C catalog; // Reference to the catalog entity this translation belongs to
 
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @ManyToOne(fetch = FetchType.LAZY) // Many-to-one relationship with the language entity, FetchType.LAZY ensures the language is loaded only when accessed
     @JoinColumn(updatable = false, nullable = false, name="language_id")
     private Language language; // Reference to the language entity for this translation

@@ -11,8 +11,10 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import jakarta.persistence.Column;
 import java.time.LocalDateTime;
+import org.hibernate.envers.Audited;
 
 @MappedSuperclass
+@Audited
 @EntityListeners(AuditingEntityListener.class) // Enable auditing for this entity from Spring Data JPA
 @Getter
 @Setter
