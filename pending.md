@@ -58,29 +58,3 @@ rutas protegidas.
 
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
-
-## P-19 — UserProfileService no tiene pruebas para su lógica propia
-
-**Dónde:**
-`user-auth/src/test/java/com/icms/user_auth/service/UserProfileServiceTest.java:6-8`
-
-**Ubicación del TODO: no agregado.**
-
-**Problema:** la clase de prueba está vacía, aunque `UserProfileService` tiene
-lógica propia para guardar, actualizar y resolver usuario y perfil.
-
-**Contexto y explicación:** los casos de ausencia de usuario o perfil y la
-conversión del DTO no tienen cobertura específica conforme al principio
-selectivo de pruebas de §I.
-
-**Opciones estándar:**
-
-- A) Añadir pruebas unitarias con Mockito y AssertJ para las rutas propias
-  (recomendado).
-- B) Mantener la clase vacía y confiar únicamente en pruebas de integración.
-
-**Recomendación:** A, verificando guardado/actualización y excepciones cuando
-falte el usuario o perfil.
-
-**Nivel de acción requerido:** Medio — lógica propia de servicio sin pruebas
-específicas.
