@@ -11,9 +11,9 @@ import org.hibernate.envers.Audited;
 @Table(name = "userstatus")
 @AllArgsConstructor 
 @Audited
-@Builder 
 public class UserStatus extends BaseCatalogEntity{
     
+    @Builder 
     public UserStatus(String code, Boolean active, String name) {
         super(code, active, name);
     }
