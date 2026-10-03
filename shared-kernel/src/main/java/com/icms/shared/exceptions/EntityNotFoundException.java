@@ -5,7 +5,7 @@ public class EntityNotFoundException extends BaseException {
         super("Ent-001");
     }
 
-    public EntityNotFoundException(String message) {
-        super("Ent-001", message);
+    public EntityNotFoundException(String code) {
+        super(code);
     }
 }
