@@ -21,16 +21,15 @@ import java.util.UUID;
 public class UserProfileService extends BaseService<UserProfile, UserProfileDto, UUID, UserProfileRepository> {
 
     private UserProfileRepository repository;
-
-    @Autowired 
     private UserRepository userRepository;
 
     private UserProfileMapper mapper;
     private UserProfileRules rules;
 
-    public UserProfileService(UserProfileRepository repository, UserProfileMapper mapper, UserProfileRules rules) {
+    public UserProfileService(UserProfileRepository repository, UserRepository userRepository, UserProfileMapper mapper, UserProfileRules rules) {
         super(repository, mapper, rules);
         this.repository = repository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
         this.rules = rules;
     }
