@@ -41,7 +41,7 @@ class LanguageRepositoryTest {
         // clear the persistence context to ensure the entity is fetched from the database
         testEntityManager.clear();
         
-        // When
+        // act
         Language found = languageRepository.findByCode(language.getCode()).orElse(null);
 
         // Then
