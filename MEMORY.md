@@ -70,6 +70,9 @@
 - **MCP de Postgres para validación:**
   - *Decisión:* `@microsoft/postgres-mcp` vía `opencode.json` (raíz, sin credenciales), con un perfil por módulo (`user-auth` → `ICMS_UA`) y contraseña en el keyring de Windows. Comando `/rebuild-db` ejecuta dropAll + update + seed y valida con el MCP.
   - *Por qué:* Varias BD por microservicio sin duplicar config; cumple la prohibición de contraseñas en archivos versionados.
+- **`PasswordEncoder` global sin perfil (2026-10-05):**
+  - *Decisión:* El bean vive en `EncryptEncoder` (`@AutoConfiguration` de SharedKernel, sin `@Profile`); no duplicarlo en configs con `@Profile("!task")` como `SecurityConfig`.
+  - *Por qué:* El perfil `task` excluye seguridad pero igual instancia servicios que lo exigen; duplicarlo rompe `task` (ausente) o el arranque normal (dos beans). Validado con `/rebuild-db` → seeds verdes.
 
 ---
 
