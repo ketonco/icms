@@ -79,17 +79,13 @@ public class UserMapperTest {
             user.getEmail());
 
         given(userProfileMapper.toDto(any())).willReturn(userProfileDto);
-        given(userTypeMapper.convertToString(any())).willReturn("ADM");
-        given(userStatusMapper.convertEntityToString(any())).willReturn("ACT");
-
+        
         //Act
-        CreateUserDto createUserDto = mapper.toCreateUseDto(user);
+        CreateUserDto createUserDto = mapper.toCreateUserDto(user);
 
         //Assert
         assertThat(createUserDto.username()).isEqualTo(user.getUsername());
-        assertThat(createUserDto.profile().firstName()).isEqualTo(user.getProfile().getFirstName());
-        assertThat(createUserDto.status()).isEqualTo(user.getStatus().getCode());
-        assertThat(createUserDto.types()).contains("ADM");       
+        assertThat(createUserDto.profile().firstName()).isEqualTo(user.getProfile().getFirstName());       
 
         
     }

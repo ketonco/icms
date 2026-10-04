@@ -15,7 +15,7 @@ import com.icms.user_auth.entity.User;
 )
 public interface UserMapper{
 
-    CreateUserDto toCreateUseDto(User user);
+    CreateUserDto toCreateUserDto(User user);
 
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "types", ignore = true)
