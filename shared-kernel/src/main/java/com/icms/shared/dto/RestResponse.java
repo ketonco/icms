@@ -23,6 +23,7 @@ public class RestResponse<T> {
 
     public static <T> RestResponse<T> ok(T data, String message) {
         RestResponse<T> response = new RestResponse<>();
+        // TODO: status can be 200 or 201 if it is a creation operation or 204 if no content is returned
         response.setStatus(200);
         response.setMessage(message);
         response.setTimestamp(LocalDateTime.now());
