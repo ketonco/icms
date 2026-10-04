@@ -21,7 +21,8 @@ public class UserStatusDataSeed implements DataSeed{
     List<UserStatus> userStatusList = List.of(
         new UserStatus("ACT", Boolean.TRUE, "ACTIVE"),
         new UserStatus("INA", Boolean.TRUE, "INACTIVE"),
-        new UserStatus("SUS", Boolean.TRUE, "SUSPENDED")
+        new UserStatus("SUS", Boolean.TRUE, "SUSPENDED"),
+        new UserStatus("DEL", Boolean.TRUE, "DELETED")
     );
 
     @Override
