@@ -2,8 +2,8 @@
 
 ## Estado de referencia
 
-- **Fecha:** 2026-10-02
-- **Commit:** `0a65c26`
+- **Fecha:** 2026-10-05
+- **Commit:** `a4ba680`
 - **Alcance:** revisión completa del proyecto; arquitectura y estructura
   Gradle revisadas.
 - **Pendientes vigentes:** P-03, P-15, P-16, P-17, P-18, P-19 y P-20 en

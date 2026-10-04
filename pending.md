@@ -1,7 +1,7 @@
 # Pendientes activos del proyecto ICMS
 
 Revisión integral de `.github/copilot-instructions.md` frente al código real.
-Fecha: 2026-10-02.
+Fecha: 2026-10-05.
 
 ## P-03 — Versiones hardcodeadas fuera de `libs.versions.toml`
 
@@ -10,20 +10,24 @@ Fecha: 2026-10-02.
 
 **Ubicacion del TODO: no agregado** (aparcado, lo revisa el desarrollador)
 
-**Problema:** `shared-kernel/build.gradle:12` fija `mavenBom '...:4.1.1'` y
-`migration-conventions.gradle.kts:16` fija
-`liquibaseRuntime("info.picocli:picocli:4.7.6")` en vez de usar el catálogo
-`libs`, lo que contradice el “estrictamente `libs.versions.toml`” de §1.
+**Problema:** `shared-kernel/build.gradle:12` fija la versión del BOM con
+`mavenBom '...:4.1.1'`, y
+`migration-conventions.gradle.kts:16` declara directamente la coordenada y
+versión de picocli en `liquibaseRuntime`, aunque ya existe el alias `libs.picocli`.
+Esto contradice el uso estrictamente centralizado de versiones de §1.
 
-**Contexto / Explicación:** las versiones dispersas fuera del catálogo
-centralizado se desincronizan con el tiempo y rompen la regla de §1.
+**Contexto / Explicación:** versiones declaradas fuera del catálogo centralizado
+se pueden desincronizar y hacen que el alias ya definido para picocli no cubra
+la configuración de Liquibase.
 
 **Opciones estándar:**
 
-- A) Migrar ambas a `libs` (recomendado).
+- A) Usar el catálogo para el BOM y el alias `libs.picocli` también en
+  `liquibaseRuntime` (recomendado).
 - B) Documentar la excepción en §1 si hay motivo técnico.
 
-**Recomendación:** A, pendiente de revisión del desarrollador.
+**Recomendación:** A, queda pendiente centralizar la versión del BOM y usar el
+alias existente de picocli en todas sus configuraciones.
 
 **Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
 funcional.
@@ -31,7 +35,7 @@ funcional.
 ## P-15 — Rutas protegidas sin mecanismo de autenticación visible
 
 **Dónde:**
-`user-auth/src/main/java/com/icms/user_auth/config/SecurityConfig.java:46-50`
+`user-auth/src/main/java/com/icms/user_auth/config/SecurityConfig.java:51`
 
 **Ubicacion del TODO: agregado** antes de deshabilitar login por formulario y
 HTTP Basic.
@@ -58,3 +62,107 @@ rutas protegidas.
 
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
+
+## P-21 — Prueba de gateway no atraviesa el gateway
+
+**Donde y TODO:**
+`api/src/test/java/com/icms/api/userauth/UserAuthGatewayRoutingIntegrationTest.java:70-72`;
+TODO no agregado.
+
+**Problema:** el cliente `WebTestClient` se configura con el puerto de WireMock,
+así que las solicitudes de la prueba van directamente al stub y omiten el
+servidor Gateway iniciado por Spring.
+
+**Contexto y explicación:** la prueba puede pasar sin verificar el enrutamiento
+ni la configuración de rutas del API Gateway, aunque se presenta como prueba
+de integración de ese componente.
+
+**Opciones estándar:**
+
+- A) Apuntar el cliente al puerto `@LocalServerPort` del Gateway y mantener
+  WireMock como downstream (recomendado).
+- B) Cambiar la prueba para declarar explícitamente que solo prueba el stub,
+  aunque ya no validaría el Gateway.
+
+**Recomendación:** A, verificando además que WireMock recibió las solicitudes
+esperadas.
+
+**Nivel de acción requerido:** Alto — la prueba actual no cubre el componente
+que pretende validar.
+
+## P-22 — Endpoint de creación no activa validación del DTO
+
+**Donde y TODO:**
+`user-auth/src/main/java/com/icms/user_auth/controller/UserController.java:24`;
+TODO no agregado.
+
+**Problema:** el parámetro `@RequestBody CreateUserDto` no incluye `@Valid`, pese
+a que el DTO declara restricciones Jakarta y validación anidada para el perfil.
+
+**Contexto y explicación:** la validación automática de Spring MVC no ejecuta
+esas restricciones para esta solicitud sin `@Valid`; datos inválidos pueden
+llegar al servicio y persistencia.
+
+**Opciones estándar:**
+
+- A) Añadir `@Valid` al parámetro y cubrir solicitudes inválidas en la prueba
+  del controlador (recomendado).
+- B) Ejecutar validación manual en la capa de servicio.
+
+**Recomendación:** A, usando validación declarativa de Spring MVC y pruebas
+RestAssured que comprueben el rechazo de DTO inválidos.
+
+**Nivel de acción requerido:** Alto — permite que la operación de alta omita
+las restricciones declaradas por el contrato de entrada.
+
+## P-23 — Endpoint de creación responde HTTP 200 en vez de 201
+
+**Donde y TODO:**
+`user-auth/src/main/java/com/icms/user_auth/controller/UserController.java:23-26`
+y `user-auth/src/test/java/com/icms/user_auth/controller/UserControllerTest.java:71-73`;
+TODO agregado en la prueba, línea 71.
+
+**Problema:** el método declara `@ResponseStatus(HttpStatus.CREATED)`, pero
+devuelve `ResponseEntity.ok(...)`, cuyo estado explícito es 200; la prueba espera
+200 y deja pendiente cambiarlo a 201.
+
+**Contexto y explicación:** el estado HTTP observado contradice la intención
+expresada por la anotación y el contrato esperado para crear un recurso.
+
+**Opciones estándar:**
+
+- A) Devolver `ResponseEntity.status(HttpStatus.CREATED)` y ajustar la prueba a
+  201 (recomendado).
+- B) Eliminar la anotación y documentar explícitamente 200 como contrato.
+
+**Recomendación:** A, manteniendo el estado estándar de creación.
+
+**Nivel de acción requerido:** Medio — el recurso se crea, pero la respuesta
+HTTP no refleja el resultado de creación.
+
+## P-24 — Prueba de UserService no verifica invariantes de creación
+
+**Donde y TODO:**
+`user-auth/src/test/java/com/icms/user_auth/service/UserServiceTest.java:103-108`;
+TODO no agregado.
+
+**Problema:** la prueba solo comprueba que el DTO devuelto no sea nulo y que su
+nombre coincida; no verifica codificación de contraseña, asignación del rol y
+estado predeterminados, ni exclusión de la contraseña de la respuesta.
+
+**Contexto y explicación:** esos comportamientos son lógica propia de
+`UserService` y afectan seguridad y consistencia de la cuenta creada. La prueba
+actual puede pasar aunque las asignaciones o el tratamiento del secreto fallen.
+
+**Opciones estándar:**
+
+- A) Capturar/verificar la entidad guardada y las interacciones del mapper para
+  comprobar esas invariantes con Mockito y AssertJ (recomendado).
+- B) Añadir una prueba de integración de persistencia que valide el flujo
+  completo de creación.
+
+**Recomendación:** A para la lógica de servicio; mantener la prueba de
+integración como validación del contrato HTTP.
+
+**Nivel de acción requerido:** Alto — la prueba actual no protege invariantes de
+seguridad ni de asignación de roles/estado.
