@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/auth/user-status/**").permitAll()
                 .requestMatchers("/api/v1/auth/user-status-translations/**").permitAll()
                 .requestMatchers("/api/v1/auth/test/**").permitAll()
+                .requestMatchers("/api/v1/auth/user/**").permitAll()
 
                 .anyRequest().authenticated()
             )
@@ -52,10 +53,5 @@ public class SecurityConfig {
             .httpBasic(httpBasic -> httpBasic.disable());
 
         return http.build();
-    }
-
-    @Bean 
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }
