@@ -25,6 +25,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<RestResponse<CreateUserDto>> createUser(@RequestBody @Valid CreateUserDto createUserDto) {
         CreateUserDto createdUser = userService.createUserDto(createUserDto);
+        // TODO (pending P-23)
         return ResponseEntity.ok(RestResponse.ok(createdUser));
     }
 

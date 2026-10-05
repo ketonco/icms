@@ -103,6 +103,7 @@ public class UserServiceTest {
         CreateUserDto result = userService.createUserDto(createUserDto);
 
         // Assert
+        // TODO (pending P-24)
         // Add assertions to verify the user was created correctly
         assertThat(result).isNotNull();
         assertThat(result.username()).isEqualTo(userDtoCreated.username());

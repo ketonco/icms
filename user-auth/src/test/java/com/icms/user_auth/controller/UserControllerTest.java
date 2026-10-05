@@ -68,7 +68,7 @@ public class UserControllerTest {
         .when()
             .post("/api/v1/auth/user")
         .then()
-            //TODO: cambiar a 201 cuando se implemente correctamente el código de estado para la creación de usuarios
+            // TODO (pending P-23)
             .statusCode(200)
             .body("data.username", equalTo("testuser2"))
             .body("data.email", equalTo("testuser2@example.com")); 
