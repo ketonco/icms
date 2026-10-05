@@ -12,6 +12,7 @@ public class TestRouterConfig {
     @Bean
     public RouterFunction<ServerResponse> routerFunction() {
         return RouterFunctions.route()
+                // TODO (pending P-28)
                 .GET("/test", 
                     request -> ServerResponse.ok().bodyValue("Test route"))
                 .build();

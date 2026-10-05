@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class TestController {
     
+    // TODO (pending P-28)
     @GetMapping("/test")
     public String test() {
         return "User-Auth Service is running";
