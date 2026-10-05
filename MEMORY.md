@@ -93,7 +93,43 @@
 
 ## 4. Próximos Pasos
 
-1. **Entidad `Usuario` y Repositorios:** Finalizar el modelado de la entidad `Usuario`, sus enums y roles y la persistencia con Spring Data JPA.
-2. **Módulo de Seguridad con Spring Security:** Implementar configuración, tokens JWT u OAuth2 y filtros de autenticación y autorización.
-3. **Estandarización de Pruebas:** Definir clases base y patrones para tests unitarios con Mockito, AssertJ e Instancio y de integración con `@SpringBootTest` o `@DataJpaTest`.
-4. **Optimización de DTOs y Mappers:** Diseñar jerarquía de DTOs según rol con MapStruct y configuración central `MapperSetting`.
+1. **Mecanismo de autenticación JWT en `user-auth` (cierra P-15):**
+   `UserDetailsService` + `AuthenticationProvider` que cargue al usuario con
+   sus tipos y permisos, endpoint `POST /api/v1/auth/login` que emita el token
+   y filtro JWT conectado a la cadena de `SecurityConfig:49` (quitando el
+   TODO). *Terminado cuando:* login devuelve token, un Bearer válido pasa a
+   rutas protegidas, sin token o inválido responde 401, con tests verdes.
+2. **Flujo de estados de cuenta:** decidir el status inicial de los usuarios
+   nuevos (`PENDING` vs `INA`), cambiar el default en `UserService:52`,
+   sembrar el status nuevo en `UserStatusDataSeed` y agregar sus traducciones
+   junto con las de `DEL` (cierra P-25). *Terminado cuando:* todo status del
+   catálogo tiene traducciones en cada idioma activo, validado con el MCP
+   PostgreSQL.
+3. **Estandarización de pruebas + invariantes de `UserService` (cierra
+   P-24):** definir clases base y patrones AAA (Mockito + AssertJ + Instancio)
+   y corregir la prueba de creación para verificar codificación bcrypt, rol,
+   estado por defecto y ausencia de contraseña en la respuesta.
+   *Terminado cuando:* el test falla si cualquiera de esas invariantes cae y
+   queda commiteado en verde.
+4. **DTOs por rol con MapStruct:** jerarquía de DTOs de entrada y salida por
+   rol (GUE/USR/MOD/ADM) con configuración central `MapperSetting`.
+   *Terminado cuando:* ningún DTO de salida expone campos sensibles y existen
+   tests de mapper que validen el mapeo por rol.
+5. **Contrato HTTP de creación (cierra P-23):** `POST /api/v1/auth/user`
+   responde 201, refleja `status=201` en `RestResponse` e incluye `Location`;
+   `UserControllerTest` cubre altas válidas e inválidas.
+   *Terminado cuando:* código y pruebas coinciden en HTTP 201, cuerpo 201,
+   `Location` y rechazo HTTP 400 para DTOs inválidos.
+6. **Deuda de build y aislamiento de pilas (cierra P-03 y P-26):** BOM y
+   picocli centralizados en `libs.versions.toml`, y quitar
+   `spring-boot-starter-webflux` de `testImplementation` en `user-auth` si no
+   hay uso de `WebTestClient`. *Terminado cuando:* `gradlew build` verde y
+   sin versiones fuera del catálogo.
+7. **Guía de `user-auth` en `1guides/` (cierre de F1):** documentar
+   arquitectura, endpoints, roles y permisos, seeds y flujo `/rebuild-db`.
+   *Terminado cuando:* guía publicada con markdownlint en 0 warnings y F1
+   cerrada con migraciones, seeds y tests verdes.
+8. **Arranque de `catalog` (F2):** nuevo módulo WebMVC con BD propia,
+   migraciones Liquibase reutilizando `Base*`, seeds y auditoría, y lectura
+   pública de productos. *Terminado cuando:* el catálogo se lista sin
+   autenticación (GUE), migraciones aplicadas y tests verdes.

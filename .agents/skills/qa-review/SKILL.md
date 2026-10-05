@@ -39,8 +39,21 @@ Ante el alcance indicado por el usuario en su mensaje (módulo, paquete o todo e
 6. Memoria: si durante la revisión el desarrollador deja constancia de una
    decisión momentánea ("lo hice así por ahora porque...") o de avance del
    proyecto que convenga recordar, fíjalo en `MEMORY.md` como decisión
-   esencial con su porqué. Respeta su alcance: solo decisiones y
-   aprendizajes, nunca bitácora, máximo 250 líneas y nunca secretos.
+   esencial con su porqué. En §4 Próximos Pasos, que no es estática y que
+   mantiene este skill, no el desarrollador:
+   a. Si un punto se completó o está en curso según los commits revisados,
+      elimínalo o reescríbelo al estado real.
+   b. Al retirar o reescribir un punto, propón el reemplazo que corresponda
+      para mantener el conjunto real: guíate en `ROADMAP.md` (fases, módulos
+      y criterios de terminado) y en los pendientes activos de `pending.md`,
+      atendiendo a lo que realmente se está haciendo ahora; nada genérico ni
+      inventado.
+   c. Mantén hasta 8 puntos, cada uno un paso detallado y sustancial
+      (módulo, alcance y cómo se sabe terminado), no tareas menores
+      agrupadas. Si no hay 8 reales, deja los que haya.
+   Todo cambio propuesto en §4 se presenta en el resumen del paso 7 y se
+   escribe solo tras el sí. Respeta el alcance del archivo: solo decisiones
+   y aprendizajes, nunca bitácora, máximo 250 líneas y nunca secretos.
 7. Presenta el resumen (hallazgos, pruebas propuestas, pendientes a borrar o
    completar, histórico a crear/actualizar, memoria a actualizar) y espera el
    sí. Sin tu orden no se escribe nada. Si solicitaste un cambio sobre lo
@@ -54,7 +67,6 @@ Ante el alcance indicado por el usuario en su mensaje (módulo, paquete o todo e
 9. Respeta markdownlint (blancos alrededor de encabezados/listas, niveles sin
    saltos) en todo `.md` que toques. Validación de runtime no te corresponde:
    si en el código no hay señal de fallo, el cambio está bien aplicado.
-
 10. Integridad de datos en BD: si el MCP `postgres` está disponible, conecta
    con el perfil del módulo y valida:
    a. Todo catálogo con traducciones (`*Translation`) tiene filas en cada
