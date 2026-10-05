@@ -70,7 +70,7 @@ protegidas y deja incompleto el flujo central del módulo.
 `user-auth/src/main/java/com/icms/user_auth/controller/UserController.java:28`,
 `user-auth/src/test/java/com/icms/user_auth/controller/UserControllerTest.java:71`
 y `shared-kernel/src/main/java/com/icms/shared/dto/RestResponse.java:26`;
-TODO agregado en controlador y prueba; falta vincular el TODO del cuerpo de respuesta.
+TODO agregado en los tres archivos.
 
 **Problema:** el método declara `@ResponseStatus(HttpStatus.CREATED)`, pero
 devuelve `ResponseEntity.ok(...)`, cuyo estado explícito es 200. Además,
@@ -177,7 +177,7 @@ debilita el aislamiento de pilas indicado para el módulo.
 
 **Donde y TODO:**
 `user-auth/src/test/java/com/icms/user_auth/controller/UserControllerTest.java:76`;
-TODO no agregado.
+TODO agregado.
 
 **Problema:** `UserControllerTest` solo envía un DTO válido y no comprueba que
 las restricciones declaradas en `CreateUserDto` y su perfil anidado produzcan
@@ -206,7 +206,7 @@ controlador sin una prueba negativa que la proteja.
 `api/src/main/java/com/icms/api/config/TestRouterConfig.java:15`,
 `user-auth/src/main/java/com/icms/user_auth/controller/TestController.java:11`
 y `user-auth/src/main/java/com/icms/user_auth/config/SecurityConfig.java:44`;
-TODO no agregado.
+TODO agregado en las tres ubicaciones.
 
 **Problema:** el Gateway publica una ruta local `/test` y `user-auth` publica
 `/api/v1/auth/test`; ambas configuraciones están activas fuera del perfil de

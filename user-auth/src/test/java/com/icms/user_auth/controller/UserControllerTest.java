@@ -73,5 +73,6 @@ public class UserControllerTest {
             .body("data.username", equalTo("testuser2"))
             .body("data.email", equalTo("testuser2@example.com")); 
     }
+
     // TODO (pending P-27)
 }
