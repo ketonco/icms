@@ -33,6 +33,9 @@ Ante el alcance indicado por el usuario en su mensaje (módulo, paquete o todo e
    cada hallazgo nuevo con la plantilla estándar P-XX. Si un hallazgo obliga
    a cambiar `AGENTS.md` o `.github/copilot-instructions.md`, NO los toques:
    regístralo como pending de nivel Alto para que lo aplique el desarrollador.
+   **ES OBLIGATORIO:** agrega el comentario `TODO (pending P-XX)` en la línea exacta de código a
+   corregir. Sin excepciones. Si el hallazgo es de datos (no de código),
+   indícalo en el reporte y propón la migración o seed necesario.
 6. Memoria: si durante la revisión el desarrollador deja constancia de una
    decisión momentánea ("lo hice así por ahora porque...") o de avance del
    proyecto que convenga recordar, fíjalo en `MEMORY.md` como decisión
@@ -51,3 +54,15 @@ Ante el alcance indicado por el usuario en su mensaje (módulo, paquete o todo e
 9. Respeta markdownlint (blancos alrededor de encabezados/listas, niveles sin
    saltos) en todo `.md` que toques. Validación de runtime no te corresponde:
    si en el código no hay señal de fallo, el cambio está bien aplicado.
+
+10. Integridad de datos en BD: si el MCP `postgres` está disponible, conecta
+   con el perfil del módulo y valida:
+   a. Todo catálogo con traducciones (`*Translation`) tiene filas en cada
+      idioma activo (o al menos en el idioma por defecto).
+   b. Los datos de cada `*DataSeed.java` existen en BD con los valores
+      declarados en el seed.
+   c. No hay huérfanos referenciales obvios (FKs sin padre).
+   d. Las relaciones entre tablas respetan las restricciones de integridad definidas (FKs, unique constraints, not null).
+   e. Los índices definidos en las tablas existen y son utilizados según lo esperado.
+   f. La data registrada tiene consistencia con las reglas de negocio definidas (por ejemplo, valores dentro de rangos esperados, formatos correctos, relaciones válidas).
+   Si el MCP no está disponible, anótalo en el reporte y continúa.

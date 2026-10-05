@@ -114,3 +114,33 @@ integración como validación del contrato HTTP.
 
 **Nivel de acción requerido:** Alto — la prueba actual no protege invariantes de
 seguridad ni de asignación de roles/estado.
+
+## P-25 — Traducciones faltantes para los status PENDING y DEL
+
+**Dónde:** `user-auth/src/main/java/com/icms/user_auth/cli/level2/UserStatusTranslationDataSeed.java`
+y `user-auth/src/main/resources/db/migrations/` (nuevo changeset si aplica)
+
+**Ubicacion del TODO: no agregado** (pendiente de tu autorización)
+
+**Problema:** el status `DEL` (DELETED) existe en BD con 0 traducciones
+(verificado 2026-10-05 vía MCP: ACT=2, DEL=0, INA=2, SUS=2). Al agregar
+`PENDING` como status por defecto de nuevos usuarios, también quedará sin
+traducciones. `SecurityConfig:44` expone `/api/v1/auth/user-status/**`
+públicamente, así que el nombre de estos status se mostraría en blanco.
+
+**Contexto / Explicación:** `UserStatusTranslationDataSeed` solo cubre
+ACT/INA/SUS (6 filas). Los status agregados después (DEL, y ahora PENDING)
+no tienen traducciones en `userstatus_translation`.
+
+**Opciones estándar:**
+
+- A) Agregar las traducciones en el seed `UserStatusTranslationDataSeed`
+  (recomendado si aún no está en producción): 2 filas por status
+  (en-US, es-ES).
+- B) Si la BD ya está en producción: changeset Liquibase nuevo con
+  `INSERT` en `userstatus_translation` para DEL y PENDING.
+
+**Recomendación:** A si la BD es solo local; B si ya corrió en compartida.
+
+**Nivel de acción requerido:** Medio — no rompe nada hoy, pero el nombre
+de los status aparecería en blanco en la API pública.
