@@ -5,6 +5,8 @@ import com.icms.shared.dto.RestResponse;
 import com.icms.user_auth.dto.user.CreateUserDto;
 import com.icms.user_auth.service.daoservice.UserService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<RestResponse<CreateUserDto>> createUser(@RequestBody CreateUserDto createUserDto) {
+    public ResponseEntity<RestResponse<CreateUserDto>> createUser(@RequestBody @Valid CreateUserDto createUserDto) {
         CreateUserDto createdUser = userService.createUserDto(createUserDto);
         return ResponseEntity.ok(RestResponse.ok(createdUser));
     }

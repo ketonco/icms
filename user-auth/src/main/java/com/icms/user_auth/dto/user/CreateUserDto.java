@@ -16,7 +16,7 @@ public record CreateUserDto(
 
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 6, max = 100, message = "Password must be between 6 and 100 characters")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[a-zA-Z])(?=.*[A-Z]).+$", message = "Password must include at least one number, one special character, one letter and one uppercase letter")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[!@#$%^&*\\-._])(?=.*[a-zA-Z])(?=.*[A-Z]).+$", message = "Password must include at least one number, one special character, one letter and one uppercase letter")
     String password,
 
     @NotBlank(message = "Email cannot be blank")

@@ -63,31 +63,6 @@ rutas protegidas.
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
 
-## P-22 — Endpoint de creación no activa validación del DTO
-
-**Donde y TODO:**
-`user-auth/src/main/java/com/icms/user_auth/controller/UserController.java:24`;
-TODO no agregado.
-
-**Problema:** el parámetro `@RequestBody CreateUserDto` no incluye `@Valid`, pese
-a que el DTO declara restricciones Jakarta y validación anidada para el perfil.
-
-**Contexto y explicación:** la validación automática de Spring MVC no ejecuta
-esas restricciones para esta solicitud sin `@Valid`; datos inválidos pueden
-llegar al servicio y persistencia.
-
-**Opciones estándar:**
-
-- A) Añadir `@Valid` al parámetro y cubrir solicitudes inválidas en la prueba
-  del controlador (recomendado).
-- B) Ejecutar validación manual en la capa de servicio.
-
-**Recomendación:** A, usando validación declarativa de Spring MVC y pruebas
-RestAssured que comprueben el rechazo de DTO inválidos.
-
-**Nivel de acción requerido:** Alto — permite que la operación de alta omita
-las restricciones declaradas por el contrato de entrada.
-
 ## P-23 — Endpoint de creación responde HTTP 200 en vez de 201
 
 **Donde y TODO:**

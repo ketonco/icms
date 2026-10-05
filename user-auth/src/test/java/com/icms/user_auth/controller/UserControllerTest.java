@@ -35,9 +35,9 @@ public class UserControllerTest {
     @AfterEach
     @Transactional
     void tearDown() {
-        userRepository.deleteProfileByUsername("testuser");
-        userRepository.deleteUserTypesByUsername("testuser");
-        userRepository.deleteByUsername("testuser");
+        userRepository.deleteProfileByUsername("testuser2");
+        userRepository.deleteUserTypesByUsername("testuser2");
+        userRepository.deleteByUsername("testuser2");
     }
 
     @Test 
@@ -48,16 +48,16 @@ public class UserControllerTest {
         // json payload for creating a new user with CreateUserDto fields
         String jsonPayload = """
         {
-            "username": "testuser",
-            "password": "testpassword",
-            "email": "testuser@example.com",
+            "username": "testuser2",
+            "password": "Testpassword.123456",
+            "email": "testuser2@example.com",
             "profile": {
                 "firstName": "Test",
                 "lastName": "User",
                 "avatarUrl": "http://example.com/avatar.jpg",
                 "prefs": null,
                 "contact": null,
-                "email": "testuser@example.com"
+                "email": "testuser2@example.com"
             }
         }
         """;
@@ -70,7 +70,7 @@ public class UserControllerTest {
         .then()
             //TODO: cambiar a 201 cuando se implemente correctamente el código de estado para la creación de usuarios
             .statusCode(200)
-            .body("data.username", equalTo("testuser"))
-            .body("data.email", equalTo("testuser@example.com")); 
+            .body("data.username", equalTo("testuser2"))
+            .body("data.email", equalTo("testuser2@example.com")); 
     }
 }
