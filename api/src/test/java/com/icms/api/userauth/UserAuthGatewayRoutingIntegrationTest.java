@@ -68,7 +68,7 @@ public class UserAuthGatewayRoutingIntegrationTest {
         
         // Initialize the WebTestClient to point to the WireMock server
         webTestClient = WebTestClient.bindToServer()
-                .baseUrl("http://localhost:" + wireMockServer.port())
+                .baseUrl("http://localhost:" + port)
                 .build();
     }
 

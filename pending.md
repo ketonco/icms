@@ -63,33 +63,6 @@ rutas protegidas.
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
 
-## P-21 — Prueba de gateway no atraviesa el gateway
-
-**Donde y TODO:**
-`api/src/test/java/com/icms/api/userauth/UserAuthGatewayRoutingIntegrationTest.java:70-72`;
-TODO no agregado.
-
-**Problema:** el cliente `WebTestClient` se configura con el puerto de WireMock,
-así que las solicitudes de la prueba van directamente al stub y omiten el
-servidor Gateway iniciado por Spring.
-
-**Contexto y explicación:** la prueba puede pasar sin verificar el enrutamiento
-ni la configuración de rutas del API Gateway, aunque se presenta como prueba
-de integración de ese componente.
-
-**Opciones estándar:**
-
-- A) Apuntar el cliente al puerto `@LocalServerPort` del Gateway y mantener
-  WireMock como downstream (recomendado).
-- B) Cambiar la prueba para declarar explícitamente que solo prueba el stub,
-  aunque ya no validaría el Gateway.
-
-**Recomendación:** A, verificando además que WireMock recibió las solicitudes
-esperadas.
-
-**Nivel de acción requerido:** Alto — la prueba actual no cubre el componente
-que pretende validar.
-
 ## P-22 — Endpoint de creación no activa validación del DTO
 
 **Donde y TODO:**
