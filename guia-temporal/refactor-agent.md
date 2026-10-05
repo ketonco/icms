@@ -1,33 +1,31 @@
 # Refactor Agent — Guía temporal
 
-Para crear en **OpenCode**. Orquestador + 3 subagentes.
+Creado en **OpenCode** como agentes nativos en `.opencode/agents/`.
 
-## Estructura
+## Archivos
 
-- `refactor-planner`: revisa código actual, máx 5 preguntas, escribe plan en `.opencode/refactors/<slug>/plan.md`
-- `refactor-executor`: lee plan, ejecuta, escribe en `.opencode/refactors/<slug>/executed.md`
-- `refactor-tester`: ejecuta tests específicos, veredicto en `.opencode/refactors/<slug>/test-result.md`
+- `refactor-coordinator.md` — mode: primary, orquesta las 3 fases
+- `refactor-planner.md` — mode: subagent, inspecciona y escribe el plan
+- `refactor-executor.md` — mode: subagent, ejecuta el plan
+- `refactor-tester.md` — mode: subagent, ejecuta tests y emite veredicto
 
 ## Flujo
 
-1. Planner pregunta (máx 5) → usuario responde
-2. Planner escribe plan → executor ejecuta → tester valida
-3. Tests verdes → avisa para `qa-review` (Codex) como cierre
-4. Tests rojos → loop con planner (máx 3 ciclos, luego escala al usuario)
+1. Planner propone `<slug>` y hasta 5 preguntas → usuario responde
+2. Planner escribe `.opencode/refactors/<slug>/plan.md` → usuario aprueba
+3. Executor ejecuta → `.opencode/refactors/<slug>/executed.md`
+4. Tester valida → `.opencode/refactors/<slug>/test-result.md`
+5. Tests verdes → avisa para `qa-review` (Codex)
+6. Tests rojos → loop con planner (máx 3 ciclos, luego escala)
 
-## Reglas
+## Decisiones cerradas
 
-- Tester nunca debilita tests para hacerlos pasar
-- `<slug>` kebab-case decidido por el usuario
-- `qa-review` siempre es el cierre final
+- Tester: tests de la refactor + suite completo si toca código compartido
+- Slug: lo propone el planner, se confirma con el usuario
+- Gate: el usuario aprueba el plan antes de ejecutar
+- Tester nunca debilita tests
 
 ## Caso inicial: i18n de validaciones DTO
 
 - Anotaciones Jakarta con mensajes inline → `MessageSource` + properties
 - Pendiente definir: convención de claves, idiomas (en-US, es-ES), fallback
-
-## Pendiente al crear
-
-- [ ] Skill o comando orquestador
-- [ ] 3 subagentes (o modos de una skill)
-- [ ] Probar con el caso i18n de DTO
