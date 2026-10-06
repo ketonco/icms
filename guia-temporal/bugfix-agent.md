@@ -1,20 +1,30 @@
 # Bugfix Agent — Guía temporal
 
-Para crear en **OpenCode**. Agente único, sin subagentes.
+Creado en **OpenCode** como agente nativo en `.opencode/agents/bugfix-agent.md`.
 
-## Fases
+## Estructura
 
-1. **Analizar:** causa raíz + alineación con `AGENTS.md`, `.github/copilot-instructions.md`, `MEMORY.md` y `ROADMAP.md`
-2. **Corregir:** aplica el fix y ejecuta los tests afectados
+- Agente único, `mode: primary`, sin subagentes
+- Permisos: `edit` en código (con deny de protegidos) + `shell` para `*gradlew*`
 
 ## Flujo
 
-- Usuario reporta bug → agente propone solución → usuario aprueba → fix + tests
-- Tests rojos → itera (máx 3 ciclos) → escala si no converge
+1. Preguntas (máx 5) → usuario responde
+2. Replicar bug → documenta en `report.md`
+3. Analizar → hipótesis clara + alineación con convenciones
+4. Proponer solución → usuario aprueba
+5. Corregir → TDD si aplica + tests + verificación de regresión
+6. Reportar → `.opencode/bugfixes/<slug>/report.md`
+
+## Decisiones cerradas
+
+- No downgrades como solución fácil; verificar versiones más nuevas primero
+- Rama `bugfix*` verificada al inicio; no cambia sin aprobación
+- Worktrees para trabajo paralelo en ramas distintas
+- Bug de código del desarrollador → `pending.md` (aprendizaje)
+- Bug externo → flujo normal de bugfix
+- `detected-bug.md` para bugs encontrados durante el trabajo
+- MCP de PostgreSQL si el bug involucra datos
+- Puede escribir tests unitarios/de integración para validar el fix
+- Loop: máx 3 ciclos si tests fallan
 - Cierre: `qa-review` (Codex)
-
-## Reglas
-
-- Cambio estructural pequeño: no aplica, lo propone y el usuario decide
-- Regla puntual → `MEMORY.md`; regla general → `AGENTS.md` (solo con aprobación explícita del usuario)
-- Reporte: `.opencode/bugfixes/<slug>/report.md`
