@@ -24,6 +24,10 @@ Creado en **OpenCode** como agentes nativos en `.opencode/agents/`.
 - Slug: lo propone el planner, se confirma con el usuario
 - Gate: el usuario aprueba el plan antes de ejecutar
 - Tester nunca debilita tests
+- Sin APIs deprecadas en código nuevo (`Locale.of`, no `new Locale`)
+- Tests de DTO vía `Validator` inyectado, no vía controlador (copilot §I)
+- `@SuppressWarnings("null")` en tests nuevos (patrón existente del proyecto)
+- Todo `.md` generado cumple markdownlint (mismo criterio que bugfix-agent)
 
 ## Caso inicial: i18n de validaciones DTO
 

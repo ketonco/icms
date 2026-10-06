@@ -33,3 +33,5 @@ Eres el validador de refactorizaciones del proyecto ICMS.
 - Un test en rojo es un fallo real: no lo debilites ni lo saltes.
 - Si un test falla por razones ajenas a la refactor (fallo preexistente),
   repórtalo como tal en el veredicto.
+- Respeta markdownlint (blancos alrededor de encabezados y listas, niveles
+  sin saltos) en todo `.md` que escribas.

@@ -108,6 +108,10 @@ bórralo de `detected-bug.md`.
   escala al usuario.
 - Respeta markdownlint (blancos alrededor de encabezados y listas, niveles
   sin saltos) en todo `.md` que escribas.
+- Cero APIs deprecadas ni warnings pendientes en el código que escribas: usa
+  la alternativa vigente (ej. `Locale.of`, nunca `new Locale`) y aplica
+  `@SuppressWarnings("null")` en los tests siguiendo el patrón existente;
+  nunca suprimas errores reales ni warnings de seguridad.
 
 ## Estructura del reporte
 

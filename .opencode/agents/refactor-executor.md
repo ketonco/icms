@@ -47,6 +47,12 @@ Eres el ejecutor de refactorizaciones del proyecto ICMS.
 - TDD: si el plan incluye tests, escríbelos primero (en rojo) y después
   el código que los pone en verde.
 - Nunca des la tarea por hecha con tests en rojo.
+- Respeta markdownlint (blancos alrededor de encabezados y listas, niveles
+  sin saltos) en todo `.md` que escribas.
+- Cero APIs deprecadas ni warnings pendientes en el código que escribas: usa
+  la alternativa vigente (ej. `Locale.of`, nunca `new Locale`) y aplica
+  `@SuppressWarnings("null")` en los tests siguiendo el patrón existente;
+  nunca suprimas errores reales ni warnings de seguridad.
 - Si encuentras un problema que el plan no contempla, detente y reporta
   al orquestador en vez de improvisar.
 

@@ -84,6 +84,8 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 - **Pruebas unitarias de mapper** (`src/test/.../mappers/*MapperTest.java`): instancian el mapper vía `Mappers.getMapper(XxxMapper.class)` (sin contexto Spring), usando `Instancio` para generar datos aleatorios y `Select.field(...)` para fijar valores puntuales de verificación.
 - **Pruebas de integración de repositorio** (`src/test/.../repository/*RepositoryTest.java`): `@DataJpaTest`, `@ActiveProfiles("test")`, `@Import(AuditConfig.class)`, `@AutoConfigureTestDatabase(replace = Replace.NONE)` (usa la BD real de test, no H2), `TestEntityManager` para `persistAndFlush`. Evitar `Instancio.create(Entity.class)` para el ID/PK: usar el constructor de negocio o limpiar el `id` explícitamente antes de persistir.
 - **Pruebas de integración de controlador** (`src/test/.../controller/*IntegrationTest.java`): `@SpringBootTest(webEnvironment = RANDOM_PORT)`, `@ActiveProfiles("test")`, `@LocalServerPort`, peticiones HTTP reales vía `RestAssured`.
+- **Pruebas de validación de DTO:** validar directamente con el `Validator` inyectado (`validator.validate(dto)`) en lugar de peticiones HTTP a los controladores, porque no todos los DTO nacen por un endpoint (ej.: `UserTypeController` solo implementa `ReadController`, no expone `POST`). Reservar los tests HTTP con RestAssured (`*IntegrationTest`) para los flujos que sí exponen endpoint.
+- **Warnings en tests nuevos:** aplicar el patrón ya usado en el proyecto — `@SuppressWarnings("null")` en la clase o miembro afectado para silenciar las advertencias de nulidad de los campos inyectados (`@Autowired`, `@Mock`) y dejar limpia la ventana de problemas. Nunca suprimir warnings de seguridad ni errores reales.
 - **Pruebas del gateway** (`api/src/test/.../*IntegrationTest.java`): `@SpringBootTest(webEnvironment = RANDOM_PORT)` con cliente `WebTestClient` y downstream controlado (WireMock + `@DynamicPropertySource` para `HOST_*`/`PORT_*`); nunca exigen el microservicio real levantado ni asertan sus seeds. Las pruebas con servicio vivo pertenecen a una suite de sistema aparte, excluida de `./gradlew test`.
 - El perfil `test` (ver `application.yml`) desactiva Liquibase, sesión y caché para aislar las pruebas.
 
@@ -116,6 +118,7 @@ Estructura de referencia (`user-auth`), replicable en todo microservicio MVC nue
 - Manejo de internacionalización (i18n) en mensajes de error mediante archivos `messages.properties` y la cabecera `Accept-Language`.
 - Seguir las convenciones de nombres de paquetes y clases establecidas en el proyecto para mantener la coherencia y facilitar la navegación del código.
 - Todo comentario, Javadoc e identificador en el código debe ser descriptivo y estar escrito en inglés (evitar abreviaturas innecesarias); las explicaciones al usuario en el chat deben ser en español.
+- **APIs deprecadas:** no usar constructores, métodos o clases marcados como `@Deprecated` en código nuevo. Si el compilador o el IDE marca un warning de deprecación, usar siempre la alternativa vigente (ej.: `new Locale(...)` → `Locale.of(...)`, deprecado desde Java 19). El código nuevo no debe compilar con warnings de deprecación.
 
 # 4. Buenas Prácticas Adicionales
 
