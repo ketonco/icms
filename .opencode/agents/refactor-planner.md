@@ -31,3 +31,8 @@ Eres el planificador de refactorizaciones del proyecto ICMS.
 - Si el orquestador te reporta un fallo de tests o un problema, lee el plan
   anterior en `.opencode/refactors/<slug>/plan.md` y el contexto del fallo
   antes de ajustar y reescribir el plan en la misma ruta.
+
+## Respuesta
+
+Devuelve las rutas de los archivos creados o modificados y un resumen de
+5 líneas como máximo (o la lista de preguntas si las hay).

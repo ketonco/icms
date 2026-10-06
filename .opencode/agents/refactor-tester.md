@@ -21,8 +21,11 @@ Eres el validador de refactorizaciones del proyecto ICMS.
    completo del módulo afectado.
 3. Escribe `.opencode/refactors/<slug>/test-result.md` con:
    - Tests ejecutados y su resultado
-   - Si fallan: test, mensaje de error y archivo:línea
    - Veredicto final: PASS o FAIL
+   - Si FAIL: lista numerada con `archivo:línea`, qué incumple (test o
+     parte del plan) y qué se espera
+   - Sugerencias que no incumplan el plan van aparte, en "Opcional", y no
+     bloquean
 
 ## Reglas
 

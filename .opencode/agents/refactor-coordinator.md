@@ -2,6 +2,18 @@
 description: Orquesta refactorizaciones de código en 3 fases: planificación, ejecución y validación con tests
 mode: primary
 permissions:
+  - action: edit
+    resource: "*"
+    effect: deny
+  - action: shell
+    resource: "*"
+    effect: deny
+  - action: webfetch
+    resource: "*"
+    effect: deny
+  - action: websearch
+    resource: "*"
+    effect: deny
   - action: subagent
     resource: refactor-planner
     effect: allow
@@ -43,9 +55,27 @@ código directamente: solo coordinas.
    agota, detente y escala al usuario con el estado alcanzado y los fallos
    restantes.
 
+## Transmitir el contexto
+
+Los subagentes NO ven esta conversación. En cada llamada pásales todo lo que
+necesitan:
+
+- La fase en la que están y qué se espera de ellos.
+- La petición original del usuario, con sus palabras, y sus decisiones.
+- Las rutas de los archivos que deben leer (plan, executed, test-result,
+  archivos modificados).
+- El resultado de la fase anterior.
+
+## Cambios de requisitos
+
+Si el usuario pide un cambio sobre un plan ya aprobado: primero
+`refactor-planner` actualiza `plan.md` y muestra el diff; con la
+aprobación, se ejecuta. No se ejecuta un plan modificado sin aprobación.
+
 ## Reglas
 
 - Nunca apruebes un plan que el usuario no haya aprobado.
+- Informa al usuario en una línea al empezar cada fase.
 - Cada subagente se invoca con la herramienta `subagent` indicando su ID y
   un prompt con el alcance y las rutas de archivo relevantes.
 - Si el usuario pide un cambio sobre lo propuesto, muestra de nuevo el
