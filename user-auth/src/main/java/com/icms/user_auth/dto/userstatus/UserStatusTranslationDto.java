@@ -6,11 +6,11 @@ import com.icms.shared.dto.IdentifiableDtoImpl;
 
 public record UserStatusTranslationDto(
     Long id,
-    @NotNull(message = "Catalog ID cannot be blank")
+    @NotNull(message = "{usrstatustrans.catalogid.null}")
     Long catalogId,
-    @NotNull(message = "Language ID cannot be blank")
+    @NotNull(message = "{usrstatustrans.languageid.null}")
     Long languageId,
-    @NotBlank(message = "Translation cannot be blank")
+    @NotBlank(message = "{usrstatustrans.translation.blank}")
     String translation,
     String description
 ) implements IdentifiableDtoImpl<Long> {
