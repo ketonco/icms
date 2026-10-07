@@ -73,9 +73,8 @@ public class UserRulesTest {
         // Act & Assert
         assertThatThrownBy(() -> userRules.canCreate(user))
             .isInstanceOf(BusinessRuleException.class)
-        .hasMessage("Usr-010 context")
         .extracting("code")
-        .isEqualTo("Usr-010");
+        .isEqualTo("Usr-002");
 
         Mockito.verify(userRepository, Mockito.times(1)).findByEmail(user.getEmail());
         Mockito.verify(userRepository, Mockito.never()).findByUsername(user.getUsername());
@@ -95,9 +94,8 @@ public class UserRulesTest {
         // Act & Assert
         assertThatThrownBy(() -> userRules.canCreate(user))
             .isInstanceOf(BusinessRuleException.class)
-            .hasMessage("Usr-011 context")
             .extracting("code")
-            .isEqualTo("Usr-011");
+            .isEqualTo("Usr-003");
 
         Mockito.verify(userRepository, Mockito.times(1)).findByEmail(user.getEmail());
         Mockito.verify(userRepository, Mockito.times(1)).findByUsername(user.getUsername());

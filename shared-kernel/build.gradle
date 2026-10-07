@@ -29,4 +29,8 @@ dependencies {
     // Jackson for JSON serialization and deserialization
     // implementation 'com.fasterxml.jackson.core:jackson-databind'
     // implementation libs.jackson.datatype.jsr310
+
+    // Unit tests for the generic i18n bundle contract (JUnit 5, AssertJ, Mockito)
+    testImplementation libs.spring.boot.starter.test
+    testRuntimeOnly libs.junit.platform
 }

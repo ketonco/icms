@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
                 .body(RestResponse.error(
                     status.value(),
                     ex.getMessage(),
-                    "E-000", // Código de error para regla de negocio
+                    "E-001", // Business rule error code
                     uri,
                     status.getReasonPhrase() // Detailed error message like "Internal Server Error" or "Not Found"
                 ));

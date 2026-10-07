@@ -13,7 +13,7 @@ public interface WriteController<ID, DTO extends IdentifiableDtoImpl<ID>>
     @PostMapping
     default ResponseEntity<RestResponse<DTO>> create(@RequestBody DTO dto) {
         DTO createdDto = getService().save(dto);
-        return ResponseEntity.ok(RestResponse.ok(createdDto, MessageResolver.resolveMessage("S-000")));
+        return ResponseEntity.ok(RestResponse.ok(createdDto, MessageResolver.resolveMessage("S-001")));
     }
 
 }

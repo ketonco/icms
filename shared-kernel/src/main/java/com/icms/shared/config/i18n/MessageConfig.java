@@ -1,5 +1,6 @@
 package com.icms.shared.config.i18n;
 
+import com.icms.shared.Utils.MessageResolver;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.context.MessageSource;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +22,11 @@ public class MessageConfig {
         messageSource.setUseCodeAsDefaultMessage(true);
 
         return messageSource;
+    }
+
+    @Bean
+    public MessageResolver messageResolver(MessageSource messageSource) {
+        return new MessageResolver(messageSource);
     }
 
 }

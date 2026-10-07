@@ -12,7 +12,7 @@ public interface DeleteController<ID, DTO extends IdentifiableDtoImpl<ID>>
     @DeleteMapping("/{id}")
     default ResponseEntity<RestResponse<String>> delete(@PathVariable ID id) {
         getService().deleteById(id);
-        return ResponseEntity.ok(RestResponse.ok("", MessageResolver.resolveMessage("S-002")));
+        return ResponseEntity.ok(RestResponse.ok("", MessageResolver.resolveMessage("S-003")));
     }
 
 }

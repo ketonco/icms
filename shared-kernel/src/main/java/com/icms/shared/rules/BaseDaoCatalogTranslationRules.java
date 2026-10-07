@@ -33,7 +33,7 @@ public class BaseDaoCatalogTranslationRules<E extends BaseCatalogTranslationEnti
         public void noRepeatedCatalogTranslation(E translationEntity) {
             E existingTranslation = repository.findByCatalogAndLanguage(translationEntity.getCatalog(), translationEntity.getLanguage()).orElse(null);
             if (existingTranslation != null && !existingTranslation.getId().equals(translationEntity.getId())) {
-                throw new BusinessRuleException("Lan-007"); 
+                throw new BusinessRuleException("Lan-002"); 
             }
         }
 
@@ -44,7 +44,7 @@ public class BaseDaoCatalogTranslationRules<E extends BaseCatalogTranslationEnti
         public void atLeastTwoTranslations(C catalog) {
             int count = repository.countByCatalog(catalog);
             if (count < 2) {
-                throw new BusinessRuleException("Lan-006"); 
+                throw new BusinessRuleException("Lan-003"); 
             }
         }
 

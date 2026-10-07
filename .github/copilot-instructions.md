@@ -61,7 +61,8 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 - **`BaseDaoCatalogRules<E, R>`:** Extiende `BaseDaoRules<E, R, Long>`; añade validación de `code` no vacío y único para entidades de catálogo.
 - **`BaseDaoCatalogTranslationRules<E, R, C>`:** Extiende `BaseDaoRules<E, R, Long>`; valida que no exista una traducción duplicada por catálogo+idioma y exige mínimo dos traducciones antes de permitir un borrado.
 - Excepciones: `BusinessRuleException` (violación de regla de negocio) y `EntityNotFoundException` (entidad inexistente), ambas heredan de `BaseException` con un código de mensaje i18n.
-- **Convención de códigos de error:** prefijo por dominio + número, ej. `Ent-XXX` (genérico de entidad), `Cat-XXX` (catálogo), `Lan-XXX` (idioma/traducción). Resueltos vía `messages.properties` (`i18n/messages`).
+- **Convención de códigos de error:** prefijo por dominio + número de 3 dígitos, ej. `E-XXX` (error inesperado), `Res-XXX` (recurso), `S-XXX` (éxito), `Ent-XXX` (genérico de entidad), `Cat-XXX` (catálogo), `Lan-XXX` (idioma/traducción), `Usr-XXX` (usuario) y `UsrProf-XXX` (perfil de usuario). La numeración de cada prefijo va de `001` a `NNN` sin huecos y en orden de caso de uso. Resueltos vía `messages.properties` (`i18n/messages`).
+- **Estructura de los bundle i18n:** dos bloques ordenados por caso de uso; primero los códigos de negocio y después las claves de validación `{dominio.campo.regla}`. `messages_es.properties` conserva exactamente la misma estructura que `messages.properties` (mismos comentarios en inglés, mismo orden y mismas claves, solo cambian los valores) y una clave definida sin uso en el código se considera huérfana y falla en el test de cobertura.
 
 ### G. Capa de Servicio (Service Layer)
 
@@ -74,7 +75,7 @@ Todos los microservicios backend deben seguir el patrón de abstracción genéri
 
 - **Segregación por Interfaces:** `ReadController<ID, DTO>`, `WriteController<ID, DTO>`, `UpdateController<ID, DTO>`, `DeleteController<ID, DTO>` — cada una con métodos `default` que exponen `@GetMapping`/`@PostMapping`/`@PutMapping`/`@DeleteMapping`, envolviendo la respuesta en `RestResponse<T>`.
 - **`BaseControllerImpl<ID, DTO>`:** Contrato raíz con `getService()`. **`BaseController<ID, DTO>`:** Implementación base que inyecta el `BaseService` por constructor.
-- Mensajes de éxito i18n resueltos vía `MessageResolver.resolveMessage(code)` (`S-000` crear, `S-001` actualizar, `S-002` eliminar).
+- Mensajes de éxito i18n resueltos vía `MessageResolver.resolveMessage(code)` (`S-001` crear, `S-002` actualizar, `S-003` eliminar).
 - **`GlobalExceptionHandler`** (`@ControllerAdvice` en `shared-kernel`): captura `EntityNotFoundException`, `BusinessRuleException`, `NoResourceFoundException` y excepciones genéricas, devolviendo siempre `RestResponse` con código HTTP, código de negocio y mensaje.
 
 ### I. Convenciones de Pruebas

@@ -41,6 +41,7 @@ Fuente de verdad: `.github/copilot-instructions.md` prevalece sobre el código r
 - **Persistencia reactiva:** R2DBC o conectores no bloqueantes solo aplican si un módulo reactivo necesitara base de datos. El gateway actual no necesita R2DBC porque no persiste.
 - **Paquetes:** usar siempre `jakarta.*` para JPA, validación y servlets. Nunca usar `javax.*`.
 - **Mapeadores:** usar MapStruct y Lombok para entidades y DTOs. No escribir getters, setters o builders manuales.
+- **Registro de beans de `shared-kernel`:** los `@Component` de la librería (`MessageResolver`, `GlobalExceptionHandler`, `CustomSecurityExceptionHandler`) solo existen si las autoconfiguraciones listadas en `shared-kernel/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` (`MessageConfig`, `ExceptionAutoConfiguration`, `AuditConfig`, `SharedJacksonConfig`, `EncryptEncoder`) los declaran como `@Bean`, porque `:user-auth` escanea únicamente `com.icms.user_auth` y el `scanBasePackages` de `UserAuthApplication.java:10` está comentado. Un `@Component` fuera de esas listas nunca se instancia y su estado estático queda en `null`; si se reactiva el escaneo de `com.icms.shared`, retirar el `@Component` correspondiente para evitar un bean duplicado.
 
 ## Forma de trabajar
 

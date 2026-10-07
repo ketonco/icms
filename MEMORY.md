@@ -88,6 +88,9 @@
   - *Aprendizaje:* Comparar IDs `Long` con `!=` compara referencias y da falsos negativos fuera del rango cacheado; usar siempre `equals`.
 - **Secuencias huérfanas en Liquibase:**
   - *Aprendizaje:* `autoIncrement: true` y `defaultValueSequenceNext` son excluyentes por columna; crear `createSequence` más `autoIncrement` deja la secuencia huérfana.
+- **Beans de `shared-kernel` fuera del escaneo:**
+  - *Aprendizaje:* `:user-auth` escanea solo `com.icms.user_auth`, así que los `@Component` de la librería (`MessageResolver`, `GlobalExceptionHandler`, `CustomSecurityExceptionHandler`) solo existen si `AutoConfiguration.imports` los declara como `@Bean`. Sin eso, el `MessageSource` estático de `MessageResolver` queda en `null` y toda respuesta HTTP salía con `"<code> context"` en lugar del texto i18n; lo destapó `MessagesI18nIntegrationTest`.
+  - *Por qué:* decisión convertida en regla permanente y ya movida a `AGENTS.md` §Reglas de dominio: registrar los componentes compartidos en las autoconfiguraciones, nunca confiar en el escaneo de paquetes.
 
 ---
 

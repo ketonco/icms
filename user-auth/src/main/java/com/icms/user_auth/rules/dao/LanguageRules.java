@@ -25,20 +25,20 @@ public class LanguageRules extends BaseDaoCatalogRules<Language, LanguageReposit
     public void canUpdate(Language entity) {
         super.canUpdate(entity);
         existsByName(entity);
-        checkIsDefault(entity, "Ent-006");
+        checkIsDefault(entity, "Ent-005");
     }
 
     @Override
     public void canDelete(Language entity) {
         super.canDelete(entity);
-        checkIsDefault(entity, "Ent-005");
+        checkIsDefault(entity, "Ent-004");
     }
     /* Checks if a language with the given name already exists in the repository */
     private void existsByName(Language language) {
         Language existingLanguage = languageRepository.findByName(language.getName()).orElse(null);
         // If an existing language with the same name is found and it is not the same as the current language, throw an exception
         if (existingLanguage != null && !existingLanguage.getId().equals(language.getId())) {
-            throw new BusinessRuleException("Lan-008");
+            throw new BusinessRuleException("Lan-001");
         }
     }
 

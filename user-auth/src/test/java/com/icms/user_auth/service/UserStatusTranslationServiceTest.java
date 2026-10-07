@@ -67,13 +67,13 @@ public class UserStatusTranslationServiceTest {
         UserStatusTranslation userStatusTranslation = new UserStatusTranslation( userStatus, language, "translation", null);
 
         Mockito.when(userStatusTranslationMapper.toEntity(userStatusTranslationDto)).thenReturn(userStatusTranslation);
-        Mockito.doThrow(new BusinessRuleException("Lan-007")).when(userStatusTranslationRules).canSave(userStatusTranslation);
+        Mockito.doThrow(new BusinessRuleException("Lan-002")).when(userStatusTranslationRules).canSave(userStatusTranslation);
 
         // Act & Assert
         try {
             userStatusTranslationService.save(userStatusTranslationDto);
         } catch (BusinessRuleException e) {
-            assertEquals("Lan-007 context", e.getMessage());
+            assertEquals("Lan-002", e.getCode());
         }
 
         // Verify that the business rule was checked

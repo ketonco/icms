@@ -24,14 +24,14 @@ public class UserRules {
     private void uniqueEmail(User user) {
         User existingUser = userRepository.findByEmail(user.getEmail()).orElse(null);
         if (existingUser != null && !existingUser.getId().equals(user.getId())) {
-            throw new BusinessRuleException("Usr-010");
+            throw new BusinessRuleException("Usr-002");
         }
     }
 
     private void uniqueUsername(User user) {
         User existingUser = userRepository.findByUsername(user.getUsername()).orElse(null);
         if (existingUser != null && !existingUser.getId().equals(user.getId())) {
-            throw new BusinessRuleException("Usr-011");
+            throw new BusinessRuleException("Usr-003");
         }
     }
 

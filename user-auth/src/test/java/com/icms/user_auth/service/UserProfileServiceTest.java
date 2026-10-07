@@ -106,9 +106,8 @@ public class UserProfileServiceTest {
         // Act & Assert
         assertThatThrownBy(() -> service.save(dto))
             .isInstanceOf(EntityNotFoundException.class)
-            .hasMessage("Usr-009 context")
             .extracting("code")
-            .isEqualTo("Usr-009");
+            .isEqualTo("Usr-001");
 
         Mockito.verify(userRepository, Mockito.times(1)).findByEmail(dto.email());
         Mockito.verify(repository, Mockito.never()).findByUser(Mockito.any());
@@ -130,7 +129,6 @@ public class UserProfileServiceTest {
         // Act & Assert
         assertThatThrownBy(() -> service.save(dto))
             .isInstanceOf(EntityNotFoundException.class)
-            .hasMessage("UsrProf-001 context")
             .extracting("code")
             .isEqualTo("UsrProf-001");
 

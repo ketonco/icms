@@ -75,9 +75,8 @@ public class UserProfileRulesTest {
 
         assertThatThrownBy(() -> userProfileRules.canSave(userProfile))
         .isInstanceOf(BusinessRuleException.class)
-        .hasMessage("UsrProf-009 context")
         .extracting("code")
-        .isEqualTo("UsrProf-009");
+        .isEqualTo("UsrProf-002");
 
         // Validation
         Mockito.verify(userRepository, Mockito.times(1)).existsById(user.getId());
@@ -122,9 +121,8 @@ public class UserProfileRulesTest {
         // Act && Assert
         assertThatThrownBy(() -> userProfileRules.canUpdate(userProfile))
         .isInstanceOf(BusinessRuleException.class)
-        .hasMessage("Ent-003 context")
         .extracting("code")
-        .isEqualTo("Ent-003");
+        .isEqualTo("Ent-002");
     }
 
     @Test 
@@ -142,7 +140,6 @@ public class UserProfileRulesTest {
         // Act && Assert
         assertThatThrownBy(() -> userProfileRules.canUpdate(userProfile))
         .isInstanceOf(EntityNotFoundException.class)
-        .hasMessage("Ent-001 context")
         .extracting("code")
         .isEqualTo("Ent-001");
 

@@ -227,3 +227,94 @@ dedicado si se necesita monitorización en ejecución.
 
 **Nivel de acción requerido:** Bajo — publica endpoints de prueba en el
 despliegue normal y mantiene innecesariamente un permiso anónimo.
+
+## P-29 — Quince claves huérfanas en los bundle i18n
+
+**Donde y TODO:**
+`shared-kernel/src/main/resources/i18n/messages.properties:14,19,26-30,36-43`
+(líneas anteriores a la estandarización) y su espejo `messages_es.properties`;
+sin TODO en código, la corrección es eliminar las claves.
+
+**Problema:** quince claves definidas en los bundle sin ninguna referencia en
+`src/main/java` ni en los tests: `Ent-002`, `Ent-007`, `Lan-001` a `Lan-005` y
+`Usr-001` a `Usr-008`.
+
+**Contexto y explicación:** son texto muerto que oculta qué códigos están real
+mente en uso y dejaba huecos en la numeración de los prefijos, impidiendo la
+numeración continua `001..NNN` que exige la convención de códigos.
+
+**Opciones estándar:**
+
+- A) Eliminarlas en la estandarización y declarar cualquier clave reservada en
+  `RESERVED_MESSAGE_KEYS` del test de cobertura (recomendado).
+- B) Conservarlas como reservadas con una lista de excepciones propia.
+
+**Recomendación:** A, aplicada en el refactor `messages-properties-usecases`;
+las quince claves dejan de existir en ambos bundle. Si más adelante se necesita
+una clave nueva sin usar todavía, debe declararse en `RESERVED_MESSAGE_KEYS`
+o fallará `MessagesBundleCoverageTest`.
+
+**Nivel de acción requerido:** Bajo — claves muertas, sin impacto en
+ejecución; solo ruido y numeración inconsistente.
+
+## P-30 — Texto EN/ES incoherente en cuatro claves de validación `.null`
+
+**Donde y TODO:**
+`shared-kernel/src/main/resources/i18n/messages.properties` en las claves
+`usrstatustrans.catalogid.null`, `usrstatustrans.languageid.null`,
+`usrtypetrans.catalogid.null` y `usrtypetrans.languageid.null`; sin TODO en
+código.
+
+**Problema:** en inglés los cuatro valores dicen `cannot be blank` y en español
+dicen `no puede ser nulo`, mientras que la anotación asociada es `@NotNull` y
+la regla de la propia clave es `.null`.
+
+**Contexto y explicación:** quien recibe la respuesta en inglés ve "no debe
+estar vacío" para un error de nulidad, y la regla de naming
+`<dominio>.<campo>.<regla>` queda contradicha por el texto del mensaje.
+
+**Opciones estándar:**
+
+- A) Unificar los textos en inglés a `... cannot be null` y actualizar las
+  cuatro aserciones afectadas en `UserTypeTranslationDtoValidationIT:78,110` y
+  `UserStatusTranslationDtoValidationIT:78,110` (recomendado).
+- B) Cambiar la regla de la clave a `.blank` y la anotación a `@NotBlank`, lo
+  que altera el comportamiento de validación.
+
+**Recomendación:** A, en una tarea propia para no mezclar cambios de texto con
+la renumeración de códigos del ciclo `messages-properties-usecases`.
+
+**Nivel de acción requerido:** Bajo — traducción confusa, sin impacto
+funcional.
+
+## P-31 — Prueba de creación de usuario con residuo en BD y limpieza ineficaz
+
+**Donde y TODO:**
+`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerTest.java:35-44`
+(y `:72`); el `TODO` de la línea 71 ya apunta a P-23.
+
+**Problema:** la siguiente ejecución del test recibe HTTP 400 en la línea
+72, donde espera 200, porque el usuario `testuser2` ya existe en la BD de
+pruebas. El `@Transactional` del método (`:44`) no revierte la alta, ya que
+la petición HTTP la atiende el hilo del servidor con otra conexión, y el
+`tearDown` `@Transactional` (`:35-41`) no consigue dejar la tabla limpia.
+
+**Contexto y explicación:** el perfil `test` desactiva Liquibase y no hay
+aislamiento por transacción entre el cliente de la prueba y el servidor, de
+modo que cada corrida que falla deja filas residuales. Es un fallo
+preexistente: la línea base de la refactorización `messages-properties-usecases`
+antes de tocar cualquier código ya era de 120 tests con 1 fallo.
+
+**Opciones estándar:**
+
+- A) Limpiar el residuo actual de la BD y hacer efectivo el borrado en el
+  `tearDown` (sin `@Transactional` en el `@AfterEach`, en orden inverso de
+  claves foráneas) antes de cada prueba (recomendado).
+- B) Usar usuario y correo aleatorios por corrida y borrarlos al final,
+  eliminando la dependencia de datos fijos.
+
+**Recomendación:** A, y aprovechar para alinear la asertación con P-23
+cuando el contrato pase a 201.
+
+**Nivel de acción requerido:** Medio — mantiene `gradlew.bat build` en rojo
+y enmascara regresiones reales al fallar siempre por el mismo motivo.

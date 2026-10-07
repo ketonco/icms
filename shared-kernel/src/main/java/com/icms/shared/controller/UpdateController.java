@@ -13,7 +13,7 @@ public interface UpdateController <ID, DTO extends IdentifiableDtoImpl<ID>>
     @PutMapping
     default ResponseEntity<RestResponse<DTO>> update(@RequestBody DTO dto) {
         DTO updatedDto = getService().update(dto);
-        return ResponseEntity.ok(RestResponse.ok(updatedDto, MessageResolver.resolveMessage("S-001")));
+        return ResponseEntity.ok(RestResponse.ok(updatedDto, MessageResolver.resolveMessage("S-002")));
     }
     
 }

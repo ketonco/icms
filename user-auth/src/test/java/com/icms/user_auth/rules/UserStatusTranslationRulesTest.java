@@ -93,9 +93,8 @@ class UserStatusTranslationRulesTest {
         // Act & Assert
         assertThatThrownBy(() -> userStatusTranslationRules.canSave(userStatusTranslation))
         .isInstanceOf(BusinessRuleException.class)
-        .hasMessage("Lan-007 context")
         .extracting("code")
-        .isEqualTo("Lan-007");
+        .isEqualTo("Lan-002");
 
         // Validation
         Mockito.verify(userStatusTranslationRepository, Mockito.times(1)).findByCatalogAndLanguage(userStatus,

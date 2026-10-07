@@ -44,7 +44,7 @@ public class UserProfileRules extends BaseDaoRules<UserProfile, UserProfileRepos
      */
     private void checkUserIntegrity(UserProfile entity) {
         if (entity.getUser() == null || !userRepository.existsById(entity.getUser().getId())) {
-            throw new BusinessRuleException("UsrProf-009");
+            throw new BusinessRuleException("UsrProf-002");
         }
     }
 
@@ -61,7 +61,7 @@ public class UserProfileRules extends BaseDaoRules<UserProfile, UserProfileRepos
         UUID requestedUserId = entity.getUser().getId();
 
         if (!persistedUserId.equals(requestedUserId)) {
-            throw new BusinessRuleException("UsrProf-010");
+            throw new BusinessRuleException("UsrProf-003");
         }
     }
 }

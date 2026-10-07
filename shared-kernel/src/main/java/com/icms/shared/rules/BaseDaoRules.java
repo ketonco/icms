@@ -32,13 +32,13 @@ public class BaseDaoRules<E extends IdentifiableImpl<ID>, R extends BaseReposito
 
     protected void isNew(E entity) {
         if (entity.getId() != null) {
-            throw new BusinessRuleException("Ent-004"); 
+            throw new BusinessRuleException("Ent-003"); 
         }
     }
 
     protected void hasId(E entity) {
         if (entity.getId() == null) {
-            throw new BusinessRuleException("Ent-003"); 
+            throw new BusinessRuleException("Ent-002"); 
         }
     }
 

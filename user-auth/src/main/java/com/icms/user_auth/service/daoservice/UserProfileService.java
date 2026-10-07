@@ -52,7 +52,7 @@ public class UserProfileService extends BaseService<UserProfile, UserProfileDto,
     }
 
     private UserProfile toEntity(UserProfileDto dto) {
-        User user = userRepository.findByEmail(dto.email()).orElseThrow(() -> new EntityNotFoundException("Usr-009"));
+        User user = userRepository.findByEmail(dto.email()).orElseThrow(() -> new EntityNotFoundException("Usr-001"));
         UserProfile entity = repository.findByUser(user).orElseThrow(() -> new EntityNotFoundException("UsrProf-001"));
         mapper.updateEntityFromDto(dto, entity);
         entity.setUser(user);
