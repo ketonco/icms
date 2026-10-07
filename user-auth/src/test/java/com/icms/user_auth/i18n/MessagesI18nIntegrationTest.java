@@ -31,7 +31,6 @@ import static org.hamcrest.Matchers.equalTo;
  * in Spanish, for every response of the API.
  * </p>
  */
-@SuppressWarnings("null")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class MessagesI18nIntegrationTest {
