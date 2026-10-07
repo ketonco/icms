@@ -12,10 +12,10 @@ Estas guias documentan la estructura y configuracion real del monorepo, separada
 6. [API Gateway y comunicacion entre servicios](06-api-gateway.md)
 7. [Diagnostico](07-diagnostico.md)
 8. [Tests del gateway](10-gateway-tests.md)
-8. [Dependencias](08-dependencias.md)
-9. [Plantilla de migracion](09-plantilla-migracion.md)
-10. [MCP de Postgres y perfiles de base de datos](10-mcp-postgres.md)
-11. [Guía de pruebas del monorepo](11-pruebas.md)
+9. [Dependencias](08-dependencias.md)
+10. [Plantilla de migracion](09-plantilla-migracion.md)
+11. [MCP de Postgres y perfiles de base de datos](10-mcp-postgres.md)
+12. [Guía de pruebas del monorepo](11-pruebas.md)
 
 La guia [docker.md](docker.md) conserva los comandos rapidos de Docker Compose existentes.
 
