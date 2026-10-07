@@ -15,6 +15,7 @@ Estas guias documentan la estructura y configuracion real del monorepo, separada
 8. [Dependencias](08-dependencias.md)
 9. [Plantilla de migracion](09-plantilla-migracion.md)
 10. [MCP de Postgres y perfiles de base de datos](10-mcp-postgres.md)
+11. [Guía de pruebas del monorepo](11-pruebas.md)
 
 La guia [docker.md](docker.md) conserva los comandos rapidos de Docker Compose existentes.
 
