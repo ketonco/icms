@@ -7,16 +7,16 @@ import com.icms.shared.dto.IdentifiableDtoImpl;
 
 public record LanguageDto(
     Long id,
-    @NotBlank(message = "Code cannot be blank")
-    @Size(min = 2, max = 10, message = "Code must be between 2 and 10 characters")
-    @Pattern(regexp = "^[a-z]{2,3}(-[A-Z]{2})?$", message = "Code must follow BCP 47 format (e.g. 'es', 'es-ES')")
+    @NotBlank(message = "{lang.code.blank}")
+    @Size(min = 2, max = 10, message = "{lang.code.size}")
+    @Pattern(regexp = "^[a-z]{2,3}(-[A-Z]{2})?$", message = "{lang.code.pattern}")
     String code,
-    @NotBlank(message = "Name cannot be blank")
-    @Size(min = 1, max = 100, message = "Name must be between 1 and 100 characters")
+    @NotBlank(message = "{lang.name.blank}")
+    @Size(min = 1, max = 100, message = "{lang.name.size}")
     String name,
-    @NotNull(message = "isDefault cannot be null")
+    @NotNull(message = "{lang.isdefault.null}")
     Boolean isDefault,
-    @NotNull(message = "Active cannot be null")
+    @NotNull(message = "{lang.active.null}")
     Boolean active
 ) implements IdentifiableDtoImpl<Long> {
 

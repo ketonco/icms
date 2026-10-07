@@ -7,12 +7,12 @@ import com.icms.shared.dto.IdentifiableDtoImpl;
 public record PermissionDto(
     Long id,
     // must be at least 2 characters long, all uppercase letters, e.g., READ, WRITE, DELETE
-    @NotBlank(message = "Code must not be blank")
-    @Pattern (regexp = "^[A-Z]{2,}$", message = "Code must be at least 2 uppercase letters")
+    @NotBlank(message = "{perm.code.blank}")
+    @Pattern (regexp = "^[A-Z]{2,}$", message = "{perm.code.pattern}")
     String code,
-    @NotBlank(message = "Name must not be blank")
+    @NotBlank(message = "{perm.name.blank}")
     String name,
-    @NotNull (message = "Active cannot be null")
+    @NotNull (message = "{perm.active.null}")
     Boolean active
 ) implements IdentifiableDtoImpl<Long> {
 
