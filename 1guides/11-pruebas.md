@@ -7,18 +7,20 @@ indica `.github/copilot-instructions.md` §I.
 
 ## 1. Elegir el tipo de prueba
 
-| Qué se verifica | Tipo | Ejemplo actual |
-| --- | --- | --- |
-| Una regla o transformación Java sin Spring ni BD | Unitaria | `UserRulesTest`, `LanguageMapperTest` |
-| Servicio coordinando mocks | Unitaria de servicio | `UserProfileServiceTest` |
-| Query real, persistencia o constraint | Integración de repositorio | `LanguageRepositoryTest` |
-| DTO y sus restricciones | Validación directa | `CreateUserDtoValidationIT` |
-| HTTP, filtros, serialización y errores | Integración MVC | `UserAuthGlobalExceptionsTest` |
-| Resolución real de mensajes dentro del contexto Spring | Integración i18n | `MessagesI18nIntegrationTest` |
-| Enrutamiento reactivo del Gateway | Integración WebFlux con downstream simulado | `UserAuthGatewayRoutingIntegrationTest` |
+| Qué se verifica | Tipo | Sufijo | Ejemplo actual |
+| --- | --- | --- | --- |
+| Una regla o transformación Java sin Spring ni BD | Unitaria | `*Test` | `UserRulesTest`, `LanguageMapperTest` |
+| Servicio coordinando mocks | Unitaria de servicio | `*Test` | `UserProfileServiceTest` |
+| Query real, persistencia o constraint | Integración de repositorio | `*IT` | `LanguageRepositoryIT` |
+| DTO y sus restricciones | Validación directa | `*IT` | `CreateUserDtoValidationIT` |
+| HTTP, filtros, serialización y errores | Integración MVC | `*IT` | `UserAuthGlobalExceptionsIT` |
+| Resolución real de mensajes dentro del contexto Spring | Integración i18n | `*IT` | `MessagesI18nIT` |
+| Enrutamiento reactivo del Gateway | Integración WebFlux con downstream simulado | `*IT` | `UserAuthGatewayRoutingIT` |
 
-El nombre `*IT` no hace que Gradle ejecute automáticamente una suite separada:
-estas clases están bajo `src/test` y usan el source set de pruebas del módulo.
+El sufijo no cambia la ejecución: ni `*Test` ni `*IT` crean una suite
+separada. Todas las clases viven bajo `src/test` y corren en la tarea
+`test` con `useJUnitPlatform()`, sin filtro por nombre
+(`buildSrc/src/main/kotlin/java-common-conventions.gradle.kts:52-54`).
 
 ## 2. Dependencias disponibles
 
@@ -222,7 +224,7 @@ Dependencias: JUnit, Mockito, AssertJ e Instancio; no requieren Spring ni BD.
 
 ### Repositorios JPA
 
-Ejemplos: `LanguageRepositoryTest` y `UserProfileRepositoryTest`.
+Ejemplos: `LanguageRepositoryIT` y `UserProfileRepositoryIT`.
 
 Usa `@DataJpaTest`, `@ActiveProfiles("test")`,
 `@Import(AuditConfig.class)` y
@@ -257,8 +259,8 @@ RestAssured para validar directamente un DTO.
 
 ### Controladores HTTP y excepciones
 
-`UserControllerTest`, `UserAuthGlobalExceptionsTest` y
-`TestControllerIntegrationTest` levantan MVC con
+`UserControllerIT`, `UserAuthGlobalExceptionsIT` y
+`TestControllerIT` levantan MVC con
 `@SpringBootTest(webEnvironment = RANDOM_PORT)`, perfil `test` y RestAssured.
 
 En cada petición afirma el estado HTTP y los campos sustantivos del cuerpo
@@ -266,7 +268,7 @@ En cada petición afirma el estado HTTP y los campos sustantivos del cuerpo
 mensaje no esté vacío. Limpia los datos insertados para que los casos sean
 repetibles. Usa un servidor real aleatorio del test, no un puerto fijo.
 
-`MessagesI18nIntegrationTest` también usa el contexto y HTTP para confirmar que
+`MessagesI18nIT` también usa el contexto y HTTP para confirmar que
 la `MessageSource` real resuelve códigos en español e inglés y que los errores
 de negocio llegan traducidos por el handler global. Como crea datos persistidos,
 su setup y cleanup forman parte del aislamiento del test.
@@ -288,7 +290,7 @@ No agregues MVC, JPA ni un servicio externo vivo a las pruebas del módulo `api`
 
 ## 7. Tests de contexto y comandos
 
-`ApiApplicationTests` y `UserAuthApplicationTests` solo comprueban que el
+`ApiApplicationIT` y `UserAuthApplicationIT` solo comprueban que el
 contexto arranque. Son pruebas de humo; no reemplazan pruebas de reglas,
 servicios ni endpoints.
 

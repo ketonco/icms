@@ -29,13 +29,4 @@ tarea `update` de Gradle.
 
 Ejecuta todos los `Test` del modulo de `api`. Los tests del gateway usan
 downstream controlado (WireMock) y no requieren `user-auth` vivo; detalle en
-`1guides/10-gateway-tests.md`.
-
-## Pruebas puntuales (patrón `--tests`, acepta comodines `*`)
-
-```powershell
-.\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIntegrationTest"
-.\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIntegrationTest.testGatewayRoutingToUserAuth"
-```
-
-Para un método puntual usa `"Clase.metodo"`; para un paquete completo, `"paquete.*"`.
+`1guides/10-gateway-tests.md`. Para pruebas puntuales ver `api-tests.md`.

@@ -55,3 +55,13 @@ por lo que resulta útil en compilaciones puntuales o entornos de CI.
 ## Nota de credenciales (sin secretos en repo)
 
 `user-auth` exige `DB_PASSWORD` de usuario Windows; `update` usa `-PdbPassword` o `DB_PASSWORD`. Detalle en `commands/user-auth.md`.
+
+## Ejecutar todos los tests
+
+```powershell
+.\gradlew.bat test
+```
+
+Ejecuta la suite completa del monorepo (`shared-kernel`, `user-auth` y
+`api`), con unitarios `*Test` e integración `*IT`. Para pruebas puntuales por
+módulo ver `user-auth-tests.md`, `api-tests.md` y `shared-kernel-tests.md`.

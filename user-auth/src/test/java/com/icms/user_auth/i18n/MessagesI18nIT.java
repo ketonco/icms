@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.equalTo;
 /**
  * HTTP contract of the i18n bundles through the real {@code user-auth} stack.
  * <p>
- * Follows the pattern of {@code UserAuthGlobalExceptionsTest}: random port,
+ * Follows the pattern of {@code UserAuthGlobalExceptionsIT}: random port,
  * {@code test} profile and RestAssured. It proves that the renumbered business
  * codes still resolve through the real {@link MessageSource}, in English and
  * in Spanish, for every response of the API.
@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.equalTo;
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class MessagesI18nIntegrationTest {
+class MessagesI18nIT {
 
     /** The 21 business codes defined by the i18n standard, in bundle order. */
     private static final String[] BUSINESS_CODES = {

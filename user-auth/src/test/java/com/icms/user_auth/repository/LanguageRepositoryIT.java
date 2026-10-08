@@ -18,7 +18,7 @@ import com.icms.shared.entity.Language;
 @ActiveProfiles("test")
 @Import(AuditConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) 
-class LanguageRepositoryTest {
+class LanguageRepositoryIT {
 
     @Autowired 
     private TestEntityManager testEntityManager;

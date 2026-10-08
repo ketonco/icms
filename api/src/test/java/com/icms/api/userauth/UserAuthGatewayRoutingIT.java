@@ -22,7 +22,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class UserAuthGatewayRoutingIntegrationTest {
+public class UserAuthGatewayRoutingIT {
 
     @LocalServerPort 
     private int port;

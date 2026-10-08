@@ -10,7 +10,7 @@ import io.restassured.RestAssured;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-public class TestControllerIntegrationTest {
+public class TestControllerIT {
 
     @LocalServerPort
     private int port;

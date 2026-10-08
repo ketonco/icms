@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class UserAuthGlobalExceptionsTest {
+class UserAuthGlobalExceptionsIT {
 
     
     @LocalServerPort private int port;

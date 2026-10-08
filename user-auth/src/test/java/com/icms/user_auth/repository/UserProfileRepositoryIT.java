@@ -25,7 +25,7 @@ import org.instancio.Select;
 @ActiveProfiles("test")
 @Import(AuditConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) 
-public class UserProfileRepositoryTest {
+public class UserProfileRepositoryIT {
 
     @Autowired 
     private TestEntityManager testEntityManager;

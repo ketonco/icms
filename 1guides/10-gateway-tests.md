@@ -2,7 +2,7 @@
 
 Los tests del módulo `api` verifican el enrutado del gateway sin exigir que
 `user-auth` esté levantado. Patrón real aplicado en
-`api/src/test/java/com/icms/api/userauth/UserAuthGatewayRoutingIntegrationTest.java`.
+`api/src/test/java/com/icms/api/userauth/UserAuthGatewayRoutingIT.java`.
 
 ## 1. Por qué un stub y no el servicio real
 
@@ -57,7 +57,7 @@ Toda versión vive estrictamente en `gradle/libs.versions.toml` (§1 de
 6. Ejecutar sin `user-auth` levantado:
 
 ```powershell
-.\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIntegrationTest"
+.\gradlew.bat :api:test --tests "com.icms.api.userauth.UserAuthGatewayRoutingIT"
 ```
 
 ## 4. Opciones no aplicadas y cuándo usarlas

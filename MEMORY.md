@@ -73,6 +73,10 @@
 - **`PasswordEncoder` global sin perfil (2026-10-05):**
   - *Decisión:* El bean vive en `EncryptEncoder` (`@AutoConfiguration` de SharedKernel, sin `@Profile`); no duplicarlo en configs con `@Profile("!task")` como `SecurityConfig`.
   - *Por qué:* El perfil `task` excluye seguridad pero igual instancia servicios que lo exigen; duplicarlo rompe `task` (ausente) o el arranque normal (dos beans). Validado con `/rebuild-db` → seeds verdes.
+- **Estándar de nombres de tests: 2 sufijos `*Test`/`*IT` (2026-10-08):**
+  - *Decisión:* en todo el monorepo solo dos sufijos para clases de prueba: `*Test` = unitaria (sin contexto Spring completo ni BD real: services, rules, mappers y bundles de `shared-kernel`) y `*IT` = integración (repositorio, controlador, gateway, i18n en contexto, validación de DTO y humo de aplicación). Prohibidos `*UT`, `*IntegrationTest`, `*RepositoryTest` y `*ApplicationTests`. Quedó fijado en `.github/copilot-instructions.md` §I y reflejado en `1guides/11-pruebas.md`.
+  - *Por qué:* antes convivían 5 sufijos para 2 categorías reales, con 17 tests de integración repartidos en `*RepositoryTest`, `*IntegrationTest` e `*IT`. `*Test`/`*IT` es la convención Maven Surefire/Failsafe y la única que reconoce el ecosistema (IDEs, SonarQube y filtros CI buscan `*Test`), mientras que `*UT` no la respalda ninguna herramienta. El sufijo no altera la ejecución: `buildSrc/src/main/kotlin/java-common-conventions.gradle.kts` solo declara `useJUnitPlatform()` sin filtro por nombre.
+  - *Error a evitar:* no inventar sufijos nuevos ni crear excepciones "solo para este caso"; la uniformidad se logró con 9 `git mv` que alinearon código, fuente de verdad y documentación en una sola pasada. Validado con 173 tests / 1 fallo preexistente (P-31) y `.opencode/refactors/test-naming-standard/test-result.md` → PASS.
 
 ---
 
@@ -89,7 +93,7 @@
 - **Secuencias huérfanas en Liquibase:**
   - *Aprendizaje:* `autoIncrement: true` y `defaultValueSequenceNext` son excluyentes por columna; crear `createSequence` más `autoIncrement` deja la secuencia huérfana.
 - **Beans de `shared-kernel` fuera del escaneo:**
-  - *Aprendizaje:* `:user-auth` escanea solo `com.icms.user_auth`, así que los `@Component` de la librería (`MessageResolver`, `GlobalExceptionHandler`, `CustomSecurityExceptionHandler`) solo existen si `AutoConfiguration.imports` los declara como `@Bean`. Sin eso, el `MessageSource` estático de `MessageResolver` queda en `null` y toda respuesta HTTP salía con `"<code> context"` en lugar del texto i18n; lo destapó `MessagesI18nIntegrationTest`.
+  - *Aprendizaje:* `:user-auth` escanea solo `com.icms.user_auth`, así que los `@Component` de la librería (`MessageResolver`, `GlobalExceptionHandler`, `CustomSecurityExceptionHandler`) solo existen si `AutoConfiguration.imports` los declara como `@Bean`. Sin eso, el `MessageSource` estático de `MessageResolver` queda en `null` y toda respuesta HTTP salía con `"<code> context"` en lugar del texto i18n; lo destapó `MessagesI18nIT`.
   - *Por qué:* decisión convertida en regla permanente y ya movida a `AGENTS.md` §Reglas de dominio: registrar los componentes compartidos en las autoconfiguraciones, nunca confiar en el escaneo de paquetes.
 
 ---
@@ -120,7 +124,7 @@
    tests de mapper que validen el mapeo por rol.
 5. **Contrato HTTP de creación (cierra P-23):** `POST /api/v1/auth/user`
    responde 201, refleja `status=201` en `RestResponse` e incluye `Location`;
-   `UserControllerTest` cubre altas válidas e inválidas.
+   `UserControllerIT` cubre altas válidas e inválidas.
    *Terminado cuando:* código y pruebas coinciden en HTTP 201, cuerpo 201,
    `Location` y rechazo HTTP 400 para DTOs inválidos.
 6. **Deuda de build y aislamiento de pilas (cierra P-03 y P-26):** BOM y

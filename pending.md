@@ -68,7 +68,7 @@ protegidas y deja incompleto el flujo central del módulo.
 
 **Donde y TODO:**
 `user-auth/src/main/java/com/icms/user_auth/controller/UserController.java:28`,
-`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerTest.java:71`
+`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerIT.java:71`
 y `shared-kernel/src/main/java/com/icms/shared/dto/RestResponse.java:26`;
 TODO agregado en los tres archivos.
 
@@ -176,10 +176,10 @@ debilita el aislamiento de pilas indicado para el módulo.
 ## P-27 — Prueba de controlador no cubre el rechazo de DTO inválidos
 
 **Donde y TODO:**
-`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerTest.java:76`;
+`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerIT.java:76`;
 TODO agregado.
 
-**Problema:** `UserControllerTest` solo envía un DTO válido y no comprueba que
+**Problema:** `UserControllerIT` solo envía un DTO válido y no comprueba que
 las restricciones declaradas en `CreateUserDto` y su perfil anidado produzcan
 un rechazo.
 
@@ -290,7 +290,7 @@ funcional.
 ## P-31 — Prueba de creación de usuario con residuo en BD y limpieza ineficaz
 
 **Donde y TODO:**
-`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerTest.java:35-44`
+`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerIT.java:35-44`
 (y `:72`); el `TODO` de la línea 71 ya apunta a P-23.
 
 **Problema:** la siguiente ejecución del test recibe HTTP 400 en la línea
