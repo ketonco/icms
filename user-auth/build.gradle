@@ -21,7 +21,7 @@ dependencies {
 	testImplementation libs.spring.boot.test.autoconfigure
 	testImplementation libs.mockito.core
 	testImplementation libs.instancio.junit
-    testImplementation libs.spring.boot.starter.webflux // TODO (pending P-26)
+    //testImplementation libs.spring.boot.starter.webflux // TODO (pending P-26)
     testImplementation libs.rest.assured
     testImplementation libs.rest.assured.mockmvc
 
