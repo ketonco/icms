@@ -65,7 +65,7 @@ public class UserServiceTest {
     @BeforeEach 
     void setUp() {
         userStatus = Instancio.of(UserStatus.class)
-            .set(Select.field(UserStatus::getCode), "INA")
+            .set(Select.field(UserStatus::getCode), "PEN")
             .create();
 
         userType = Instancio.of(UserType.class)
@@ -96,7 +96,7 @@ public class UserServiceTest {
             .create();
 
         Mockito.when(userMapper.toEntity(createUserDto)).thenReturn(user);
-        Mockito.when(userStatusRepository.findByCode("INA")).thenReturn(Optional.of(userStatus));
+        Mockito.when(userStatusRepository.findByCode("PEN")).thenReturn(Optional.of(userStatus));
         Mockito.when(userTypeRepository.findByCode("USR")).thenReturn(Optional.of(userType));
         Mockito.when(passwordEncoder.encode(createUserDto.password())).thenReturn("passwordEncoded");
 

@@ -100,6 +100,34 @@ public class UserStatusTranslationDataSeed implements DataSeed{
         userStatusTranslation6.setCatalog(userStatusService.findByCode("SUS"));
         userStatusTranslation6.setLanguage(languageService.findByCode("es-ES"));
         userStatusTranslationList.add(userStatusTranslation6);
+
+        // Deleted
+        UserStatusTranslation userStatusTranslation7 = new UserStatusTranslation();
+        userStatusTranslation7.setTranslation("Deleted");
+        userStatusTranslation7.setCatalog(userStatusService.findByCode("DEL"));
+        userStatusTranslation7.setLanguage(languageService.findByCode("en-US"));
+        userStatusTranslationList.add(userStatusTranslation7);
+
+        // Eliminado
+        UserStatusTranslation userStatusTranslation8 = new UserStatusTranslation();
+        userStatusTranslation8.setTranslation("Eliminado");
+        userStatusTranslation8.setCatalog(userStatusService.findByCode("DEL"));
+        userStatusTranslation8.setLanguage(languageService.findByCode("es-ES"));
+        userStatusTranslationList.add(userStatusTranslation8);
+        
+        // Pending
+        UserStatusTranslation userStatusTranslation9 = new UserStatusTranslation();
+        userStatusTranslation9.setTranslation("Pending");
+        userStatusTranslation9.setCatalog(userStatusService.findByCode("PEN"));
+        userStatusTranslation9.setLanguage(languageService.findByCode("en-US"));
+        userStatusTranslationList.add(userStatusTranslation9);
+
+        // Pendiente
+        UserStatusTranslation userStatusTranslation10 = new UserStatusTranslation();
+        userStatusTranslation10.setTranslation("Pendiente");
+        userStatusTranslation10.setCatalog(userStatusService.findByCode("PEN"));
+        userStatusTranslation10.setLanguage(languageService.findByCode("es-ES"));
+        userStatusTranslationList.add(userStatusTranslation10);
     }
 
 }

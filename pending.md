@@ -62,35 +62,6 @@ la respuesta de creación.
 **Nivel de acción requerido:** Medio — la respuesta no refleja en HTTP ni en el
 cuerpo el estado de creación esperado.
 
-## P-25 — Traducción ausente para el status DEL en el seed
-
-**Donde y TODO:**
-`user-auth/src/main/java/com/icms/user_auth/cli/level2/UserStatusTranslationDataSeed.java:61`;
-TODO agregado.
-
-**Problema:** el seed `UserStatusDataSeed` declara el status `DEL`, pero
-`UserStatusTranslationDataSeed` solo carga traducciones para `ACT`, `INA` y
-`SUS`. El código actual no declara `PENDING`; al crear usuarios se asigna
-`INA`, que sí cuenta con traducciones en el seed.
-
-**Contexto y explicación:** el endpoint público de estados podría mostrar el
-status `DEL` sin nombre traducido después de ejecutar los seeds. No se pudo
-confirmar el contenido actual de la base porque el MCP de PostgreSQL no está
-disponible en esta sesión.
-
-**Opciones estándar:**
-
-- A) Agregar traducciones para `DEL` en el seed, en los idiomas activos
-  pertinentes (recomendado para el flujo de desarrollo local).
-- B) Si una base compartida o productiva ya fue inicializada, agregar también
-  las filas faltantes mediante un changeset Liquibase.
-
-**Recomendación:** A para que el seed mantenga completos los datos desde el
-reinicio local; verificar la BD con PostgreSQL MCP cuando esté disponible.
-
-**Nivel de acción requerido:** Medio — el catálogo y su seed de traducciones
-no cubren el mismo conjunto de estados.
-
 ## P-26 — Dependencia WebFlux de pruebas sin uso en user-auth
 
 **Donde y TODO:** `user-auth/build.gradle:24`; TODO agregado.

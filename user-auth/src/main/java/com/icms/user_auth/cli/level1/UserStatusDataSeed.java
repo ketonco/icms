@@ -22,7 +22,8 @@ public class UserStatusDataSeed implements DataSeed{
         new UserStatus("ACT", Boolean.TRUE, "ACTIVE"),
         new UserStatus("INA", Boolean.TRUE, "INACTIVE"),
         new UserStatus("SUS", Boolean.TRUE, "SUSPENDED"),
-        new UserStatus("DEL", Boolean.TRUE, "DELETED")
+        new UserStatus("DEL", Boolean.TRUE, "DELETED"),
+        new UserStatus("PEN", Boolean.TRUE, "PENDING")
     );
 
     @Override

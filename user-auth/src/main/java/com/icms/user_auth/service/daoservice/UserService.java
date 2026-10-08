@@ -49,7 +49,7 @@ public class UserService {
 
         entity.setPassword(passwordEncoder.encode(userDto.password()));
         entity.setTypes(roles); // Set default roles
-        entity.setStatus(userStatusRepository.findByCode("INA").orElseThrow(() -> new BusinessRuleException("Cat-001"))); // Set default status
+        entity.setStatus(userStatusRepository.findByCode("PEN").orElseThrow(() -> new BusinessRuleException("Cat-001"))); // Set default status
 
         User savedUser = createUser(entity);
         savedUser.setPassword(null); // Clear the password before returning the DTO
