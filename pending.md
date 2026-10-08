@@ -62,58 +62,6 @@ la respuesta de creación.
 **Nivel de acción requerido:** Medio — la respuesta no refleja en HTTP ni en el
 cuerpo el estado de creación esperado.
 
-## P-26 — Dependencia WebFlux de pruebas sin uso en user-auth
-
-**Donde y TODO:** `user-auth/build.gradle:24`; TODO agregado.
-
-**Problema:** `user-auth` declara `spring-boot-starter-webflux` en
-`testImplementation`, pero no se encontraron usos de `WebTestClient` en las
-pruebas de ese módulo.
-
-**Contexto y explicación:** Copilot y AGENTS solo permiten WebFlux en las
-pruebas MVC cuando se usa como cliente `WebTestClient`. La dependencia actual
-añade una pila reactiva de pruebas que el módulo no usa.
-
-**Opciones estándar:**
-
-- A) Eliminar la dependencia si no existe una prueba que requiera
-  `WebTestClient` (recomendado).
-- B) Mantenerla únicamente si se incorpora una prueba de cliente WebTestClient
-  justificada en `user-auth`.
-
-**Recomendación:** A, al no haber usos de `WebTestClient` en las pruebas
-actuales del módulo.
-
-**Nivel de acción requerido:** Bajo — dependencia de prueba innecesaria que
-debilita el aislamiento de pilas indicado para el módulo.
-
-## P-27 — Prueba de controlador no cubre el rechazo de DTO inválidos
-
-**Donde y TODO:**
-`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerIT.java:76`;
-TODO agregado.
-
-**Problema:** `UserControllerIT` solo envía un DTO válido y no comprueba que
-las restricciones declaradas en `CreateUserDto` y su perfil anidado produzcan
-un rechazo.
-
-**Contexto y explicación:** el endpoint ahora activa `@Valid`, pero la prueba
-actual no detectaría si se elimina esa validación o si deja de ejecutarse para
-campos anidados.
-
-**Opciones estándar:**
-
-- A) Añadir casos RestAssured con campos requeridos vacíos, formato de email o
-  contraseña inválidos y perfil anidado inválido; comprobar HTTP 400 y que no se
-  persista el usuario (recomendado).
-- B) Cubrir las restricciones solo con pruebas unitarias del validador.
-
-**Recomendación:** A, comprobando el contrato HTTP y la ausencia de persistencia
-para solicitudes inválidas.
-
-**Nivel de acción requerido:** Medio — la validación es lógica nueva del
-controlador sin una prueba negativa que la proteja.
-
 ## P-28 — Rutas de prueba expuestas en la configuración de producción
 
 **Donde y TODO:**

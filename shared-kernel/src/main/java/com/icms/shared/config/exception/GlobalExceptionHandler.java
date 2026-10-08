@@ -1,10 +1,19 @@
 package com.icms.shared.config.exception;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.icms.shared.Utils.MessageResolver;
 import com.icms.shared.dto.RestResponse;
@@ -64,22 +73,44 @@ public class GlobalExceptionHandler {
 
     }
 
-    @ExceptionHandler(BusinessRuleException.class)
-    public ResponseEntity<RestResponse<Void>> handleBusinessRuleException(BusinessRuleException ex, HttpServletRequest request) {
+    @ExceptionHandler({
+        BusinessRuleException.class, 
+        MethodArgumentNotValidException.class,
+        ConstraintViolationException.class,
+        HttpMessageNotReadableException.class,
+        MethodArgumentTypeMismatchException.class
+    })
+    public ResponseEntity<RestResponse<Void>> handleBadRequestException(Exception ex, HttpServletRequest request) {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
         String uri = request.getRequestURI();
+        String code = ex instanceof BusinessRuleException ? ((BusinessRuleException) ex).getCode() : "E-002";
+        Map<String, String> errors = ex instanceof MethodArgumentNotValidException ? handleValidationErrors((MethodArgumentNotValidException) ex) : null;
+        String errorMessage = ex instanceof BusinessRuleException ? ex.getMessage() : MessageResolver.resolveMessage("E-002");
 
         return ResponseEntity
                 .status(status)
                 .body(RestResponse.error(
                     status.value(),
-                    ex.getMessage(),
-                    ex.getCode(), // Código de error para regla de negocio
+                    errorMessage,
+                    code, // Código de error para regla de negocio
                     uri,
-                    status.getReasonPhrase() // Detailed error message like "Bad Request"
+                    status.getReasonPhrase(), // Detailed error message like "Bad Request"
+                    errors
                 ));
+    }
 
+    @SuppressWarnings ("null")
+    Map<String, String> handleValidationErrors(MethodArgumentNotValidException ex) {
+        return ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .collect(Collectors.toMap(
+                    FieldError::getField, 
+                    FieldError::getDefaultMessage,
+                    (existing, replacement) -> existing + ", " + replacement, // In case of duplicate keys, concatenate the error messages
+                    LinkedHashMap::new // Use LinkedHashMap to preserve the order of the field errors
+                ));
     }
 
 }

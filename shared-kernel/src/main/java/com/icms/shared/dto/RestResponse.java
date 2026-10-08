@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -20,6 +21,7 @@ public class RestResponse<T> {
     private String code; // Código de error o éxito
     private String error; // Mensaje de error detallado
     private T data; // Genérico para devolver cualquier dato extra  
+    private Map<String, String> errors; // Map to hold field-specific error messages
 
     public static <T> RestResponse<T> ok(T data, String message) {
         RestResponse<T> response = new RestResponse<>();
@@ -36,6 +38,10 @@ public class RestResponse<T> {
     }
 
     public static <T> RestResponse<T> error(int status, String message, String code, String path, String error) {
+        return error(status, message, code, path, error, null);
+    }
+
+    public static <T> RestResponse<T> error(int status, String message, String code, String path, String error, Map<String, String> errors) {
         RestResponse<T> response = new RestResponse<>();
         response.setStatus(status);
         response.setMessage(message);
@@ -43,6 +49,7 @@ public class RestResponse<T> {
         response.setTimestamp(LocalDateTime.now());
         response.setPath(path);
         response.setError(error); // Set the detailed error message
+        response.setErrors(errors); // Set the field-specific error messages
         return response;
     }
 }
