@@ -118,33 +118,3 @@ o fallará `MessagesBundleCoverageTest`.
 
 **Nivel de acción requerido:** Bajo — claves muertas, sin impacto en
 ejecución; solo ruido y numeración inconsistente.
-
-## P-30 — Texto EN/ES incoherente en cuatro claves de validación `.null`
-
-**Donde y TODO:**
-`shared-kernel/src/main/resources/i18n/messages.properties` en las claves
-`usrstatustrans.catalogid.null`, `usrstatustrans.languageid.null`,
-`usrtypetrans.catalogid.null` y `usrtypetrans.languageid.null`; sin TODO en
-código.
-
-**Problema:** en inglés los cuatro valores dicen `cannot be blank` y en español
-dicen `no puede ser nulo`, mientras que la anotación asociada es `@NotNull` y
-la regla de la propia clave es `.null`.
-
-**Contexto y explicación:** quien recibe la respuesta en inglés ve "no debe
-estar vacío" para un error de nulidad, y la regla de naming
-`<dominio>.<campo>.<regla>` queda contradicha por el texto del mensaje.
-
-**Opciones estándar:**
-
-- A) Unificar los textos en inglés a `... cannot be null` y actualizar las
-  cuatro aserciones afectadas en `UserTypeTranslationDtoValidationIT:78,110` y
-  `UserStatusTranslationDtoValidationIT:78,110` (recomendado).
-- B) Cambiar la regla de la clave a `.blank` y la anotación a `@NotBlank`, lo
-  que altera el comportamiento de validación.
-
-**Recomendación:** A, en una tarea propia para no mezclar cambios de texto con
-la renumeración de códigos del ciclo `messages-properties-usecases`.
-
-**Nivel de acción requerido:** Bajo — traducción confusa, sin impacto
-funcional.
