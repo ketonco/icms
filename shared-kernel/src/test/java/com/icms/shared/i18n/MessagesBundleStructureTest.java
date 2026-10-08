@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * business block that always precedes the validation block.
  * </p>
  */
-@SuppressWarnings("null")
+//@SuppressWarnings("null")
 class MessagesBundleStructureTest {
 
     private static final String EN_BUNDLE = "/i18n/messages.properties";

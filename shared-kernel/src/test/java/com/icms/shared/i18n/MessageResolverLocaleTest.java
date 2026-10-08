@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * and that an unknown code falls back to the code itself.
  * </p>
  */
-@SuppressWarnings("null")
+//@SuppressWarnings("null")
 class MessageResolverLocaleTest {
 
     /** The 21 business codes defined by the i18n standard, in bundle order. */

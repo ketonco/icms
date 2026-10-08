@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * otherwise return the code itself as message instead of failing.
  * </p>
  */
-@SuppressWarnings("null")
+//@SuppressWarnings("null")
 class MessagesBundleCoverageTest {
 
     /** Bundle keys that are intentionally defined without any code reference. */
