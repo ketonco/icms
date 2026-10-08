@@ -3,36 +3,6 @@
 Revisión integral de `.github/copilot-instructions.md` frente al código real.
 Fecha: 2026-10-05.
 
-## P-03 — Versiones hardcodeadas fuera de `libs.versions.toml`
-
-**Dónde:** `shared-kernel/build.gradle:12` y
-`buildSrc/src/main/kotlin/migration-conventions.gradle.kts:16`
-
-**Ubicacion del TODO: agregado** en `shared-kernel/build.gradle:12` y
-`migration-conventions.gradle.kts:16`.
-
-**Problema:** `shared-kernel/build.gradle:12` fija la versión del BOM con
-`mavenBom '...:4.1.1'`, y
-`migration-conventions.gradle.kts:16` declara directamente la coordenada y
-versión de picocli en `liquibaseRuntime`, aunque ya existe el alias `libs.picocli`.
-Esto contradice el uso estrictamente centralizado de versiones de §1.
-
-**Contexto / Explicación:** versiones declaradas fuera del catálogo centralizado
-se pueden desincronizar y hacen que el alias ya definido para picocli no cubra
-la configuración de Liquibase.
-
-**Opciones estándar:**
-
-- A) Usar el catálogo para el BOM y el alias `libs.picocli` también en
-  `liquibaseRuntime` (recomendado).
-- B) Documentar la excepción en §1 si hay motivo técnico.
-
-**Recomendación:** A, queda pendiente centralizar la versión del BOM y usar el
-alias existente de picocli en todas sus configuraciones.
-
-**Nivel de acción requerido:** Bajo — consistencia de build, sin impacto
-funcional.
-
 ## P-15 — Rutas protegidas sin mecanismo de autenticación visible
 
 **Dónde:**

@@ -13,7 +13,7 @@ dependencies {
 
 	// Requerido por la tarea de Liquibase para ejecutar desde CLI
     liquibaseRuntime(libs.findLibrary("liquibase-core").get())
-    liquibaseRuntime("info.picocli:picocli:4.7.6") // TODO (pending P-03)
+    liquibaseRuntime(libs.findLibrary("picocli").get()) // TODO (pending P-03)
     liquibaseRuntime(sourceSets.main.get().output)
 
     testImplementation(libs.findLibrary("spring-boot-starter-liquibase-test").get())

@@ -12,17 +12,20 @@ instancio = "5.4.0"
 picocli = "4.7.6"
 rest-assured = "6.0.1"
 wiremock = "3.13.2"
+springBootDependencies = "4.1.1"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
 dependency-management = { id = "io.spring.dependency-management", version.ref = "dependencyManagement" }
 liquibase = { id = "org.liquibase.gradle", version.ref = "liquibase" }
+spring-boot-dependencies = { id = "org.springframework.boot", version.ref = "springBootDependencies" }
 
 [libraries]
 # Plugins (para buildSrc)
 spring-boot-gradle-plugin = { module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "springBoot" }
 dependency-management-gradle-plugin = { module = "io.spring.dependency-management:io.spring.dependency-management.gradle.plugin", version.ref = "dependencyManagement" }
 liquibase-gradle-plugin = { module = "org.liquibase.gradle:org.liquibase.gradle.gradle.plugin", version.ref = "liquibase" }
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "springBootDependencies" }
 
 # Spring Boot Starters Core
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }

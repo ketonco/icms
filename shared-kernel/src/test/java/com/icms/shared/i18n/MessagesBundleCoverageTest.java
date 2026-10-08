@@ -70,6 +70,8 @@ class MessagesBundleCoverageTest {
     }
 
     /* Reads a bundle from the classpath and returns its keys as a sorted set. */
+    @SuppressWarnings("resource")
+    //TODO: check this warning
     private static Set<String> bundleKeys(String bundlePath) {
         java.io.InputStream stream = MessagesBundleCoverageTest.class.getResourceAsStream(bundlePath);
         assertThat(stream).as("bundle %s must exist on the test classpath", bundlePath).isNotNull();
