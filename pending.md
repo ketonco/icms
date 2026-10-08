@@ -62,33 +62,6 @@ la respuesta de creación.
 **Nivel de acción requerido:** Medio — la respuesta no refleja en HTTP ni en el
 cuerpo el estado de creación esperado.
 
-## P-24 — Prueba de UserService no verifica invariantes de creación
-
-**Donde y TODO:**
-`user-auth/src/test/java/com/icms/user_auth/service/UserServiceTest.java:106`;
-TODO agregado.
-
-**Problema:** la prueba solo comprueba que el DTO devuelto no sea nulo y que su
-nombre coincida; no verifica codificación de contraseña, asignación del rol y
-estado predeterminados, ni exclusión de la contraseña de la respuesta.
-
-**Contexto y explicación:** esos comportamientos son lógica propia de
-`UserService` y afectan seguridad y consistencia de la cuenta creada. La prueba
-actual puede pasar aunque las asignaciones o el tratamiento del secreto fallen.
-
-**Opciones estándar:**
-
-- A) Capturar/verificar la entidad guardada y las interacciones del mapper para
-  comprobar esas invariantes con Mockito y AssertJ (recomendado).
-- B) Añadir una prueba de integración de persistencia que valide el flujo
-  completo de creación.
-
-**Recomendación:** A para la lógica de servicio; mantener la prueba de
-integración como validación del contrato HTTP.
-
-**Nivel de acción requerido:** Alto — la prueba actual no protege invariantes de
-seguridad ni de asignación de roles/estado.
-
 ## P-25 — Traducción ausente para el status DEL en el seed
 
 **Donde y TODO:**

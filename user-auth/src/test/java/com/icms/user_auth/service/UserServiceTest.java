@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.instancio.Instancio;
 import org.instancio.Select;
@@ -73,10 +74,7 @@ public class UserServiceTest {
 
         userTypes = new HashSet<>(List.of(userType));
 
-        user = Instancio.of(User.class)
-            .set(Select.field(User::getStatus), userStatus)
-            .set(Select.field(User::getTypes), userTypes)
-            .create();
+        user = Instancio.create(User.class);
 
         createUserDto = Instancio.create(CreateUserDto.class);
     }
@@ -85,6 +83,13 @@ public class UserServiceTest {
     @DisplayName("Test creating a new user")
     void testCreateUser() {
         // Arrange
+        // we use AtomicReference to capture the encoded password during the test, since the password is encoded inside the service method
+        // AtomicReference is useful to capture the value inside the lambda expression
+        AtomicReference<String> passwordAtSave = new AtomicReference<>();
+        AtomicReference<UserStatus> statusAtSave = new AtomicReference<>();
+        AtomicReference<Set<UserType>> typesAtSave = new AtomicReference<>();
+        AtomicReference<String> passwordAfterSave = new AtomicReference<>();
+
         CreateUserDto userDtoCreated = Instancio.of(CreateUserDto.class)
             .set(Select.field(CreateUserDto::username), createUserDto.username())
             .ignore(Select.field(CreateUserDto::password))
@@ -93,20 +98,38 @@ public class UserServiceTest {
         Mockito.when(userMapper.toEntity(createUserDto)).thenReturn(user);
         Mockito.when(userStatusRepository.findByCode("INA")).thenReturn(Optional.of(userStatus));
         Mockito.when(userTypeRepository.findByCode("USR")).thenReturn(Optional.of(userType));
-        Mockito.when(passwordEncoder.encode(createUserDto.password())).thenReturn("encodedPassword");
+        Mockito.when(passwordEncoder.encode(createUserDto.password())).thenReturn("passwordEncoded");
+
         Mockito.doNothing().when(userRules).canCreate(user);
-        Mockito.when(userRepository.save(user)).thenReturn(user);
-        Mockito.when(userMapper.toCreateUserDto(user)).thenReturn(userDtoCreated);
+
+        Mockito.when(userRepository.save(user)).thenAnswer(invocation -> {
+            User toSave = invocation.getArgument(0);
+            passwordAtSave.set(toSave.getPassword());
+            statusAtSave.set(toSave.getStatus());
+            typesAtSave.set(toSave.getTypes());
+            return toSave;
+        });
+
+        Mockito.when(userMapper.toCreateUserDto(user)).thenAnswer(invocation -> {
+            User userArg = invocation.getArgument(0);
+            passwordAfterSave.set(userArg.getPassword());
+            return userDtoCreated;
+        });
 
         // Act
         // Call the method to create a user here, e.g., userService.createUser(createUserDto);
         CreateUserDto result = userService.createUserDto(createUserDto);
 
         // Assert
-        // TODO (pending P-24)
         // Add assertions to verify the user was created correctly
         assertThat(result).isNotNull();
         assertThat(result.username()).isEqualTo(userDtoCreated.username());
+        assertThat(passwordAfterSave.get()).isNull();
+        assertThat(passwordAtSave.get()).isEqualTo("passwordEncoded");
+        assertThat(statusAtSave.get()).isEqualTo(userStatus);
+        assertThat(typesAtSave.get()).isEqualTo(userTypes);
+
+        Mockito.verify(userRules, Mockito.times(1)).canCreate(user);
     }
 
 }
