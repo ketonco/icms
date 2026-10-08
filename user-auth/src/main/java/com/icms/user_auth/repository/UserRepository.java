@@ -6,6 +6,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import com.icms.user_auth.entity.User;
+
+import jakarta.transaction.Transactional;
+
 import com.icms.shared.repository.BaseRepository;
 import java.util.UUID;
 
@@ -17,14 +20,17 @@ public interface UserRepository extends BaseRepository<User, UUID> {
     Optional<User> findByUsername(String username);
 
     @Modifying
+    @Transactional 
     @Query(value = "DELETE FROM user_types WHERE user_id = (SELECT id FROM users WHERE username = :username)", nativeQuery = true)
     void deleteUserTypesByUsername(@Param("username") String username);
 
     @Modifying
+    @Transactional 
     @Query("DELETE FROM User u WHERE u.username = :username")
     void deleteByUsername(@Param("username") String username);
 
     @Modifying
+    @Transactional 
     @Query(value = "DELETE FROM user_profiles WHERE user_id = (SELECT id FROM users WHERE username = :username)", nativeQuery = true)
     void deleteProfileByUsername(@Param("username") String username);
 

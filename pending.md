@@ -200,35 +200,3 @@ la renumeración de códigos del ciclo `messages-properties-usecases`.
 
 **Nivel de acción requerido:** Bajo — traducción confusa, sin impacto
 funcional.
-
-## P-31 — Prueba de creación de usuario con residuo en BD y limpieza ineficaz
-
-**Donde y TODO:**
-`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerIT.java:35-44`
-(y `:72`); el `TODO` de la línea 71 ya apunta a P-23.
-
-**Problema:** la siguiente ejecución del test recibe HTTP 400 en la línea
-72, donde espera 200, porque el usuario `testuser2` ya existe en la BD de
-pruebas. El `@Transactional` del método (`:44`) no revierte la alta, ya que
-la petición HTTP la atiende el hilo del servidor con otra conexión, y el
-`tearDown` `@Transactional` (`:35-41`) no consigue dejar la tabla limpia.
-
-**Contexto y explicación:** el perfil `test` desactiva Liquibase y no hay
-aislamiento por transacción entre el cliente de la prueba y el servidor, de
-modo que cada corrida que falla deja filas residuales. Es un fallo
-preexistente: la línea base de la refactorización `messages-properties-usecases`
-antes de tocar cualquier código ya era de 120 tests con 1 fallo.
-
-**Opciones estándar:**
-
-- A) Limpiar el residuo actual de la BD y hacer efectivo el borrado en el
-  `tearDown` (sin `@Transactional` en el `@AfterEach`, en orden inverso de
-  claves foráneas) antes de cada prueba (recomendado).
-- B) Usar usuario y correo aleatorios por corrida y borrarlos al final,
-  eliminando la dependencia de datos fijos.
-
-**Recomendación:** A, y aprovechar para alinear la asertación con P-23
-cuando el contrato pase a 201.
-
-**Nivel de acción requerido:** Medio — mantiene `gradlew.bat build` en rojo
-y enmascara regresiones reales al fallar siempre por el mismo motivo.

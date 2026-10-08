@@ -9,7 +9,6 @@ import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
@@ -33,7 +32,6 @@ public class UserControllerIT {
     }
 
     @AfterEach
-    @Transactional
     void tearDown() {
         userRepository.deleteProfileByUsername("testuser2");
         userRepository.deleteUserTypesByUsername("testuser2");
@@ -41,7 +39,6 @@ public class UserControllerIT {
     }
 
     @Test 
-    @Transactional
     @DisplayName("POST /api/v1/auth/user - test creating a new user")
     void testCreateUser() {
         // Implement the test using RestAssured here
