@@ -99,4 +99,34 @@ public class UserControllerIT {
             .body("message", equalTo("The submitted data is not valid.")); // Expecting an error message indicating the missing username
 
     }
+
+    
+    @Test 
+    @DisplayName("POST /api/v1/auth/user - test creating a new user with missing email")
+    void testCreateUserWithMissingEmail() {
+        String jsonPayload = """
+        {
+            "username": "testuser2",
+            "password": "Testpassword.123456",
+            "email": "",
+            "profile": {
+                "firstName": "Test",
+                "lastName": "User",
+                "avatarUrl": "http://example.com/avatar.jpg",
+                "prefs": null,
+                "contact": null,
+                "email": ""
+            }
+        }
+        """;
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(jsonPayload)
+        .when()
+            .post("/api/v1/auth/user")
+        .then()
+            .statusCode(400) // Expecting a bad request due to missing email
+            .body("message", equalTo("The submitted data is not valid.")); // Expecting an error message indicating the missing email
+    }
 }
