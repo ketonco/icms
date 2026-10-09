@@ -34,34 +34,6 @@ rutas protegidas.
 **Nivel de acción requerido:** Alto — impide el acceso autenticado a las rutas
 protegidas y deja incompleto el flujo central del módulo.
 
-## P-23 — Endpoint de creación responde HTTP 200 en vez de 201
-
-**Donde y TODO:**
-`user-auth/src/main/java/com/icms/user_auth/controller/UserController.java:28`,
-`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerIT.java:71`
-y `shared-kernel/src/main/java/com/icms/shared/dto/RestResponse.java:26`;
-TODO agregado en los tres archivos.
-
-**Problema:** el método declara `@ResponseStatus(HttpStatus.CREATED)`, pero
-devuelve `ResponseEntity.ok(...)`, cuyo estado explícito es 200. Además,
-`RestResponse.ok` fija `status=200` en el cuerpo y la prueba espera 200.
-
-**Contexto y explicación:** tanto el estado HTTP como el campo `status` del
-cuerpo deben coincidir con el contrato de creación esperado. La prueba actual
-no verifica el estado 201 ni el encabezado `Location`.
-
-**Opciones estándar:**
-
-- A) Devolver HTTP 201, propagarlo al campo `RestResponse.status`, incluir
-  `Location` y ajustar la prueba del contrato (recomendado).
-- B) Eliminar la anotación y documentar explícitamente 200 como contrato.
-
-**Recomendación:** A, manteniendo alineados estado HTTP, cuerpo y encabezado de
-la respuesta de creación.
-
-**Nivel de acción requerido:** Medio — la respuesta no refleja en HTTP ni en el
-cuerpo el estado de creación esperado.
-
 ## P-29 — Quince claves huérfanas en los bundle i18n
 
 **Donde y TODO:**

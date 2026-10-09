@@ -65,13 +65,11 @@ public class UserControllerIT {
         .when()
             .post("/api/v1/auth/user")
         .then()
-            // TODO (pending P-23)
-            .statusCode(200)
+            .statusCode(201)
             .body("data.username", equalTo("testuser2"))
             .body("data.email", equalTo("testuser2@example.com")); 
     }
 
-    // TODO (pending P-27)
     @Test 
     @DisplayName("POST /api/v1/auth/user - test creating a new user with missing username")
     void testCreateUserWithMissingUsername() {

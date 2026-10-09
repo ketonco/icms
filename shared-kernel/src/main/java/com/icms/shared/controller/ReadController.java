@@ -1,5 +1,8 @@
 package com.icms.shared.controller;
+import java.util.Optional;
+import org.springframework.http.HttpStatus;
 import java.util.List;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import com.icms.shared.dto.IdentifiableDtoImpl;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +15,23 @@ public interface ReadController<ID, DTO extends IdentifiableDtoImpl<ID>>
 
     @GetMapping
     default ResponseEntity<RestResponse<List<DTO>>> getAll() {
-        List<DTO> dtos = getService().findAllDto();
-        return ResponseEntity.ok(RestResponse.ok(dtos));
+        return Optional.ofNullable(getService().findAllDto()).
+        filter(dtos -> !dtos.isEmpty())
+        .map(dtos -> ResponseEntity.ok(RestResponse.ok(dtos)))
+        .orElse(ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .body(RestResponse.noContent())
+        );
     }
 
     @GetMapping("/{id}")
     default ResponseEntity<RestResponse<DTO>> getById(@PathVariable ID id) {
-        DTO dto = getService().findDtoById(id);
-        return ResponseEntity.ok(RestResponse.ok(dto));
+        return Optional.ofNullable(getService().findDtoById(id))
+        .map(dto -> ResponseEntity.ok(RestResponse.ok(dto)))
+        .orElse(ResponseEntity
+            .status(HttpStatus.NO_CONTENT)
+            .body(RestResponse.noContent())
+        );
     }
 
 }

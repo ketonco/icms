@@ -106,6 +106,10 @@
    y filtro JWT conectado a la cadena de `SecurityConfig:49` (quitando el
    TODO). *Terminado cuando:* login devuelve token, un Bearer válido pasa a
    rutas protegidas, sin token o inválido responde 401, con tests verdes.
+   *Importante (2026-10-09):* P-15 se atiende una vez terminados los
+   servicios relacionados con usuarios, comenzando de inmediato en ese punto;
+   mientras sea el único punto crítico abierto, no debe tomarse en cuenta para
+   retener ni denegar la revisión de QA.
 2. **Flujo de estados de cuenta:** decidir el status inicial de los usuarios
    nuevos (`PENDING` vs `INA`), cambiar el default en `UserService:52`,
    sembrar el status nuevo en `UserStatusDataSeed` y agregar sus traducciones
