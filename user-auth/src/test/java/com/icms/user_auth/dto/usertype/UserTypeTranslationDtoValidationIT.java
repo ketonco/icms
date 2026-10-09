@@ -75,7 +75,7 @@ class UserTypeTranslationDtoValidationIT {
         // Assert
         assertThat(violations).isNotEmpty();
         assertThat(getMessageForPropertyAndAnnotation(violations, "catalogId", NotNull.class))
-                .isEqualTo("Catalog ID cannot be blank");
+                .isEqualTo("Catalog ID cannot be null");
     }
 
     @Test
@@ -107,7 +107,7 @@ class UserTypeTranslationDtoValidationIT {
         // Assert
         assertThat(violations).isNotEmpty();
         assertThat(getMessageForPropertyAndAnnotation(violations, "languageId", NotNull.class))
-                .isEqualTo("Language ID cannot be blank");
+                .isEqualTo("Language ID cannot be null");
     }
 
     @Test

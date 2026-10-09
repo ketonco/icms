@@ -62,34 +62,6 @@ la respuesta de creación.
 **Nivel de acción requerido:** Medio — la respuesta no refleja en HTTP ni en el
 cuerpo el estado de creación esperado.
 
-## P-28 — Rutas de prueba expuestas en la configuración de producción
-
-**Donde y TODO:**
-`api/src/main/java/com/icms/api/config/TestRouterConfig.java:15`,
-`user-auth/src/main/java/com/icms/user_auth/controller/TestController.java:11`
-y `user-auth/src/main/java/com/icms/user_auth/config/SecurityConfig.java:44`;
-TODO agregado en las tres ubicaciones.
-
-**Problema:** el Gateway publica una ruta local `/test` y `user-auth` publica
-`/api/v1/auth/test`; ambas configuraciones están activas fuera del perfil de
-pruebas y el endpoint de `user-auth` además está permitido explícitamente.
-
-**Contexto y explicación:** son endpoints diagnósticos con respuestas fijas,
-incluidos en la aplicación desplegable. El test actual del Gateway usa un
-downstream WireMock y ya no necesita ejecutar el controlador real.
-
-**Opciones estándar:**
-
-- A) Restringir las rutas al perfil `test` o quitarlas de la configuración de
-  producción (recomendado).
-- B) Sustituirlas por un mecanismo de salud dedicado y documentado.
-
-**Recomendación:** A para las rutas de fixture; usar un endpoint de salud
-dedicado si se necesita monitorización en ejecución.
-
-**Nivel de acción requerido:** Bajo — publica endpoints de prueba en el
-despliegue normal y mantiene innecesariamente un permiso anónimo.
-
 ## P-29 — Quince claves huérfanas en los bundle i18n
 
 **Donde y TODO:**

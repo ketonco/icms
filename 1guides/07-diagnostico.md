@@ -26,11 +26,13 @@ Revisar que se use `spring.cloud.gateway.server.webflux`, que `routes` este dent
 
 ## Redireccion a `user-auth:8081/login`
 
-La ruta funciona, pero Spring Security redirige una peticion HTML. Comparar respuestas:
+La ruta funciona, pero Spring Security redirige en lugar de devolver el error. Comparar respuestas con endpoints reales:
 
 ```powershell
-curl.exe -i -H "Accept: text/html" http://localhost:8080/api/v1/auth/test
-curl.exe -i -H "Accept: application/json" http://localhost:8080/api/v1/auth/test
+# Endpoint publico (permitAll): debe responder 200 con JSON
+curl.exe -i -H "Accept: application/json" http://localhost:8080/api/v1/auth/languages
+# Ruta fuera de los permitAll: debe responder 401 en JSON, sin redireccion
+curl.exe -i http://localhost:8080/api/v1/auth/roles
 ```
 
-Si aparece `Location: http://user-auth:8081/login`, permitir el endpoint de prueba o devolver `401` sin redireccion. No cambiar el `uri` del gateway a `localhost`, porque romperia la red interna Docker.
+Si aparece `Location: http://user-auth:8081/login`, el backend esta redirigiendo en lugar de devolver `401` JSON: revisar `SecurityConfig` y `CustomSecurityExceptionHandler`. No cambiar el `uri` del gateway a `localhost`, porque romperia la red interna Docker.
