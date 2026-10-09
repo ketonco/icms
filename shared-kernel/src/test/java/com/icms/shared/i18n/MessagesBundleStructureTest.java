@@ -40,6 +40,7 @@ class MessagesBundleStructureTest {
     /** The 16 section comments of the standard, in bundle order. */
     private static final List<String> STANDARD_SECTIONS = List.of(
         "# Common Errors",
+        "# General Success Messages",
         "# Resource Errors",
         "# Success Messages",
         "# Entity Errors",

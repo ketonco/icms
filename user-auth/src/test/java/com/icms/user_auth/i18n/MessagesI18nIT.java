@@ -168,8 +168,8 @@ class MessagesI18nIT {
         .when()
             .post("/api/v1/auth/languages")
         .then()
-            .statusCode(200)
-            .body("status", equalTo(200))
+            .statusCode(201)
+            .body("status", equalTo(201))
             .body("message", equalTo("Entidad creada con éxito"));
     }
 
