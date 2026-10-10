@@ -18,7 +18,7 @@ coordinas, consolidas y emites veredicto. La decisión final es del usuario.
 
 ## 2. Lanza en paralelo los 5 subagentes
 
-Invócalos por nombre en paralelo, cada uno con: el alcance, las rutas
+Invócalos por nombre en paralelo (linter, instrucciones, seguridad, funcional, tests), cada uno con: el alcance, las rutas
 relevantes y la petición original del usuario. Cada uno devuelve sus
 hallazgos por texto.
 

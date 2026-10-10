@@ -100,47 +100,40 @@
 
 ## 4. Próximos Pasos
 
-1. **Mecanismo de autenticación JWT en `user-auth` (cierra P-15):**
-   `UserDetailsService` + `AuthenticationProvider` que cargue al usuario con
-   sus tipos y permisos, endpoint `POST /api/v1/auth/login` que emita el token
-   y filtro JWT conectado a la cadena de `SecurityConfig:49` (quitando el
-   TODO). *Terminado cuando:* login devuelve token, un Bearer válido pasa a
-   rutas protegidas, sin token o inválido responde 401, con tests verdes.
-   *Importante (2026-10-09):* P-15 se atiende una vez terminados los
-   servicios relacionados con usuarios, comenzando de inmediato en ese punto;
-   mientras sea el único punto crítico abierto, no debe tomarse en cuenta para
-   retener ni denegar la revisión de QA.
-2. **Flujo de estados de cuenta:** decidir el status inicial de los usuarios
-   nuevos (`PENDING` vs `INA`), cambiar el default en `UserService:52`,
-   sembrar el status nuevo en `UserStatusDataSeed` y agregar sus traducciones
-   junto con las de `DEL` (cierra P-25). *Terminado cuando:* todo status del
-   catálogo tiene traducciones en cada idioma activo, validado con el MCP
-   PostgreSQL.
-3. **Estandarización de pruebas + invariantes de `UserService` (cierra
-   P-24):** definir clases base y patrones AAA (Mockito + AssertJ + Instancio)
-   y corregir la prueba de creación para verificar codificación bcrypt, rol,
-   estado por defecto y ausencia de contraseña en la respuesta.
-   *Terminado cuando:* el test falla si cualquiera de esas invariantes cae y
-   queda commiteado en verde.
-4. **DTOs por rol con MapStruct:** jerarquía de DTOs de entrada y salida por
-   rol (GUE/USR/MOD/ADM) con configuración central `MapperSetting`.
-   *Terminado cuando:* ningún DTO de salida expone campos sensibles y existen
-   tests de mapper que validen el mapeo por rol.
-5. **Contrato HTTP de creación (cierra P-23):** `POST /api/v1/auth/user`
-   responde 201, refleja `status=201` en `RestResponse` e incluye `Location`;
-   `UserControllerIT` cubre altas válidas e inválidas.
-   *Terminado cuando:* código y pruebas coinciden en HTTP 201, cuerpo 201,
-   `Location` y rechazo HTTP 400 para DTOs inválidos.
-6. **Deuda de build y aislamiento de pilas (cierra P-03 y P-26):** BOM y
-   picocli centralizados en `libs.versions.toml`, y quitar
-   `spring-boot-starter-webflux` de `testImplementation` en `user-auth` si no
-   hay uso de `WebTestClient`. *Terminado cuando:* `gradlew build` verde y
-   sin versiones fuera del catálogo.
-7. **Guía de `user-auth` en `1guides/` (cierre de F1):** documentar
-   arquitectura, endpoints, roles y permisos, seeds y flujo `/rebuild-db`.
-   *Terminado cuando:* guía publicada con markdownlint en 0 warnings y F1
-   cerrada con migraciones, seeds y tests verdes.
-8. **Arranque de `catalog` (F2):** nuevo módulo WebMVC con BD propia,
-   migraciones Liquibase reutilizando `Base*`, seeds y auditoría, y lectura
-   pública de productos. *Terminado cuando:* el catálogo se lista sin
-   autenticación (GUE), migraciones aplicadas y tests verdes.
+1. **Autenticación y autorización en `user-auth` (P-15):** implementar el
+   mecanismo de autenticación previsto, login/token y autorización por
+   operación; permitir anónimamente solo lecturas públicas y proteger las
+   mutaciones de idiomas y traducciones.
+   *Terminado cuando:* las escrituras anónimas responden 401/403, las lecturas
+   públicas definidas funcionan y los casos con token válido pasan con tests.
+   Este pendiente Alto bloquea QA según la skill `qa-department` mientras siga
+   activo.
+2. **Completar las traducciones de estados (P-25):** añadir `fr-FR` para ACT,
+   INA, SUS, DEL y PEN, ya que el seed declara francés activo.
+   *Terminado cuando:* cada estado sembrado tiene traducción en cada idioma
+   activo y la integridad se verifica con PostgreSQL MCP.
+3. **Completar el contrato de creación de usuario (P-23):** añadir `Location`
+   en `POST /api/v1/auth/user` y afirmar HTTP 201, `body.status=201`, datos y
+   URI del recurso en `UserControllerIT`.
+   *Terminado cuando:* implementación y prueba verifican el contrato completo.
+4. **Fortalecer las pruebas HTTP de validación (P-27):** comprobar en
+   `UserControllerIT` errores por campo para DTO inválido y que la solicitud
+   rechazada no persiste el usuario.
+   *Terminado cuando:* los tests fallan si falta el detalle de validación o se
+   guarda una solicitud inválida.
+5. **Definir el contrato de respuesta vacía (P-31):** elegir entre 204 sin
+   cuerpo o un estado que admita `RestResponse`, y cubrir ambos caminos del
+   `ReadController`.
+   *Terminado cuando:* estado, cuerpo y documentación coinciden en la prueba.
+6. **Actualizar PostgreSQL JDBC (P-32):** centralizar la versión corregida
+   `42.7.12` o posterior compatible y validar la negociación SCRAM/TLS.
+   *Terminado cuando:* el driver resuelve a una versión corregida y la conexión
+   de preproducción funciona con TLS verificado.
+7. **DTOs por rol con MapStruct:** establecer DTOs de entrada/salida para
+   GUE/USR/MOD/ADM con configuración central `MapperSetting`.
+   *Terminado cuando:* los DTOs no exponen campos sensibles y los tests de
+   mapper verifican los mapeos por rol.
+8. **Arrancar `catalog` (F2):** crear el módulo WebMVC con BD propia,
+   migraciones Liquibase reutilizando `Base*`, seeds y auditoría.
+   *Terminado cuando:* la lectura pública de productos funciona para GUE,
+   las operaciones de gestión aplican RBAC y las migraciones y tests pasan.
