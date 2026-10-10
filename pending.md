@@ -116,31 +116,3 @@ individuales sin resultado.
 
 **Nivel de acción requerido:** Bajo — discrepancia de contrato en respuestas
 vacías; no afecta los casos con datos.
-
-## P-32 — PostgreSQL JDBC 42.7.4 afectado por CVE-2026-54291
-
-**Donde y TODO:** `gradle/libs.versions.toml:9` y
-`buildSrc/src/main/kotlin/spring-jpa-conventions.gradle.kts:10`;
-TODO no agregado.
-
-**Problema:** el driver `org.postgresql:postgresql` está fijado en `42.7.4`,
-versión afectada hasta `42.7.11` por una degradación de channel binding bajo
-`channelBinding=require` y condiciones específicas de intermediario TLS.
-
-**Contexto y explicación:** el driver se incluye en runtime de `user-auth`. No
-se confirmó que el proyecto configure `channelBinding=require`; el advisory
-indica que la versión corregida es `42.7.12`.
-
-**Opciones estándar:**
-
-- A) Actualizar la dependencia centralizada a `42.7.12` o una versión posterior
-  compatible (recomendado).
-- B) Mantener temporalmente la versión solo tras verificar TLS con
-  `sslmode=verify-full` y una CA de confianza, y confirmar que no se depende de
-  channel binding como única protección.
-
-**Recomendación:** A y validar la negociación SCRAM/TLS en el entorno de
-preproducción.
-
-**Nivel de acción requerido:** Medio — vulnerabilidad de severidad alta pero
-condicional al modo de channel binding y a un escenario de intermediario.
