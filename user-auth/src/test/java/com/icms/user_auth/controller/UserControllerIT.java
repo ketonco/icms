@@ -4,6 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
@@ -96,7 +98,15 @@ public class UserControllerIT {
             .post("/api/v1/auth/user")
         .then()
             .statusCode(400) // Expecting a bad request due to missing username
-            .body("message", equalTo("The submitted data is not valid.")); // Expecting an error message indicating the missing username
+            .body("message", equalTo("The submitted data is not valid.")) // Expecting an error message indicating the missing username
+            .body("errors.username", allOf(
+                containsString("Username cannot be blank"),
+                containsString("Username must be between 3 and 50 characters")))
+            .body("errors.password", allOf(
+                containsString("Password cannot be blank"),
+                containsString("Password must be between 6 and 100 characters"),
+                containsString("Password must include at least one number, one special character, one letter and one uppercase letter")
+            ));
 
     }
 
@@ -127,6 +137,9 @@ public class UserControllerIT {
             .post("/api/v1/auth/user")
         .then()
             .statusCode(400) // Expecting a bad request due to missing email
-            .body("message", equalTo("The submitted data is not valid.")); // Expecting an error message indicating the missing email
+            .body("message", equalTo("The submitted data is not valid."))
+            .body("errors.email", allOf(
+                containsString("Email cannot be blank")
+            )); // Expecting an error message indicating the missing email
     }
 }

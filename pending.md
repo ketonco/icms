@@ -62,30 +62,3 @@ prueba HTTP.
 
 **Nivel de acción requerido:** Medio — la creación funciona, pero la respuesta
 no completa el contrato documentado.
-
-## P-27 — Tests de DTO inválido no verifican errores por campo ni ausencia de persistencia
-
-**Donde y TODO:**
-`user-auth/src/test/java/com/icms/user_auth/controller/UserControllerIT.java:76-132`;
-TODO no agregado.
-
-**Problema:** los casos con username/email inválidos verifican HTTP 400 y un
-mensaje genérico, pero no comprueban el mapa `errors` con el campo que falló ni
-que el usuario no haya sido persistido.
-
-**Contexto y explicación:** los tests pueden pasar aunque se pierda el detalle
-de validación por propiedad o se ejecute parcialmente el flujo de creación
-antes del rechazo.
-
-**Opciones estándar:**
-
-- A) Afirmar los errores por campo y consultar `UserRepository` para comprobar
-  que no existe el usuario tras cada petición inválida (recomendado).
-- B) Probar por separado la estructura del `RestResponse` y delegar la
-  persistencia a tests de servicio.
-
-**Recomendación:** A para cubrir el contrato HTTP y el efecto observable de la
-solicitud inválida.
-
-**Nivel de acción requerido:** Medio — la prueba negativa no protege el detalle
-de validación ni que no se persista el usuario.

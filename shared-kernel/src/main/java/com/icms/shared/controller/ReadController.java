@@ -1,6 +1,5 @@
 package com.icms.shared.controller;
 import java.util.Optional;
-import org.springframework.http.HttpStatus;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.PathVariable;
