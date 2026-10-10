@@ -58,7 +58,6 @@ public class UserStatusTranslationDataSeed implements DataSeed{
     }
 
     public void fillUserStatusTranslationList() {
-        // TODO (pending P-25)
         UserStatusTranslation userStatusTranslation1 = new UserStatusTranslation();
         // Active
         userStatusTranslation1.setTranslation("Active");
