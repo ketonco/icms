@@ -18,20 +18,14 @@ public interface ReadController<ID, DTO extends IdentifiableDtoImpl<ID>>
         return Optional.ofNullable(getService().findAllDto()).
         filter(dtos -> !dtos.isEmpty())
         .map(dtos -> ResponseEntity.ok(RestResponse.ok(dtos)))
-        .orElse(ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
-            .body(RestResponse.noContent())
-        );
+        .orElse(ResponseEntity.noContent().build());
     }
 
     @GetMapping("/{id}")
     default ResponseEntity<RestResponse<DTO>> getById(@PathVariable ID id) {
         return Optional.ofNullable(getService().findDtoById(id))
         .map(dto -> ResponseEntity.ok(RestResponse.ok(dto)))
-        .orElse(ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
-            .body(RestResponse.noContent())
-        );
+        .orElse(ResponseEntity.noContent().build());
     }
 
 }

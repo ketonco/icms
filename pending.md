@@ -89,30 +89,3 @@ solicitud inválida.
 
 **Nivel de acción requerido:** Medio — la prueba negativa no protege el detalle
 de validación ni que no se persista el usuario.
-
-## P-31 — Respuestas HTTP 204 construidas con cuerpo
-
-**Donde y TODO:**
-`shared-kernel/src/main/java/com/icms/shared/controller/ReadController.java:20-24,30-34`;
-TODO no agregado.
-
-**Problema:** los casos sin resultados devuelven estado HTTP 204 junto con
-`RestResponse.noContent()` como cuerpo. HTTP 204 no transporta cuerpo, de modo
-que el wrapper y el mensaje G-002 no son observables para el cliente.
-
-**Contexto y explicación:** el estado HTTP y el cuerpo prometen dos contratos
-distintos; la respuesta efectiva puede descartar el cuerpo. No hay una prueba
-que fije cuál comportamiento deben consumir los clientes.
-
-**Opciones estándar:**
-
-- A) Responder 204 sin cuerpo y ajustar el contrato/documentación
-  (recomendado si se conserva ese status).
-- B) Usar un status que admita cuerpo, como 200, si se necesita devolver
-  `RestResponse.noContent()`.
-
-**Recomendación:** elegir y probar un único contrato para listas y recursos
-individuales sin resultado.
-
-**Nivel de acción requerido:** Bajo — discrepancia de contrato en respuestas
-vacías; no afecta los casos con datos.
