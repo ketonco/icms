@@ -16,6 +16,10 @@ dependencies {
 	implementation project(':shared-kernel')
 	implementation libs.spring.boot.starter.security
 
+    implementation libs.spring.boot.starter.mail
+    implementation libs.spring.boot.starter.thymeleaf
+    testImplementation libs.greenmail
+
 	testImplementation libs.spring.boot.starter.security.test
 	testImplementation libs.spring.boot.starter.webmvc.test
 	testImplementation libs.spring.boot.test.autoconfigure

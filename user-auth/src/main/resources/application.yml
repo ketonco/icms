@@ -29,6 +29,20 @@ spring:
     problem:
       include-stacktrace: on_param # Always include stacktrace in the response for debugging purposes
 
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USER:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:false}
+      mail.smtp.starttls.enable: ${MAIL_STARTTLS:false}
+
+app:
+  public-base-url: ${APP_PUBLIC_BASE_URL:http://localhost:8080}
+  confirm-ttl-hours: ${APP_CONFIRM_TTL_HOURS:24}
+  resend-cooldown-seconds: ${APP_RESEND_COOLDOWN_SECONDS:60}
+
 server:
   port: ${PORT_USER_AUTH:8081}
 

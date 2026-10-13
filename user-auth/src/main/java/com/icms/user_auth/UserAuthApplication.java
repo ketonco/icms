@@ -6,10 +6,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 //@SpringBootApplication(scanBasePackages = {"com.icms.user_auth", "com.icms.shared"})
 @SpringBootApplication
 @EntityScan(basePackages = {"com.icms.user_auth", "com.icms.shared"})
+@EnableAsync 
 public class UserAuthApplication {
 
 	public static void main(String[] args) {

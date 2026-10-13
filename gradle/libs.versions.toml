@@ -13,6 +13,7 @@ picocli = "4.7.6"
 rest-assured = "6.0.1"
 wiremock = "3.13.2"
 springBootDependencies = "4.1.1"
+greenmail = "2.1.14"
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "springBoot" }
@@ -54,6 +55,11 @@ lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 lombok-mapstruct-binding = { module = "org.projectlombok:lombok-mapstruct-binding", version.ref = "lombokMapstructBinding" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
+
+# Mail 
+spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail" }
+spring-boot-starter-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
+greenmail = { module = "com.icegreen:greenmail-junit5", version.ref = "greenmail" }
 
 # Pruebas (Test)
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
