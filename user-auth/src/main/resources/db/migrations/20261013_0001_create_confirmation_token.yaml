@@ -1,0 +1,196 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20261013_0001_create_confirmation_token_001
+      comment: "Create confirmation_tokens table"
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: confirmation_tokens
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: pk_confirmation_tokens
+                    nullable: false
+              - column:
+                  name: token
+                  type: VARCHAR(60)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expire_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                    updatable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                    defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: confirmation_tokens
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_confirmation_tokens_user_id
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: confirmation_tokens
+
+  - changeSet:
+      id: 20261013_0001_create_confirmation_token_indexes_002
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: confirmation_tokens
+      changes:
+        - createIndex:
+            tableName: confirmation_tokens
+            indexName: idx_confirmation_tokens_token
+            unique: true
+            columns:
+              - column:
+                  name: token
+        - createIndex:
+            tableName: confirmation_tokens
+            indexName: idx_confirmation_tokens_user_id
+            columns:
+              - column:
+                  name: user_id
+      rollback:
+        - dropIndex:
+            tableName: confirmation_tokens
+            indexName: idx_confirmation_tokens_token
+        - dropIndex:
+            tableName: confirmation_tokens
+            indexName: idx_confirmation_tokens_user_id
+
+  - changeSet:
+      id: 20261013_0001_create_confirmation_token_revision_003
+      author: "Maximo"
+      changes:
+        - createTable:
+            tableName: confirmation_tokens_aud
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: VARCHAR(60)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expire_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rev
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: revtype
+                  type: TINYINT
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: confirmation_tokens_aud
+            columnNames: id, rev
+            constraintName: pk_confirmation_tokens_aud
+        - addForeignKeyConstraint:
+            baseTableName: confirmation_tokens_aud
+            baseColumnNames: rev
+            referencedTableName: revinfo
+            referencedColumnNames: rev
+            constraintName: fk_confirmation_tokens_aud_revinfo
+            onDelete: CASCADE
+      rollback:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: confirmation_tokens_aud
+
+  - changeSet:
+      id: 20261013_0001_create_confirmation_token_revision_indexes_004
+      author: "Maximo"
+      preConditions:
+        - onFail: HALT
+        - tableExists:
+            tableName: confirmation_tokens_aud
+      changes:
+        - createIndex:
+            tableName: confirmation_tokens_aud
+            indexName: idx_confirmation_tokens_aud_rev
+            columns:
+              - column:
+                  name: rev
+        - createIndex:
+            tableName: confirmation_tokens_aud
+            indexName: idx_confirmation_tokens_aud_id
+            columns:
+              - column:
+                  name: id
+      rollback:
+        - dropIndex:
+            tableName: confirmation_tokens_aud
+            indexName: idx_confirmation_tokens_aud_rev
+        - dropIndex:
+            tableName: confirmation_tokens_aud
+            indexName: idx_confirmation_tokens_aud_id
