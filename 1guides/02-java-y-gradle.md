@@ -18,7 +18,9 @@ java -version
 Write-Output $env:JAVA_HOME
 ```
 
-`JAVA_HOME` indica qué JDK usa Gradle para arrancar. El toolchain indica qué versión de Java usa para compilar. Asegúrate de que Java 24 esté instalado y disponible para Gradle.
+`JAVA_HOME` suele indicar el JDK con el que arranca Gradle, pero `org.gradle.java.home` puede seleccionar otro. El IDE también puede tener una JVM propia para Gradle y otra para el lenguaje Java. El toolchain indica qué versión de Java usa para compilar.
+
+Comprueba la JVM efectiva de Gradle con `.\gradlew.bat --version`; comprueba el Java disponible en el `PATH` con `java -version`. Asegúrate de que el JDK 24 esté instalado y que Gradle pueda acceder a él para el toolchain.
 
 ## Gradle Wrapper
 
