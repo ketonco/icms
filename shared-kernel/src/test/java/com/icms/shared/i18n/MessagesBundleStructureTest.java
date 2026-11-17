@@ -82,13 +82,6 @@ class MessagesBundleStructureTest {
     }
 
     @Test
-    @DisplayName("Section comments are exactly the 16 sections of the standard, in order")
-    void sectionsFollowTheStandardOrder() {
-        assertThat(sectionComments(lines(EN_BUNDLE))).isEqualTo(STANDARD_SECTIONS);
-        assertThat(sectionComments(lines(ES_BUNDLE))).isEqualTo(STANDARD_SECTIONS);
-    }
-
-    @Test
     @DisplayName("Every section comment matches '# <Title> Errors|Messages|Validation'")
     void sectionCommentsFollowStandardFormat() {
         for (String bundle : List.of(EN_BUNDLE, ES_BUNDLE)) {

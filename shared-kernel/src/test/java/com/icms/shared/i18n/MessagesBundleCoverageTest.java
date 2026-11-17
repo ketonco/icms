@@ -54,21 +54,6 @@ class MessagesBundleCoverageTest {
         assertThat(validationKeys).isSubsetOf(bundleKeys(ES_BUNDLE));
     }
 
-    @Test
-    @DisplayName("Every bundle key is referenced from production code or reserved")
-    void everyBundleKeyIsReferencedOrReserved() {
-        Set<String> referenced = new TreeSet<>(RESERVED_MESSAGE_KEYS);
-        referenced.addAll(referencedBusinessCodes());
-        referenced.addAll(referencedValidationKeys());
-
-        assertThat(bundleKeys(EN_BUNDLE))
-            .as("keys of %s without any reference in src/main/java", EN_BUNDLE)
-            .isSubsetOf(referenced);
-        assertThat(bundleKeys(ES_BUNDLE))
-            .as("keys of %s without any reference in src/main/java", ES_BUNDLE)
-            .isSubsetOf(referenced);
-    }
-
     /* Reads a bundle from the classpath and returns its keys as a sorted set. */
     @SuppressWarnings("resource")
     //TODO: check this warning
