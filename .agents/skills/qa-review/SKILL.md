@@ -1,80 +1,18 @@
 ---
 name: qa-review
-description: QA del proyecto: revisa arquitectura, código y pruebas contra AGENTS.md, copilot-instructions.md y MEMORY.md, mantiene qa_historic.md y registra ajustes en pending.md. Use for QA reviews, code audits, architecture checks, or test coverage reviews.
+description: QA de ICMS: revisa arquitectura, código y pruebas según las instrucciones canónicas y presenta hallazgos sin modificar registros automáticamente.
 ---
 
-Ante el alcance indicado por el usuario en su mensaje (módulo, paquete o todo el proyecto):
+# Revisión QA de ICMS
 
-1. Compara: lee `.github/copilot-instructions.md`, `AGENTS.md` y `MEMORY.md` y
-   construye el checklist de revisión (estructura y módulos, aislamiento
-   MVC/WebFlux, jerarquía de entidades, MapStruct, reglas, servicios,
-   controladores, pruebas §I, migraciones §J, configuración §K, i18n, idioma
-   del código). Añade estándares actuales: JUnit 5 + AssertJ + Instancio,
-   patrón AAA, aserciones sustantivas, tests deterministas y aislados, sin
-   duplicación, diseño escalable.
-2. Historial: lee `qa_historic.md` en la raíz. Si NO existe, es la primera
-   corrección: propón crearlo con su plantilla y haz la revisión COMPLETA de
-   todo el código. Si existe, revisa solo los commits posteriores a la fecha
-   registrada (`git log <fecha>..HEAD`) más los cambios sin commitear del
-   alcance. Al terminar actualiza SOLO la fecha y el commit del historic;
-   nunca añadas una entrada por ejecución.
-3. Arquitectura: la revisión de estructura (módulos, Gradle, plugins de
-   convención, dependencias centralizadas, aislamiento de pilas) es COMPLETA
-   en cada corrida, aunque el histórico diga delta de código.
-4. Tests: todo test creado y en commit está ejecutado y verde — NUNCA
-   propongas "ejecutar" ni "falta probar" un test commiteado. Para cada
-   lógica nueva (servicio, regla, mapper con lógica, controller, query propia)
-   verifica que exista su test según §I respetando el principio selectivo (no
-   proponer tests de genéricos heredados ya cubiertos). Un test commiteado
-   débil o mal hecho es hallazgo válido; uno faltante se propone con patrón
-   §I, ubicación y aserciones esperadas.
-5. Pendientes: reconcilia `pending.md` — elimina los que ya están corregidos
-   (se me olvidó borrar), completa los incompletos, sin duplicar; registra
-   cada hallazgo nuevo con la plantilla estándar P-XX. Si un hallazgo obliga
-   a cambiar `AGENTS.md` o `.github/copilot-instructions.md`, NO los toques:
-   regístralo como pending de nivel Alto para que lo aplique el desarrollador.
-   **ES OBLIGATORIO:** agrega el comentario `TODO (pending P-XX)` en la línea exacta de código a
-   corregir. Sin excepciones. Si el hallazgo es de datos (no de código),
-   indícalo en el reporte y propón la migración o seed necesario.
-6. Memoria: si durante la revisión el desarrollador deja constancia de una
-   decisión momentánea ("lo hice así por ahora porque...") o de avance del
-   proyecto que convenga recordar, fíjalo en `MEMORY.md` como decisión
-   esencial con su porqué. En §4 Próximos Pasos, que no es estática y que
-   mantiene este skill, no el desarrollador:
-   a. Si un punto se completó o está en curso según los commits revisados,
-      elimínalo o reescríbelo al estado real.
-   b. Al retirar o reescribir un punto, propón el reemplazo que corresponda
-      para mantener el conjunto real: guíate en `ROADMAP.md` (fases, módulos
-      y criterios de terminado) y en los pendientes activos de `pending.md`,
-      atendiendo a lo que realmente se está haciendo ahora; nada genérico ni
-      inventado.
-   c. Mantén hasta 8 puntos, cada uno un paso detallado y sustancial
-      (módulo, alcance y cómo se sabe terminado), no tareas menores
-      agrupadas. Si no hay 8 reales, deja los que haya.
-   Todo cambio propuesto en §4 se presenta en el resumen del paso 7 y se
-   escribe solo tras el sí. Respeta el alcance del archivo: solo decisiones
-   y aprendizajes, nunca bitácora, máximo 250 líneas y nunca secretos.
-7. Presenta el resumen (hallazgos, pruebas propuestas, pendientes a borrar o
-   completar, histórico a crear/actualizar, memoria a actualizar) y espera el
-   sí. Sin tu orden no se escribe nada. Si solicitaste un cambio sobre lo
-   propuesto, muestra de nuevo el resultado completo ya con el cambio aplicado
-   y espera tu sí antes de ejecutar.
-8. Tras el sí, los ÚNICOS archivos que modificas son `pending.md`,
-   `qa_historic.md` y `MEMORY.md`. `AGENTS.md` y
-   `.github/copilot-instructions.md` jamás se editan desde aquí; el código y
-   los tests solo reciben marcadores `TODO (pending P-XX)`, nunca se corrigen
-   ni se ejecutan.
-9. Respeta markdownlint (blancos alrededor de encabezados/listas, niveles sin
-   saltos) en todo `.md` que toques. Validación de runtime no te corresponde:
-   si en el código no hay señal de fallo, el cambio está bien aplicado.
-10. Integridad de datos en BD: si el MCP `postgres` está disponible, conecta
-   con el perfil del módulo y valida:
-   a. Todo catálogo con traducciones (`*Translation`) tiene filas en cada
-      idioma activo (o al menos en el idioma por defecto).
-   b. Los datos de cada `*DataSeed.java` existen en BD con los valores
-      declarados en el seed.
-   c. No hay huérfanos referenciales obvios (FKs sin padre).
-   d. Las relaciones entre tablas respetan las restricciones de integridad definidas (FKs, unique constraints, not null).
-   e. Los índices definidos en las tablas existen y son utilizados según lo esperado.
-   f. La data registrada tiene consistencia con las reglas de negocio definidas (por ejemplo, valores dentro de rangos esperados, formatos correctos, relaciones válidas).
-   Si el MCP no está disponible, anótalo en el reporte y continúa.
+1. Lee AGENTS.md y MEMORY.md. Usa docs/contexto/project-map.md para seleccionar solo las instrucciones técnicas y guías pertinentes al alcance. Inspecciona código, configuración y pruebas como evidencia del estado actual.
+2. Delimita el alcance. Revisa diff o historial solo cuando las herramientas y la autorización lo permitan; no ejecutes comandos sin autorización explícita conforme a AGENTS.md. No presupongas ramas, commits o archivos de historial que no existan.
+3. Revisa convenciones aplicables al módulo, incluidas separación MVC/WebFlux, dependencias, persistencia, migraciones, configuración, i18n y pruebas. Aplica cobertura selectiva; no exijas duplicar tests de abstracciones genéricas ya cubiertas.
+4. Para cada hallazgo informa ubicación, evidencia, impacto, severidad, recomendación y opciones. Distingue hechos de inferencias. Propón casos de prueba para validar correcciones; no declares ejecutadas pruebas que no corriste.
+5. Lee pending.md solo si es pertinente. No agregues, edites ni elimines entradas. Presenta posibles altas/cierres al usuario y espera autorización específica para escribir. No agregues marcadores TODO automáticamente.
+6. Trata MEMORY.md como contexto temporal, no como lista de tareas. No lo actualices rutinariamente. Propón cambios por separado y espera autorización.
+7. No edites código, pruebas, instrucciones canónicas ni registros durante una revisión. Si el usuario pide correcciones, presenta un plan separado para aprobación.
+
+## Entrega
+
+Entrega resumen, hallazgos priorizados, evidencia, pruebas sugeridas o ejecutadas, decisiones pendientes y limitaciones. No actualices histórico QA ni otro archivo salvo autorización específica. Respeta markdownlint en Markdown autorizado.

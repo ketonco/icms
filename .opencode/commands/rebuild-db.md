@@ -1,37 +1,16 @@
 ---
-description: Reconstruye la BD de un módulo (dropAll + update + seed) y valida esquema y datos con el MCP de Postgres
+description: Reconstruye y valida la base local de un módulo ICMS cuando el usuario aprueba expresamente destino y efecto
 agent: build
 ---
 
-Para el módulo o módulos indicados en $ARGUMENTS (nombre(s) o `all`; si está vacío, usa `all`):
+Este comando puede borrar y reconstruir datos. No lo ejecutes por una petición ambigua.
 
-1. Resuelve los módulos: `all` = todos los que apliquen
-   `migration-conventions` (hoy solo `user-auth`). Un nombre que no la
-   aplique: infórmalo y detente.
-2. Precondiciones: verifica que PostgreSQL esté levantado (contenedor
-   `postgreSQL_DB` en `docker ps`) y que el MCP `postgres` tenga sus
-   herramientas cargadas. Si falta la BD, infórmalo y detente; si falta el
-   MCP, indica reiniciar OpenCode y detente sin ejecutar nada.
-3. Seguridad: revisa la URL efectiva de Liquibase en `<mod>/build.gradle`
-   (bloque `liquibase`, incluida la propiedad `dbUrl` si se pasa por CLI) y
-   confirma que apunte a `localhost`. Si no es local, NO ejecutes nada y
-   detente.
-4. Ejecuta en orden, mostrando cada comando antes de ejecutarlo y parando en
-   el primer fallo con su error completo:
-   `.\gradlew.bat :<mod>:dropAll`, luego `:mod:update`, luego
-   `:mod:bootRun --args='--spring.profiles.active=task --seed=all'`.
-   Omite el seed si el módulo no tiene `SeedManager`.
-5. Valida con el MCP `postgres` usando el perfil `<nombre del módulo>`. Si
-   el perfil no existe, pide crearlo con `connection add` y detente hasta tu
-   orden:
-   a. tablas, columnas y secuencias declaradas en `db/migrations/*.yaml`
-      existen en `information_schema`.
-   b. `databasechangelog` sin errores y con todos los changesets del
-      `migration-root.yaml`.
-   c. por cada clase `*DataSeed.java`, compara filas y columnas clave
-      (code, name, translation, active) contra los datos reales.
-6. Reporte final: tabla de checks ✅/❌ con la consulta y el resultado. Si
-   todo está ✅, termina ahí. Si algo falló, propón la entrada para
-   `pending.md` y espera tu sí antes de escribir.
-7. Únicos archivos modificables: `pending.md` y solo con tu sí. Este comando
-   no edita código, migraciones ni seeds.
+1. Identifica el módulo solicitado y confirma que usa las convenciones Liquibase. No aceptes all por defecto.
+2. Antes de cualquier comando, inspecciona de forma permitida la configuración para identificar URL, perfil y base destino. Presenta módulo, host, base, perfil y efecto exacto de dropAll, update y seed. Si no puedes verificar que es una base local desechable, detente.
+3. Espera aprobación explícita que nombre el destino y autorice la operación destructiva. La aprobación general del plan no cubre un destino o efecto no descrito.
+4. Comprueba que PostgreSQL y las herramientas MCP requeridas estén disponibles. No ejecutes nada si falta una precondición.
+5. Tras la aprobación, ejecuta solo los comandos exactos aprobados, en orden y deteniéndote ante el primer fallo. Usa el Wrapper de Gradle y nombres de tareas/perfiles comprobados en el módulo.
+6. Valida esquema y seeds con el perfil del módulo si está disponible y autorizado. Informa consultas y resultados sin exponer secretos.
+7. Reporta checks, errores y limitaciones. Si encuentras hallazgos, propón entradas para pending.md; no escribas ni elimines entradas sin aprobación específica.
+
+Este comando no modifica código, migraciones, seeds, pending.md ni MEMORY.md.

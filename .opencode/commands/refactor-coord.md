@@ -1,39 +1,13 @@
 ---
-description: Orquesta una refactorización vía los 3 subagentes (flujo coordinador desde build, solo para comparar contra /refactor-plan|exec|test directos)
+description: Coordina el flujo de refactorización ICMS con los perfiles planner, executor y tester
 agent: build
 ---
 
-Recibe en `$ARGUMENTS` el alcance de la refactorización. Este comando es
-la réplica de `.opencode/agents/refactor-coordinator.md` disparada desde
-build: en este flujo SÍ se usan los subagentes. Usa `.opencode/refactors/`
-para los mismos archivos de handoff (`plan.md`, `executed.md`,
-`test-result.md`).
+Alcance: $ARGUMENTS
 
-Pasos:
-
-1. Lanza `refactor-planner` con el alcance. Pásale en el prompt: la fase
-   en que está, la petición original con mis palabras y decisiones, y las
-   rutas de archivo relevantes. Si el planner responde con preguntas,
-   muéstramelas, espera mis respuestas y relánzalo. Repite hasta que
-   exista `.opencode/refactors/<slug>/plan.md`.
-2. Muéstrame el plan y espera mi aprobación explícita. No continúes sin
-   ella.
-3. Con el plan aprobado, lanza `refactor-executor` con la ruta del plan.
-   - Si escribe `executed.md`: continúa al paso 4.
-   - Si se detiene con un problema: relanza `refactor-planner` con el
-     contexto del problema y repite desde el paso 2. Máximo 2 re-planes;
-     si el problema persiste, escálame.
-4. Lanza `refactor-tester` con las rutas del plan y del executed.
-5. Lee `test-result.md` y muéstrame el veredicto.
-   - Si PASS: sugiere ejecutar `qa-review`.
-   - Si FAIL: relanza `refactor-planner` con el contexto del fallo
-     (test, mensaje, archivo:línea) y repite desde el paso 2. Máximo 3
-     ciclos; agotados, detente y escálame con el estado alcanzado y los
-     fallos restantes.
-6. En cada llamada a un subagente pásale todo lo que necesita (no ven
-   esta conversación): fase y esperativa, petición original literal,
-   rutas de archivo, resultado de la fase anterior.
-7. Cambios de requisitos: si pido un cambio sobre un plan ya aprobado,
-   primero el planner actualiza `plan.md` y muestra el diff; con mi sí
-   se ejecuta. Nunca ejecutar un plan modificado sin aprobación.
-8. Informa en una línea al empezar cada fase.
+1. Invoca refactor-planner con la solicitud, decisiones y rutas pertinentes. Debe consultar AGENTS.md, docs/contexto/project-map.md y solo instrucciones aplicables.
+2. Presenta el plan en el chat y espera aprobación explícita. No persistas plan.md antes de que se apruebe la ruta.
+3. Con aprobación, vuelve a invocar refactor-planner para que persista el plan aprobado en .opencode/refactors/<slug>/plan.md si esa ruta fue autorizada. Confirma que existe y luego invoca refactor-executor con fase/rutas aprobadas.
+4. Si hay bloqueo o cambio de alcance, consulta al usuario; no continúes bajo la aprobación previa.
+5. Invoca refactor-tester solo para pruebas y comandos aprobados. Guarda el reporte si fue incluido en el alcance.
+6. Presenta cambios, comandos y resultados, limitaciones y decisiones pendientes. Los subagentes no conocen esta conversación; pasa en cada llamada petición original, decisiones, rutas, fase y resultado anterior.

@@ -1,23 +1,13 @@
 ---
 name: update-guides
-description: Check or draft project guides in 1guides for a given topic, or list outdated guides with "all". Use when reviewing, creating, or updating documentation guides.
+description: Revisa o propone guías de 1guides para temas de ICMS.
 ---
 
-Para el tema indicado por el usuario en su mensaje:
+Para el tema indicado:
 
-1. Busca en `1guides/` si ya existe una guía que cubra el tema, por nombre de
-   archivo y por contenido.
-2. Si existe: informa qué archivo la cubre, resume qué contiene y qué le
-   faltaría según el estado actual del proyecto. No modifiques nada.
-3. Si no existe: verifica primero que el tema corresponda a algo real del
-   proyecto (módulo, herramienta, flujo o convención). Si no existe en el
-   proyecto, infórmalo y detente.
-4. Si el tema sí existe en el proyecto: redacta la propuesta completa de la
-   guía (en español, estilo de `1guides/`, con rutas y ejemplos reales del
-   código) y preséntala para revisión.
-5. Aplica las modificaciones que se te indiquen y espera autorización explícita;
-   solo entonces crea el archivo en `1guides/` con el siguiente número
-   disponible (`NN-<tema>.md`).
-6. Si el tema indicado es `all`: revisa únicamente las guías ya creadas en
-   `1guides/` contra el estado actual del proyecto e informa como lista cuáles
-   requieren actualización y por qué, sin modificar ninguna.
+1. Lee AGENTS.md y usa docs/contexto/project-map.md para identificar fuentes canónicas y guías aplicables.
+2. Busca en 1guides por nombre y contenido. Si hay una guía, informa qué cubre y qué debe actualizarse según la evidencia actual; no edites todavía.
+3. Si no existe, confirma que el tema corresponde a un módulo, herramienta, flujo o convención implementada. No documentes módulos futuros como existentes.
+4. Presenta la propuesta completa en español, con rutas y ejemplos comprobados. Espera autorización explícita antes de escribir.
+5. Tras la aprobación, crea o modifica la ruta autorizada y actualiza el índice/mapa si forman parte del alcance.
+6. Para all, entrega una lista priorizada de guías existentes que requieren actualización, sin modificar archivos.

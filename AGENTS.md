@@ -1,110 +1,40 @@
-# AGENTS.md - Plataforma de Microservicios ICMS
+# AGENTS.md — Reglas de trabajo de ICMS
 
-ICMS es una plataforma backend empresarial de microservicios construida con Java 24 y Spring Boot 4.1.1. Proporciona autenticación de usuarios, gestión de roles y permisos, catálogo de productos con mini-inventario, búsqueda avanzada de ítems, módulo de facturación con portales para administradores y usuarios, un carrito de compras de prueba para simulación, y la futura integración de IA y n8n para comercio conversacional vía WhatsApp.
+Este archivo reúne reglas generales de colaboración. Las convenciones técnicas por ámbito están en [.github/copilot-instructions.md](.github/copilot-instructions.md) y sus fuentes enlazadas. El mapa para encontrar el contexto relevante es [docs/contexto/project-map.md](docs/contexto/project-map.md).
 
-Fuente de verdad: `.github/copilot-instructions.md` prevalece sobre el código real, que a su vez prevalece sobre este `AGENTS.md`, que prevalece sobre `MEMORY.md`. Lo ya implementado en el esqueleto es ley: no se reescribe código funcional para ajustar documentación.
+## Precedencia y evidencia
 
-## Stack y estructura
+- Las instrucciones del sistema y las indicaciones explícitas del usuario tienen prioridad.
+- Las instrucciones canónicas del proyecto definen el diseño y las convenciones esperadas.
+- El código, la configuración y las pruebas son evidencia del estado realmente implementado; no se modifica código funcional solo para hacerlo coincidir con documentación. Si hay discrepancias, descríbelas y consulta antes de decidir cambios de diseño.
+- MEMORY.md aporta contexto temporal y decisiones previas; no reemplaza las fuentes canónicas ni la evidencia actual.
+- Lee primero este archivo y MEMORY.md. Usa el mapa para elegir solo las instrucciones y guías pertinentes a la tarea; no es necesario releer toda la documentación.
 
-- **Java y Spring:** Java 24 puro sin código fuente Kotlin y Spring Boot 4.1.1 con paquetes Jakarta EE obligatorios.
-- **Arquitectura Monorepo:**
-  - `:api`: Spring Cloud Gateway con WebFlux reactivo sobre Netty. No tiene persistencia propia, solo enruta a servicios downstream por HTTP no bloqueante. Prohibido Tomcat, MVC o JPA bloqueante en este módulo.
-  - `:user-auth`: Microservicio de autenticación, usuarios y seguridad con Spring Web MVC y Spring Data JPA.
-  - `:shared-kernel`: Entidades base, DTOs, mappers MapStruct y manejo base de excepciones.
-- **Sistema de construcción:** Monorepo Gradle con catálogo centralizado `gradle/libs.versions.toml` y plugins de convención Kotlin DSL en `buildSrc/src/main/kotlin/*.gradle.kts`.
-- **Automatización e IA futura:**
-  - **Orquestación:** n8n Community Edition auto-hospedado con Docker.
-  - **Motor de IA:** Spring AI con Ollama local Llama 3 o DeepSeek, o APIs gratuitas Google Gemini o Groq API.
-  - **Mensajería:** WhatsApp Business Cloud API o Evolution API con túnel local ngrok o Cloudflare Tunnel.
-  - **Pagos:** Stripe en modo Sandbox.
-- **Nota de entorno:** si el entorno local usa Java 25, Gradle falla con `IllegalArgumentException: 25` en `JavaVersion.parse`. El estándar del proyecto sigue siendo Java 24. Esa excepción es temporal y no cambia la versión oficial.
+## Forma de trabajo y autorización
 
-## Comandos
+- Antes de editar, crear o eliminar archivos, presenta el plan, los archivos afectados y el cambio propuesto. Espera autorización explícita. La autorización se limita al alcance aprobado; cambios adicionales requieren consulta.
+- Antes de ejecutar comandos, builds o pruebas, explica el propósito y espera autorización explícita. No ejecutes git commit, git stash ni git push.
+- No añadas ni cambies dependencias en gradle/libs.versions.toml sin explicar la necesidad, ofrecer al menos dos opciones y obtener aprobación explícita.
+- Los cambios de esquema y las migraciones Liquibase requieren plan y aprobación explícita. Para operaciones destructivas de base de datos, confirma también la base destino y el efecto concreto.
+- Al presentar cambios, indica qué se agregó, quitó y conservó, con archivo y líneas; muestra el diff o el contenido exacto relevante antes de dar la tarea por terminada.
+- Para cambios de código, describe los casos de prueba unitarios y de integración que los validarían. No ejecutes pruebas sin autorización.
 
-- **Compilar y construir:** `./gradlew build` en Linux o macOS, `gradlew.bat build` en Windows.
-- **Ejecutar pruebas:** `./gradlew test` o `gradlew.bat test`.
-- **Ejecutar un módulo:** `./gradlew :user-auth:bootRun` o `gradlew.bat :user-auth:bootRun`.
-- **Inspección de dependencias:** `./gradlew dependencyInsight --dependency <libreria>` o `gradlew.bat dependencyInsight --dependency <libreria>`.
+## Documentación y estilo
 
-## Convenciones
+- Código, identificadores, comentarios y Javadoc en inglés. Documentación para desarrolladores en español.
+- Los comandos canónicos de OpenCode se nombran en inglés dentro de .opencode/commands/; el cuerpo de comandos y las guías de 1guides/ van en español. La carpeta commands/ de la raíz es legado.
+- Los archivos Markdown siguen markdownlint v0.41.1 sin warnings, con líneas en blanco alrededor de encabezados y listas y sin saltos de nivel.
+- Si una decisión se vuelve regla permanente, propone incorporarla en la fuente canónica adecuada. Mantén MEMORY.md breve, con máximo 250 líneas, y no guardes secretos.
 
-- **Idioma de código:** todo el código, identificadores y Javadoc en inglés.
-- **Idioma de documentación:** guías Markdown, tutoriales y explicaciones al desarrollador en español.
-- **Markdown sin warnings:** todo `.md` cumple markdownlint v0.41.1 con cero warnings, con líneas en blanco alrededor de encabezados y listas y sin saltos de nivel de encabezado.
-- **Nombres:** `camelCase` para variables y métodos, `PascalCase` para clases, `SNAKE_CASE` para constantes.
-- **Javadoc:** todo método no trivial incluye propósito, `@param`, `@throws` y `@return`.
-- **Directrices de Copilot:** antes de revisar o crear código, leer `.github/copilot-instructions.md` y alinearse a sus convenciones de estilo, patrones, tests, migraciones y configuración.
+## Gestión de pending.md y MEMORY.md
 
-## Reglas de dominio y trampas conocidas
+- pending.md en minúsculas es el registro canónico; PENDING.md es histórico y su eliminación queda reservada al desarrollador.
+- No agregues, edites ni elimines entradas de pending.md por iniciativa propia. Presenta hallazgos y opciones al usuario y modifica el archivo solo con autorización explícita específica para esos cambios. Una revisión o generación de código no concede por sí sola permiso para actualizarlo.
+- No cambies MEMORY.md salvo que la tarea lo pida o exista una decisión nueva cuya inclusión se haya autorizado.
+- Cuando se autorice registrar un hallazgo, cada entrada usa identificador consecutivo P-XX, ubicación exacta y estado agregado/no agregado, problema, contexto, opciones, recomendación y nivel de acción. No inventes ni reutilices identificadores.
 
-- **Aislamiento WebFlux contra MVC:** nunca importar `spring-boot-starter-web` en `:api` ni WebFlux reactivo en `src/main` de módulos Servlet como `:user-auth`. En `src/test` se permite `spring-boot-starter-webflux` solo como cliente `WebTestClient`.
-- **Persistencia reactiva:** R2DBC o conectores no bloqueantes solo aplican si un módulo reactivo necesitara base de datos. El gateway actual no necesita R2DBC porque no persiste.
-- **Paquetes:** usar siempre `jakarta.*` para JPA, validación y servlets. Nunca usar `javax.*`.
-- **Mapeadores:** usar MapStruct y Lombok para entidades y DTOs. No escribir getters, setters o builders manuales.
-- **Registro de beans de `shared-kernel`:** los `@Component` de la librería (`MessageResolver`, `GlobalExceptionHandler`, `CustomSecurityExceptionHandler`) solo existen si las autoconfiguraciones listadas en `shared-kernel/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` (`MessageConfig`, `ExceptionAutoConfiguration`, `AuditConfig`, `SharedJacksonConfig`, `EncryptEncoder`) los declaran como `@Bean`, porque `:user-auth` escanea únicamente `com.icms.user_auth` y el `scanBasePackages` de `UserAuthApplication.java:10` está comentado. Un `@Component` fuera de esas listas nunca se instancia y su estado estático queda en `null`; si se reactiva el escaneo de `com.icms.shared`, retirar el `@Component` correspondiente para evitar un bean duplicado.
+## Lectura y privacidad
 
-## Forma de trabajar
-
-- **Planificar primero:** explicar solución propuesta, desglose paso a paso y archivos afectados antes de pedir autorización.
-- **Mostrar cada cambio en el chat:** cada cambio incluye su contenido exacto en bloque de código o diff con `archivo:línea`, indicando qué se agregó, qué se quitó y qué quedó igual, antes de darlo por finalizado.
-- **Comandos y guías:** el nombre de archivo de comandos canónicos en `.opencode/commands/` va en inglés como `/new-migration`. La carpeta `commands/` en raíz es legado. El cuerpo de comandos y las guías en `1guides/` van en español.
-- **Inspección sin autorización:** solo lectura con `read`, `glob` y `grep` está siempre permitida sin pedir permiso.
-- **Acciones con autorización:** `shell`, `edit` y `write` siempre requieren plan previo y autorización explícita del desarrollador.
-- **Gestión de calidad con `pending.md`:**
-  - **Nombre canónico:** `pending.md` en minúsculas. El duplicado `PENDING.md` en mayúsculas es histórico y debe eliminarse con Git por el desarrollador.
-  - **Auditoría y registro:** tras cada revisión o generación de código, auditar y registrar fallos, deuda técnica o pruebas faltantes en `pending.md` con la plantilla estándar.
-  - **Auto-actualización limitada:** por defecto se pide autorización para tocar `pending.md` y `MEMORY.md`. Solo se tocan sin pregunta extra cuando la tarea, skill o comando en curso lo ordena explícitamente.
-  - **Auto-eliminación al validar:** solo en tarea de validación, si se verifica en código que un punto ya está corregido y probado, se elimina esa entrada de `pending.md`.
-  - **Estructura para hallazgos:** cada ítem incluye identificador `P-XX`, ubicación exacta `archivo:línea`, problema, contexto, opciones con recomendación y nivel de acción.
-  - **Protocolo de dependencias:** para nueva librería o cambio en `gradle/libs.versions.toml`:
-    1. Explicar justificación técnica.
-    2. Dar al menos dos opciones viables.
-    3. Esperar aprobación antes de modificar el catálogo.
-- **Verificación de pruebas:** cada cambio de código indica las pruebas unitarias y de integración necesarias para validarlo.
-
-## Limites
-
-- **Siempre:** sugerir código limpio, dar formato según el espacio de trabajo y usar inspección de solo lectura.
-- **Pregunta antes:**
-  - Cada modificación, creación o eliminación de archivos.
-  - Agregar o cambiar dependencias en `gradle/libs.versions.toml`.
-  - Cambios de esquema o migraciones Liquibase.
-  - Ejecutar comandos de terminal o construcción.
-- **Nunca:**
-  - NUNCA ejecutar comandos, alterar archivos o correr pruebas sin autorización explícita previa, salvo la inspección de solo lectura y la auto-actualización limitada ya descritas.
-  - NUNCA hacer `git commit`, `git stash` o `git push`, reservados al desarrollador.
-  - NUNCA escribir contraseñas o tokens en archivos versionados que no sean de ejemplo.
-
-## Verificacion
-
-- Describir los casos exactos con Mockito, AssertJ o `WebTestClient` y `RestAssured` que validan la funcionalidad antes de darla por finalizada.
-- Aplicar principio selectivo de copilot §I: no repetir genéricos heredados ya cubiertos; solo testear queries propias, constraints o lógica compleja.
-
-## Memoria
-
-- Al empezar, leer `MEMORY.md` para conocer estado y decisiones.
-- Al terminar una tarea, actualizarlo solo si la tarea lo pide o hay decisión nueva con su porqué y errores a evitar.
-- Mantenerlo breve con máximo 250 líneas: resumir o eliminar lo que no aporte.
-- Si algo se vuelve regla permanente, proponer moverlo a `AGENTS.md`.
-- Nunca guardar datos sensibles como claves o tokens.
-
-## Uso de la plantilla para `pending.md`
-
-Usa esta plantilla por cada hallazgo real en `pending.md`. Duplica el bloque, reemplaza corchetes y asigna identificador único consecutivo como `P-01` o `P-02`. No dejes marcadores sin completar.
-
-## P-XX - Titulo descriptivo del hallazgo
-
-**Donde y TODO:** `[modulo]/[ruta_al_archivo]:[linea]` y estado `agregado` o `no agregado` con su línea.
-
-**Problema:** [Descripción clara de la inconsistencia o violación].
-
-**Contexto y explicación:** [Por qué sucede y cómo afecta a backend, hilos o arquitectura].
-
-**Opciones estándar:**
-
-- A) [Opción 1 recomendada]
-- B) [Opción 2 alternativa]
-
-**Recomendación:** [Acción concreta propuesta].
-
-**Nivel de acción requerido:** [Alto, Medio o Bajo con justificación breve].
+- La inspección de solo lectura está permitida. Antes de modificar archivos aplica el proceso de autorización anterior.
+- Nunca guardes contraseñas o tokens en archivos versionados, salvo valores ficticios de ejemplo claramente identificados.
+- Al empezar una tarea, revisa MEMORY.md y las instrucciones específicas seleccionadas desde el mapa.

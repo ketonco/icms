@@ -1,26 +1,13 @@
 ---
-description: Planifica un archivo de migración Liquibase desde una clase entidad
+description: Planifica una migración Liquibase a partir de una entidad del monorepo ICMS
 agent: plan
 ---
 
 Para la clase entidad indicada en $ARGUMENTS:
 
-1. Localiza la clase (acepta nombre simple o calificado) y resuelve su jerarquía
-   de herencia (`extends`, `@MappedSuperclass` de `shared-kernel`) y verifica que
-   sea `@Entity`. Si es `@MappedSuperclass` o no es entidad, no hay tabla que
-   migrar: infórmalo y detente.
-2. Toma el nombre de la tabla de `@Table(name = "...")`. Si la entidad no tiene
-   `@Table` con `name` indicado, detente e informa que es necesario para crear
-   la migración.
-3. Deriva las columnas de la herencia: `LongAuditableEntity`/`UUIDAuditableEntity`
-   (`id` + auditoría), `BaseCatalogEntity` (`code`, `active`, `name`),
-   `BaseCatalogTranslationEntity` (`catalog_id`, `language_id`, `translation`,
-   `description`). Sin `@Entity` propia no hay migración.
-4. Lee `1guides/09-plantilla-migracion.md` (esqueleto `_001` a `_004`, `_aud`
-   Envers, regla de relacionales) y la sección J de
-   `.github/copilot-instructions.md` (nombres, `id`, secuencias).
-5. Detecta el módulo dueño por el paquete (`com.icms.<modulo>...`) y usa sus
-   `src/main/resources/db/migrations/` (cada microservicio tiene su BD propia).
-   Si la entidad vive en `shared-kernel`, pregunta en qué BD va antes de asumir.
-6. Presenta el plan y el YAML propuesto y espera autorización explícita para
-   crearlo. En modo plan no se ejecuta nada sin tu orden.
+1. Lee AGENTS.md y docs/contexto/project-map.md. Consulta la instrucción de Liquibase y la guía 1guides/09-plantilla-migracion.md.
+2. Localiza la clase y comprueba que sea @Entity; resuelve su herencia real, incluidos los tipos base de shared-kernel. Si no es entidad, detente e informa.
+3. Obtén el nombre de tabla y columnas desde las anotaciones y clases base efectivas. No inventes columnas a partir de una plantilla.
+4. Identifica el módulo dueño por paquete, dependencias y configuración real. Si pertenece a shared-kernel, pregunta qué servicio y base de datos deben poseer la tabla.
+5. Presenta cambios propuestos, nombre y contenido YAML, secuencias/constraints y pruebas o validaciones necesarias. Espera autorización explícita antes de crear o cambiar archivos.
+6. No ejecutes migraciones ni comandos de base de datos. Las operaciones destructivas y la selección de base destino requieren autorización específica.
