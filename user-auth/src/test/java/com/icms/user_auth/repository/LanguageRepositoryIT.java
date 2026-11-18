@@ -42,7 +42,7 @@ class LanguageRepositoryIT {
         testEntityManager.clear();
         
         // act
-        Language found = languageRepository.findByCode(language.getCode()).orElse(null);
+        Language found = languageRepository.findByCode("hr-HR").orElse(null);
 
         // Then
         assertThat(found).isNotNull();
